@@ -43,7 +43,7 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
                     return result;
                 };
 
-                if (item.Keywords.All(keyword => comparisonModeDel(keyword)))
+                if (item.KeywordsOld.All(keyword => comparisonModeDel(keyword)))
                 {
                     if ((callBotContains.Any(botname => request.Contains(botname) && item.CallBotRequired)) || !item.CallBotRequired)
                     {

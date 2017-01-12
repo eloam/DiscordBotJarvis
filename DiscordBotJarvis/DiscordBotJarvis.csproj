@@ -80,13 +80,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cortana\Controllers\CortanaCore.cs" />
+    <Compile Include="Cortana\Dal\SentencesDal.cs" />
     <Compile Include="Cortana\Enums\ClientStatutEnum.cs" />
     <Compile Include="Cortana\Enums\ComparisonModeEnum.cs" />
     <Compile Include="Cortana\Enums\ParametersEnum.cs" />
+    <Compile Include="Cortana\Enums\SentenceExtractionTypeEnum.cs" />
     <Compile Include="Cortana\Enums\SentencesEnum.cs" />
     <Compile Include="Cortana\Helpers\FormatStringHelper.cs" />
     <Compile Include="Cortana\Helpers\GetSentenceHelper.cs" />
     <Compile Include="Cortana\Models\Sentence.cs" />
+    <Compile Include="Cortana\Models\SentenceConfig.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
