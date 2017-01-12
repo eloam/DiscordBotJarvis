@@ -1,0 +1,8 @@
+﻿Au revoir {0} !
+Goodbye {0} !
+Bye {0} !
+Yep, tchuss {0} !
+Tchuss {0} !
+Salut {0} !
+++ {0} !
+a+ {0} !

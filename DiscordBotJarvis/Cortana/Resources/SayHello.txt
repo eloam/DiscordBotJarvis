@@ -1,0 +1,11 @@
+﻿Bonjour !
+Bonjour {0} !
+Bonjour {0} ! Comment vas-tu aujourd'hui ?
+Salut !
+Salut {0} !
+Salut {0} ! La forme aujourd'hui ?
+Hello !
+Hello {0} !
+Hello my friend !
+Hi {0} !
+Hi !

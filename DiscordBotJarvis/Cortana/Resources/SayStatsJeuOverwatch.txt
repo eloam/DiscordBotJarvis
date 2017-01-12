@@ -1,0 +1,5 @@
+﻿Ok, quel est ton BattleTag {0} ?
+Ok, c'est quoi ton BattleTag {0} ?
+Peux-tu me dire quel est BattleTag s'il te plait {0} ?
+Je fais ça tout de suite {0} ! Heu... par contre tu peux me dire ton BattleTag s'il te plait ?
+Je fais ça tout de suite {0} ! Heu... par contre pour qui je puisse faire ça, il me faut ton BattleTag s'il te plait :)
