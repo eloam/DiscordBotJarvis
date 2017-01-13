@@ -11,7 +11,7 @@ namespace DiscordBotJarvis.Cortana.Models
     public class SentenceConfig
     {
         private string nameSentenceFile;
-        private ParametersEnum parameters;
+        private ParametersEnum[] parameters;
         private SentenceExtractionTypeEnum sentenceExtractionType;
         private int indexSaySentence;
         private bool callBotRequired;
@@ -24,7 +24,7 @@ namespace DiscordBotJarvis.Cortana.Models
             set { nameSentenceFile = value; }
         }
 
-        public ParametersEnum Parameters
+        public ParametersEnum[] Parameters
         {
             get { return parameters; }
             set { parameters = value; }
@@ -54,16 +54,18 @@ namespace DiscordBotJarvis.Cortana.Models
             set { comparisonMode = value; }
         }
 
-        public SentenceConfig(string nameSentenceFile, ParametersEnum parameters, 
+        public SentenceConfig(string nameSentenceFile, ParametersEnum[] parameters = null, bool callBotRequired = true, 
+            ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains, 
             SentenceExtractionTypeEnum sentenceExtractionType = SentenceExtractionTypeEnum.OneSentenceRandom, 
-            int indexSaySentence = 0, bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains)
+            int indexSaySentence = 0)
         {
             this.NameSentenceFile = nameSentenceFile;
             this.Parameters = parameters;
-            this.SentenceExtractionType = sentenceExtractionType;
             this.IndexSaySentence = indexSaySentence;
             this.CallBotRequired = callBotRequired;
             this.ComparisonMode = comparisonMode;
+            this.SentenceExtractionType = sentenceExtractionType;
+            this.IndexSaySentence = indexSaySentence;
         }
     }
 }

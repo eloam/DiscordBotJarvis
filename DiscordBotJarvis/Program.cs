@@ -48,7 +48,7 @@ namespace DiscordBotCaptainObvious
                 SelfBot = false
             });
 
-            ListSentences = SentencesDal.BuildListSentence();
+            ListSentences = SentencesDal.BuildListSentencesOld();
 
             CreateCommands(_client);
             Cortana(_client);

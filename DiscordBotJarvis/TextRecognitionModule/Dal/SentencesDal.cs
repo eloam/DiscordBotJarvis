@@ -1,5 +1,7 @@
 ﻿using DiscordBotCaptainObvious.Cortana.Enums;
 using DiscordBotCaptainObvious.Cortana.Models;
+using DiscordBotJarvis.Cortana.Enums;
+using DiscordBotJarvis.Cortana.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,81 @@ namespace DiscordBotJarvis.Cortana.Dal
 {
     public static class SentencesDal
     {
-        public static IEnumerable<Sentence> BuildListSentence()
+        public static IEnumerable<Sentence> BuildListSentences()
+        {
+            // Créationde la liste temporaire des "Sentences"
+            List<Sentence> sentences = new List<Sentence>();
+
+            // Say "Hello"
+            sentences.Add(new Sentence(
+                sentences: new SentenceConfig[]
+                {
+                    new SentenceConfig("SayHello", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }, false, ComparisonModeEnum.StartsWith)
+                },
+                keywords: new List<string[]>()
+                {
+                    new string[] { "bonjour", "bjr", "salut", "salut", "hi", "hello", "yo" }
+                }));
+
+            // Say "Goodbye"
+            sentences.Add(new Sentence(
+                sentences: new SentenceConfig[]
+                {
+                    new SentenceConfig("SayGoodbye", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }, false, ComparisonModeEnum.StartsWith)
+                },
+                keywords: new List<string[]>()
+                {
+                    new string[] { "bye", "a+", "++", "@+" }
+                }));
+            sentences.Add(new Sentence(
+                sentences: new SentenceConfig[]
+                {
+                    new SentenceConfig("SayGoodbye", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }, false)
+                },
+                keywords: new List<string[]>()
+                {
+                    new string[] { "au revoir", "j'y vais", "j'y go", "je go", "bonne nuit", "tchuss" }
+                }));
+
+            // Say "De rien"
+            sentences.Add(new Sentence(
+                sentences: new SentenceConfig[]
+                {
+                    new SentenceConfig("SayDeRien", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
+                },
+                keywords: new List<string[]>()
+                {
+                    new string[] { "merci", "remerci", "nice", "thank you", "thanks", "thx", "ty" }
+                }));
+
+            // Play csgo russian song
+            sentences.Add(new Sentence(
+                sentences: new SentenceConfig[]
+                {
+                    new SentenceConfig("SayYesOrder", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }),
+                    new SentenceConfig("PlayCsGoRussianSong")
+                },
+                keywords: new List<string[]>()
+                {
+                    new string[] { "musique" },
+                    new string[] { "cs", "csgo", "cs go" }
+                }));
+
+            // Say obvious sentence
+            sentences.Add(new Sentence(
+                sentences: new SentenceConfig[]
+                {
+                    new SentenceConfig("SayObviousSentence")
+                },
+                keywords: new List<string[]>()
+                {
+                    new string[] { "obvious" }
+                }));
+
+            return sentences;
+        }
+
+        public static IEnumerable<Sentence> BuildListSentencesOld()
         {
             // Créationde la liste temporaire des "Sentences"
             List<Sentence> sentences = new List<Sentence>();

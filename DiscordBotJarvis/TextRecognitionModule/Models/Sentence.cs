@@ -18,36 +18,43 @@ namespace DiscordBotCaptainObvious.Cortana.Models
         private bool callBotRequired;
         private ComparisonModeEnum comparisonMode;
 
+        [Obsolete]
         public SentencesEnum[] SaySentences
         {
             get { return saySentences; }
             set { saySentences = value; }
         }
 
+        [Obsolete]
         public string[] KeywordsOld
         {
             get { return keywordsOld; }
             set { keywordsOld = value; }
         }
 
+        [Obsolete]
         public ParametersEnum[] Parameters
         {
             get { return parameters; }
             set { parameters = value; }
         }
 
+        [Obsolete]
         public bool CallBotRequired
         {
             get { return callBotRequired; }
             set { callBotRequired = value; }
         }
 
+        [Obsolete]
         public ComparisonModeEnum ComparisonMode
         {
             get { return comparisonMode; }
             set { comparisonMode = value; }
         }
 
+
+        [Obsolete]
         public Sentence(SentencesEnum[] saySentences, string[] keywords, ParametersEnum[] parameters = null, 
             bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains)
         {
