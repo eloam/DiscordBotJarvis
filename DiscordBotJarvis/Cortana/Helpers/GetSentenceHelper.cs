@@ -42,7 +42,5 @@ namespace DiscordBotCaptainObvious.Cortana.Helpers
 
             return lstSentences[idSentence];
         }
-
-
     }
 }

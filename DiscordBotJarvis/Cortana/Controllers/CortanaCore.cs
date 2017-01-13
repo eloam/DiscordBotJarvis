@@ -1,6 +1,7 @@
 ﻿using DiscordBotCaptainObvious.Cortana.Enums;
 using DiscordBotCaptainObvious.Cortana.Helpers;
 using DiscordBotCaptainObvious.Cortana.Models;
+using DiscordBotJarvis.Cortana.Extensions;
 using DSharpPlus;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
 
         public static void ExecuteQuery(MessageCreateEventArgs e, IEnumerable<Sentence> sentences)
         {
-            string request = FormatStringHelper.NormalizeQuery(e.Message.Content);
+            string request = e.Message.Content.Trim().ToLower().RemoveDiacritics();
             string response = string.Empty;
 
             string[] callBotContains = new string[] { "bot", "jarvis" };
