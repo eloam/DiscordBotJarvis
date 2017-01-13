@@ -12,7 +12,9 @@ namespace DiscordBotCaptainObvious.Cortana.Helpers
     {
         private static readonly object syncLock = new object();
 
-        private static IEnumerable<string> BuildListSentences(SentencesEnum sentence)
+
+        // Old
+        private static IEnumerable<string> BuildListSentencesOld(SentencesEnum sentence)
         {
             string sentenceType = $"Say{sentence.ToString()}";
             string destinationSentenceFile = $"../../TextRecognitionModule/Resources/{sentenceType}.txt";
@@ -20,15 +22,47 @@ namespace DiscordBotCaptainObvious.Cortana.Helpers
             return File.ReadAllText(destinationSentenceFile).Split('\n').ToList();
         }
 
-        public static string Say(SentencesEnum sentence, int pos)
+        public static string SayOld(SentencesEnum sentence, int pos)
         {
-            List<String> lstSentences = BuildListSentences(sentence).ToList();
+            List<String> lstSentences = BuildListSentencesOld(sentence).ToList();
             return lstSentences[pos];
         }
 
-        public static string SayRandom(SentencesEnum sentence)
+        public static string SayRandomOld(SentencesEnum sentence)
         {
-            List<String> lstSentences = BuildListSentences(sentence).ToList();
+            List<String> lstSentences = BuildListSentencesOld(sentence).ToList();
+            int nbelements = lstSentences.Count();
+            int idSentence = 0;
+
+            if (nbelements > 1)
+            {
+                Random random = new Random();
+
+                lock (syncLock)
+                    idSentence = random.Next(nbelements);
+            }
+
+            return lstSentences[idSentence];
+        }
+
+        // New
+        private static IEnumerable<string> BuildListSentences(string sentencesFile)
+        {
+            string sentenceType = $"Say{sentencesFile}";
+            string destinationSentenceFile = $"../../TextRecognitionModule/Resources/{sentenceType}.txt";
+
+            return File.ReadAllText(destinationSentenceFile).Split('\n').ToList();
+        }
+
+        public static string Say(string sentencesFile, int pos)
+        {
+            List<String> lstSentences = BuildListSentences(sentencesFile).ToList();
+            return lstSentences[pos];
+        }
+
+        public static string SayRandom(string sentencesFile)
+        {
+            List<String> lstSentences = BuildListSentences(sentencesFile).ToList();
             int nbelements = lstSentences.Count();
             int idSentence = 0;
 

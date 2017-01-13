@@ -10,18 +10,16 @@ namespace DiscordBotJarvis.Cortana.Models
 {
     public class SentenceConfig
     {
-        private string nameSentenceFile;
+        private string filename;
         private ParametersEnum[] parameters;
         private SentenceExtractionTypeEnum sentenceExtractionType;
         private int indexSaySentence;
-        private bool callBotRequired;
-        private ComparisonModeEnum comparisonMode;
 
 
-        public string NameSentenceFile
+        public string Filename
         {
-            get { return nameSentenceFile; }
-            set { nameSentenceFile = value; }
+            get { return filename; }
+            set { filename = value; }
         }
 
         public ParametersEnum[] Parameters
@@ -42,28 +40,12 @@ namespace DiscordBotJarvis.Cortana.Models
             set { indexSaySentence = value; }
         }
 
-        public bool CallBotRequired
-        {
-            get { return callBotRequired; }
-            set { callBotRequired = value; }
-        }
-
-        public ComparisonModeEnum ComparisonMode
-        {
-            get { return comparisonMode; }
-            set { comparisonMode = value; }
-        }
-
-        public SentenceConfig(string nameSentenceFile, ParametersEnum[] parameters = null, bool callBotRequired = true, 
-            ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains, 
+        public SentenceConfig(string filename, ParametersEnum[] parameters = null,
             SentenceExtractionTypeEnum sentenceExtractionType = SentenceExtractionTypeEnum.OneSentenceRandom, 
             int indexSaySentence = 0)
         {
-            this.NameSentenceFile = nameSentenceFile;
+            this.Filename = filename;
             this.Parameters = parameters;
-            this.IndexSaySentence = indexSaySentence;
-            this.CallBotRequired = callBotRequired;
-            this.ComparisonMode = comparisonMode;
             this.SentenceExtractionType = sentenceExtractionType;
             this.IndexSaySentence = indexSaySentence;
         }

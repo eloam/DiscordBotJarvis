@@ -15,8 +15,8 @@ namespace DiscordBotCaptainObvious.Cortana.Models
         private SentencesEnum[] saySentences;
         private string[] keywordsOld;
         private ParametersEnum[] parameters;
-        private bool callBotRequired;
-        private ComparisonModeEnum comparisonMode;
+        private bool callBotRequiredOld;
+        private ComparisonModeEnum comparisonModeOld;
 
         [Obsolete]
         public SentencesEnum[] SaySentences
@@ -40,14 +40,14 @@ namespace DiscordBotCaptainObvious.Cortana.Models
         }
 
         [Obsolete]
-        public bool CallBotRequired
+        public bool CallBotRequiredOld
         {
-            get { return callBotRequired; }
-            set { callBotRequired = value; }
+            get { return callBotRequiredOld; }
+            set { callBotRequiredOld = value; }
         }
 
         [Obsolete]
-        public ComparisonModeEnum ComparisonMode
+        public ComparisonModeEnum ComparisonModeOld
         {
             get { return comparisonMode; }
             set { comparisonMode = value; }
@@ -56,12 +56,12 @@ namespace DiscordBotCaptainObvious.Cortana.Models
 
         [Obsolete]
         public Sentence(SentencesEnum[] saySentences, string[] keywords, ParametersEnum[] parameters = null, 
-            bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains)
+            bool callBotRequiredOld = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains)
         {
             this.SaySentences = saySentences;
             this.KeywordsOld = keywords;
             this.Parameters = parameters;
-            this.CallBotRequired = callBotRequired;
+            this.CallBotRequiredOld = callBotRequiredOld;
             this.ComparisonMode = comparisonMode;
         }
 
@@ -70,6 +70,8 @@ namespace DiscordBotCaptainObvious.Cortana.Models
         private SentenceConfig[] sentences;
         private IEnumerable<string[]> keywords;
         private IEnumerable<Regex[]> regex;
+        private bool callBotRequired;
+        private ComparisonModeEnum comparisonMode;
 
         public SentenceConfig[] Sentences
         {
@@ -89,24 +91,39 @@ namespace DiscordBotCaptainObvious.Cortana.Models
             set { regex = value; }
         }
 
-
-        // Contructors
-        private Sentence(SentenceConfig[] sentences)
+        public bool CallBotRequired
         {
-            this.Sentences = sentences;
+            get { return callBotRequired; }
+            set { callBotRequired = value; }
         }
 
-        public Sentence(SentenceConfig[] sentences, IEnumerable<string[]> keywords) : this (sentences)
+        public ComparisonModeEnum ComparisonMode
+        {
+            get { return comparisonMode; }
+            set { comparisonMode = value; }
+        }
+
+        // Contructors
+        private Sentence(SentenceConfig[] sentences, bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains)
+        {
+            this.Sentences = sentences;
+            this.ComparisonMode = comparisonMode;
+        }
+
+        public Sentence(SentenceConfig[] sentences, IEnumerable <string[]> keywords, 
+            bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, callBotRequired ,comparisonMode)
         {
             this.Keywords = keywords;
         }
 
-        public Sentence(SentenceConfig[] sentences, IEnumerable<Regex[]> regex) : this (sentences)
+        public Sentence(SentenceConfig[] sentences, IEnumerable <Regex[]> regex, 
+            bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, callBotRequired, comparisonMode)
         {
             this.Regex = regex;
         }
 
-        public Sentence(SentenceConfig[] sentences, IEnumerable<string[]> keywords, IEnumerable<Regex[]> regex) : this (sentences, keywords)
+        public Sentence(SentenceConfig[] sentences, IEnumerable <string[]> keywords, IEnumerable<Regex[]> regex, 
+            bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, keywords, callBotRequired, comparisonMode)
         {
             this.Regex = regex;
         }

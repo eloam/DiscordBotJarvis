@@ -21,32 +21,37 @@ namespace DiscordBotJarvis.Cortana.Dal
             sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
                 {
-                    new SentenceConfig("SayHello", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }, false, ComparisonModeEnum.StartsWith)
+                    new SentenceConfig("SayHello", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
                 },
                 keywords: new List<string[]>()
                 {
                     new string[] { "bonjour", "bjr", "salut", "salut", "hi", "hello", "yo" }
-                }));
+                },
+                callBotRequired: false,
+                comparisonMode: ComparisonModeEnum.StartsWith));
 
             // Say "Goodbye"
             sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
                 {
-                    new SentenceConfig("SayGoodbye", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }, false, ComparisonModeEnum.StartsWith)
+                    new SentenceConfig("SayGoodbye", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
                 },
                 keywords: new List<string[]>()
                 {
                     new string[] { "bye", "a+", "++", "@+" }
-                }));
+                },
+                callBotRequired: false,
+                comparisonMode: ComparisonModeEnum.StartsWith));
             sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
                 {
-                    new SentenceConfig("SayGoodbye", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }, false)
+                    new SentenceConfig("SayGoodbye", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
                 },
                 keywords: new List<string[]>()
                 {
                     new string[] { "au revoir", "j'y vais", "j'y go", "je go", "bonne nuit", "tchuss" }
-                }));
+                },
+                callBotRequired: false));
 
             // Say "De rien"
             sentences.Add(new Sentence(

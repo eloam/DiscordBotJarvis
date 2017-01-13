@@ -145,7 +145,7 @@ namespace DiscordBotCaptainObvious
             {
                 if (e.Message.Author.ID != _client.Me.ID)
                 {
-                    CortanaCore.ExecuteQuery(e, ListSentences);
+                    CortanaCore.ExecuteQueryOld(e, ListSentences);
                 }
             };
 
