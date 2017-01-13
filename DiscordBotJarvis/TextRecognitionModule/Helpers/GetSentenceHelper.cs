@@ -15,7 +15,7 @@ namespace DiscordBotCaptainObvious.Cortana.Helpers
         private static IEnumerable<string> BuildListSentences(SentencesEnum sentence)
         {
             string sentenceType = $"Say{sentence.ToString()}";
-            string destinationSentenceFile = $"../../Cortana/Resources/{sentenceType}.txt";
+            string destinationSentenceFile = $"../../TextRecognitionModule/Resources/{sentenceType}.txt";
 
             return File.ReadAllText(destinationSentenceFile).Split('\n').ToList();
         }

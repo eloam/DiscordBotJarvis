@@ -79,17 +79,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cortana\Controllers\CortanaCore.cs" />
-    <Compile Include="Cortana\Dal\SentencesDal.cs" />
-    <Compile Include="Cortana\Enums\ClientStatutEnum.cs" />
-    <Compile Include="Cortana\Enums\ComparisonModeEnum.cs" />
-    <Compile Include="Cortana\Enums\ParametersEnum.cs" />
-    <Compile Include="Cortana\Enums\SentenceExtractionTypeEnum.cs" />
-    <Compile Include="Cortana\Enums\SentencesEnum.cs" />
-    <Compile Include="Cortana\Extensions\StringExtension.cs" />
-    <Compile Include="Cortana\Helpers\GetSentenceHelper.cs" />
-    <Compile Include="Cortana\Models\Sentence.cs" />
-    <Compile Include="Cortana\Models\SentenceConfig.cs" />
+    <Compile Include="TextRecognitionModule\Controllers\CortanaCore.cs" />
+    <Compile Include="TextRecognitionModule\Dal\SentencesDal.cs" />
+    <Compile Include="TextRecognitionModule\Enums\ClientStatutEnum.cs" />
+    <Compile Include="TextRecognitionModule\Enums\ComparisonModeEnum.cs" />
+    <Compile Include="TextRecognitionModule\Enums\ParametersEnum.cs" />
+    <Compile Include="TextRecognitionModule\Enums\SentenceExtractionTypeEnum.cs" />
+    <Compile Include="TextRecognitionModule\Enums\SentencesEnum.cs" />
+    <Compile Include="TextRecognitionModule\Extensions\StringExtension.cs" />
+    <Compile Include="TextRecognitionModule\Helpers\GetSentenceHelper.cs" />
+    <Compile Include="TextRecognitionModule\Models\Sentence.cs" />
+    <Compile Include="TextRecognitionModule\Models\SentenceConfig.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -97,16 +97,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Cortana\Resources\SayDeRien.txt" />
-    <Content Include="Cortana\Resources\SayYesOrder.txt" />
-    <Content Include="Cortana\Resources\SayStatsJeuOverwatch.txt" />
-    <Content Include="Cortana\Resources\SayPlayMusiqueCsGo.txt" />
-    <Content Include="Cortana\Resources\SayToutAFait.txt" />
-    <Content Include="Cortana\Resources\SayRussian.txt" />
-    <Content Include="Cortana\Resources\SayObvious.txt" />
-    <Content Include="Cortana\Resources\SayGoodbye.txt" />
-    <Content Include="Cortana\Resources\SayPunchline.txt" />
-    <Content Include="Cortana\Resources\SayHello.txt" />
+    <Content Include="TextRecognitionModule\Resources\SayDeRien.txt" />
+    <Content Include="TextRecognitionModule\Resources\SayYesOrder.txt" />
+    <Content Include="TextRecognitionModule\Resources\SayStatsJeuOverwatch.txt" />
+    <Content Include="TextRecognitionModule\Resources\SayPlayMusiqueCsGo.txt" />
+    <Content Include="TextRecognitionModule\Resources\SayToutAFait.txt" />
+    <Content Include="TextRecognitionModule\Resources\SayRussian.txt" />
+    <Content Include="TextRecognitionModule\Resources\SayObvious.txt" />
+    <Content Include="TextRecognitionModule\Resources\SayGoodbye.txt" />
+    <Content Include="TextRecognitionModule\Resources\SayPunchline.txt" />
+    <Content Include="TextRecognitionModule\Resources\SayHello.txt" />
     <Content Include="token.txt" />
     <Content Include="files\csgo.txt" />
     <Content Include="files\lvlup.txt" />
