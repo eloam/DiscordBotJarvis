@@ -15,7 +15,6 @@ namespace DiscordBotJarvis.Cortana.Models
         private SentenceExtractionTypeEnum sentenceExtractionType;
         private int indexSaySentence;
 
-
         public string Filename
         {
             get { return filename; }

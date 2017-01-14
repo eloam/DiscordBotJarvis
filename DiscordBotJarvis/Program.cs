@@ -48,7 +48,7 @@ namespace DiscordBotCaptainObvious
                 SelfBot = false
             });
 
-            ListSentences = SentencesDal.BuildListSentencesOld();
+            ListSentences = SentencesDal.BuildListSentences();
 
             CreateCommands(_client);
             Cortana(_client);
@@ -99,7 +99,7 @@ namespace DiscordBotCaptainObvious
                         Thread.Sleep(1000);
                         Console.WriteLine("Le client a été redémarré avec succès !");
                         break;
-                    default:
+                    case 'Q':
                         Console.WriteLine("Arrêt du bot en cours...");
                         if (clientStatut == ClientStatutEnum.Connected)
                         {
@@ -107,6 +107,8 @@ namespace DiscordBotCaptainObvious
                             Thread.Sleep(1000);
                         }
                         Environment.Exit(0);
+                        break;
+                    default:
                         break;
                 }
             }
@@ -145,7 +147,7 @@ namespace DiscordBotCaptainObvious
             {
                 if (e.Message.Author.ID != _client.Me.ID)
                 {
-                    CortanaCore.ExecuteQueryOld(e, ListSentences);
+                    CortanaCore.ExecuteQuery(e, ListSentences);
                 }
             };
 

@@ -100,12 +100,12 @@
     <Content Include="TextRecognitionModule\Resources\SayDeRien.txt" />
     <Content Include="TextRecognitionModule\Resources\SayYesOrder.txt" />
     <Content Include="TextRecognitionModule\Resources\SayStatsJeuOverwatch.txt" />
-    <Content Include="TextRecognitionModule\Resources\SayPlayMusiqueCsGo.txt" />
+    <Content Include="TextRecognitionModule\Resources\PlayCsGoRussianSong.txt" />
     <Content Include="TextRecognitionModule\Resources\SayToutAFait.txt" />
-    <Content Include="TextRecognitionModule\Resources\SayRussian.txt" />
-    <Content Include="TextRecognitionModule\Resources\SayObvious.txt" />
+    <Content Include="TextRecognitionModule\Resources\SayRussianInsult.txt" />
+    <Content Include="TextRecognitionModule\Resources\SayObviousSentence.txt" />
     <Content Include="TextRecognitionModule\Resources\SayGoodbye.txt" />
-    <Content Include="TextRecognitionModule\Resources\SayPunchline.txt" />
+    <Content Include="TextRecognitionModule\Resources\SayPunchlineSentence.txt" />
     <Content Include="TextRecognitionModule\Resources\SayHello.txt" />
     <Content Include="token.txt" />
     <Content Include="files\csgo.txt" />

@@ -16,50 +16,6 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
     {
         delegate bool comparisonModeDelegate(string keyword);
 
-        public static void ExecuteQueryOld(MessageCreateEventArgs e, IEnumerable<Sentence> sentences)
-        {
-            string request = e.Message.Content.Trim().ToLower().RemoveDiacritics();
-            string response = string.Empty;
-
-            string[] callBotContains = new string[] { "bot", "jarvis" };
-
-            foreach (Sentence item in sentences)
-            {
-                comparisonModeDelegate comparisonModeDel = keyword =>
-                {
-                    bool result = false;
-                    switch (item.ComparisonMode)
-                    {
-                        case ComparisonModeEnum.StartsWith:
-                            result = request.StartsWith(keyword);
-                            break;
-                        case ComparisonModeEnum.Contains:
-                            result = request.Contains(keyword);
-                            break;
-                        case ComparisonModeEnum.EndsWith:
-                            result = request.EndsWith(keyword);
-                            break;
-                        default:
-                            break;
-                    }
-                    return result;
-                };
-
-                if (item.KeywordsOld.All(keyword => comparisonModeDel(keyword)))
-                {
-                    if ((callBotContains.Any(botname => request.Contains(botname) && item.CallBotRequired)) || !item.CallBotRequired)
-                    {
-                        string[] parameters = item.Parameters != null ? ConvertParametersToValues(e, item.Parameters) : new string[0];
-                        foreach (SentencesEnum sentence in item.SaySentences)
-                        {
-                            e.Message.Respond(String.Format(GetSentenceHelper.SayRandomOld(sentence), parameters));
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-
         public static void ExecuteQuery(MessageCreateEventArgs e, IEnumerable<Sentence> sentences)
         {
             string request = e.Message.Content.Trim().ToLower().RemoveDiacritics();
@@ -77,7 +33,22 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
                     foreach (SentenceConfig sentenceConfig in sentence.Sentences)
                     {
                         string[] parameters = sentenceConfig.Parameters != null ? ConvertParametersToValues(e, sentenceConfig.Parameters) : new string[0];
-                        e.Message.Respond(String.Format(GetSentenceHelper.SayRandom(sentenceConfig.Filename), parameters));
+                        switch (sentenceConfig.SentenceExtractionType)
+                        {
+                            case DiscordBotJarvis.Cortana.Enums.SentenceExtractionTypeEnum.OneSentenceRandom:
+                                response = String.Format(GetSentenceHelper.SayRandom(sentenceConfig.Filename), parameters);
+                                break;
+                            case DiscordBotJarvis.Cortana.Enums.SentenceExtractionTypeEnum.OneSentenceSpecified:
+                                response = String.Format(GetSentenceHelper.Say(sentenceConfig.Filename, sentenceConfig.IndexSaySentence), parameters);
+                                break;
+                            case DiscordBotJarvis.Cortana.Enums.SentenceExtractionTypeEnum.File:
+                                response = String.Format(GetSentenceHelper.ReadFile(sentenceConfig.Filename), parameters);
+                                break;
+                            default:
+                                break;
+                        }
+
+                        e.Message.Respond(response, true);
                     }
                     break;
                 }
@@ -86,21 +57,6 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
                     continue;
                 }
             }
-
-            // Créationde la liste temporaire des "Sentences"
-            List<Sentence> s = new List<Sentence>();
-            // Play csgo russian song
-            s.Add(new Sentence(
-                sentences: new SentenceConfig[]
-                {
-                    new SentenceConfig("SayYesOrder", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }),
-                    new SentenceConfig("PlayCsGoRussianSong")
-                },
-                keywords: new List<string[]>()
-                {
-                    new string[] { "musique" },
-                    new string[] { "cs", "csgo", "cs go" }
-                }));
         }
 
         private static bool CheckKeywordsMatch(string request, List<string[]> keywords, ComparisonModeEnum comparisonMode)
@@ -140,7 +96,7 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
                     keywordsMatch = false;
 
                 index++;
-            } while (index < keywords.Count - 1 || !keywordsMatch);
+            } while ((index > keywords.Count) && !keywordsMatch);
 
             return keywordsMatch;
         }

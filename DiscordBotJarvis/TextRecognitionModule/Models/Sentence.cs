@@ -11,61 +11,6 @@ namespace DiscordBotCaptainObvious.Cortana.Models
 {
     public class Sentence
     {
-        // old
-        private SentencesEnum[] saySentences;
-        private string[] keywordsOld;
-        private ParametersEnum[] parameters;
-        private bool callBotRequiredOld;
-        private ComparisonModeEnum comparisonModeOld;
-
-        [Obsolete]
-        public SentencesEnum[] SaySentences
-        {
-            get { return saySentences; }
-            set { saySentences = value; }
-        }
-
-        [Obsolete]
-        public string[] KeywordsOld
-        {
-            get { return keywordsOld; }
-            set { keywordsOld = value; }
-        }
-
-        [Obsolete]
-        public ParametersEnum[] Parameters
-        {
-            get { return parameters; }
-            set { parameters = value; }
-        }
-
-        [Obsolete]
-        public bool CallBotRequiredOld
-        {
-            get { return callBotRequiredOld; }
-            set { callBotRequiredOld = value; }
-        }
-
-        [Obsolete]
-        public ComparisonModeEnum ComparisonModeOld
-        {
-            get { return comparisonMode; }
-            set { comparisonMode = value; }
-        }
-
-
-        [Obsolete]
-        public Sentence(SentencesEnum[] saySentences, string[] keywords, ParametersEnum[] parameters = null, 
-            bool callBotRequiredOld = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains)
-        {
-            this.SaySentences = saySentences;
-            this.KeywordsOld = keywords;
-            this.Parameters = parameters;
-            this.CallBotRequiredOld = callBotRequiredOld;
-            this.ComparisonMode = comparisonMode;
-        }
-
-
         // Property
         private SentenceConfig[] sentences;
         private IEnumerable<string[]> keywords;
