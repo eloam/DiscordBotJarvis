@@ -302,3 +302,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 DiscordBotJarvis/token.txt
+DiscordBotJarvis/Properties/webjob-publish-settings.json

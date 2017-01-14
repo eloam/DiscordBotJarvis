@@ -35,7 +35,7 @@ namespace DiscordBotCaptainObvious
 
             DiscordClient _client = new DiscordClient(new DiscordConfig()
             {
-                Token = File.ReadAllText("../../token.txt"),
+                Token = File.ReadAllText("token.txt"),
                 AutoReconnect = true
             });
 

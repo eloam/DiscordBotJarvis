@@ -14,7 +14,7 @@ namespace DiscordBotCaptainObvious.Cortana.Helpers
 
         private static IEnumerable<string> BuildListSentences(string filename)
         {
-            string destinationSentenceFile = $"../../TextRecognitionModule/Resources/{filename}.txt";
+            string destinationSentenceFile = $"ResourcePacks/fr-FR/{filename}.txt";
 
             return File.ReadAllLines(destinationSentenceFile).ToList();
         }

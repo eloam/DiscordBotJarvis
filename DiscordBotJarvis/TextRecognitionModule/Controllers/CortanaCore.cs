@@ -48,7 +48,7 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
                                 break;
                         }
 
-                        e.Message.Respond(response, true);
+                        e.Message.Respond(response);
                     }
                     break;
                 }
