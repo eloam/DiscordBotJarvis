@@ -99,7 +99,9 @@
     <None Include="Properties\webjob-publish-settings.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ResourcePacks\fr-FR\PlaySong.txt" />
+    <Content Include="ResourcePacks\fr-FR\PlaySong.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ResourcePacks\fr-FR\SayDeRien.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
