@@ -65,6 +65,19 @@ namespace DiscordBotJarvis.Cortana.Dal
                     new string[] { "merci", "remerci", "nice", "thank you", "thanks", "thx", "ty" }
                 }));
 
+            // Play a song
+            sentences.Add(new Sentence(
+                sentences: new SentenceConfig[]
+                {
+                    new SentenceConfig("SayYesOrder", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }),
+                    new SentenceConfig("PlaySong")
+                },
+                keywords: new List<string[]>()
+                {
+                    new string[] { "joue", "jouer", "play" },
+                    new string[] { "musique", "music" }
+                }));
+
             // Play csgo russian song
             sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
