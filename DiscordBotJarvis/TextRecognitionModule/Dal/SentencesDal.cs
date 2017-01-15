@@ -139,6 +139,7 @@ namespace DiscordBotJarvis.Cortana.Dal
             sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
                 {
+                    new SentenceConfig("SayStatsJeuOverwatch", null, SentenceExtractionTypeEnum.OneSentenceSpecified, 0)
                 },
                 regex: new List<Regex[]>()
                 {
