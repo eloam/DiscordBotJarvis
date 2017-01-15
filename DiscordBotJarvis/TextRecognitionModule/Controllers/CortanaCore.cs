@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DiscordBotCaptainObvious.Cortana.Controllers
@@ -24,7 +25,7 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
             // On parcours toutes les lignes de la liste de phrases
             foreach (Sentence sentence in sentences)
             {
-                bool keywordsMatch = CheckKeywordsMatch(request, sentence.Keywords.ToList(), sentence.ComparisonMode);
+                bool keywordsMatch = CheckKeywordsMatch(request, (List<string[]>)sentence.Keywords ?? null, (List<Regex[]>)sentence.Regex ?? null, sentence.ComparisonMode);
                 bool triggerBot = CheckTriggerBot(request, sentence.CallBotRequired);
 
                 if (keywordsMatch && triggerBot)
@@ -59,8 +60,16 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
             }
         }
 
-        private static bool CheckKeywordsMatch(string request, List<string[]> keywords, ComparisonModeEnum comparisonMode)
+        private static bool CheckKeywordsMatch(string request, List<string[]> keywords, List<Regex[]> regex, ComparisonModeEnum comparisonMode)
         {
+            // On determine si la liste de mot-clés et de regex sont à l'état null
+            bool lstKeywordsIsNull = keywords == null ? true : false;
+            bool lstRegexIsNull = regex == null ? true : false;
+
+            // Si les deux boolean sont à false :
+            if (lstKeywordsIsNull && lstRegexIsNull)
+                throw new ArgumentNullException("Au moins un des deux liste de tableaux, keywords ou regex doivent être valorisées.");
+
             // Delegate permettant de définir le mode de comparaison de la requête (en début/fin de str ou n'importe ou dans la requete)
             comparisonModeDelegate comparisonModeDel = keyword =>
             {
@@ -83,22 +92,55 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
             };
 
             // Recherche si la requête de l'utilisateur correspond aux-mots-clés de l'objet Sentence
-            int index = 0;
-            bool keywordsMatch = true;
-            do
+            bool keywordsMatch = false;
+            if (!lstKeywordsIsNull)
             {
-                // Ligne de mots-clés
-                string[] rowKeywordsSentence = keywords[index];
+                int index = 0;
+                keywordsMatch = true;
+                do
+                {
+                    // Ligne de mots-clés
+                    string[] rowKeywordsSentence = keywords[index];
 
-                // Si au moins un des mot-clé est trouvé dans la liste, on continue la vérification pour tableaux de mots-clés suivants,
-                // dans le cas contraite on sort de la boucle
-                if (!rowKeywordsSentence.Any(keyword => comparisonModeDel(keyword)))
-                    keywordsMatch = false;
+                    // Si au moins un des mot-clé est trouvé dans la liste, on continue la vérification pour tableaux de mots-clés suivants,
+                    // dans le cas contraite on sort de la boucle
+                    if (!rowKeywordsSentence.Any(keyword => comparisonModeDel(keyword)))
+                        keywordsMatch = false;
 
-                index++;
-            } while ((index > keywords.Count) && !keywordsMatch);
+                    index++;
+                } while ((index > keywords.Count) && !keywordsMatch);
+            }
 
-            return keywordsMatch;
+            bool regexMatch = false;
+            if (!lstRegexIsNull)
+            {
+                int index = 0;
+                regexMatch = true;
+                do
+                {
+                    // Obtenir à partir de la liste de regex, la ligne correspond a son indice
+                    Regex[] rowRegexSentence = regex[index];
+
+                    // Si au moins un des mot-clé est trouvé dans la liste, on continue la vérification pour tableaux de regex suivants,
+                    // dans le cas contraite on sort de la boucle
+                    if (!rowRegexSentence.Any(pattern => Regex.IsMatch(request, pattern.ToString())))
+                        keywordsMatch = false;
+
+                    index++;
+                } while ((index > regex.Count) && !regexMatch);
+            }
+
+
+            // Determination du résultat
+            bool resultMatch = false;
+            if (!lstKeywordsIsNull && !lstRegexIsNull)
+                resultMatch = keywordsMatch && regexMatch;
+            else if (!lstKeywordsIsNull)
+                resultMatch = keywordsMatch;
+            else if (!lstRegexIsNull)
+                resultMatch = regexMatch;
+
+            return resultMatch;
         }
 
         private static bool CheckTriggerBot(string request, bool callBotRequired)

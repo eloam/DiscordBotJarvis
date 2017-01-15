@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DiscordBotJarvis.Cortana.Dal
@@ -133,6 +134,17 @@ namespace DiscordBotJarvis.Cortana.Dal
                     new string[] { "stats" },
                     new string[] { "overwatch", "ow" }
                 }));
+
+            // Regex Battletag (UserName#9999)
+            sentences.Add(new Sentence(
+                sentences: new SentenceConfig[]
+                {
+                },
+                regex: new List<Regex[]>()
+                {
+                    new Regex[] { new Regex(@"([a-zA-ZÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ])([\wÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ]{2,11})#\d{4}") },
+                },
+                callBotRequired: false));
 
             return sentences;
         }

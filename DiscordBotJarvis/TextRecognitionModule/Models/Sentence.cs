@@ -55,19 +55,19 @@ namespace DiscordBotCaptainObvious.Cortana.Models
             this.ComparisonMode = comparisonMode;
         }
 
-        public Sentence(SentenceConfig[] sentences, IEnumerable <string[]> keywords, 
+        public Sentence(SentenceConfig[] sentences, IEnumerable<string[]> keywords, 
             bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, callBotRequired ,comparisonMode)
         {
             this.Keywords = keywords;
         }
 
-        public Sentence(SentenceConfig[] sentences, IEnumerable <Regex[]> regex, 
+        public Sentence(SentenceConfig[] sentences, IEnumerable<Regex[]> regex, 
             bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, callBotRequired, comparisonMode)
         {
             this.Regex = regex;
         }
 
-        public Sentence(SentenceConfig[] sentences, IEnumerable <string[]> keywords, IEnumerable<Regex[]> regex, 
+        public Sentence(SentenceConfig[] sentences, IEnumerable<string[]> keywords, IEnumerable<Regex[]> regex, 
             bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, keywords, callBotRequired, comparisonMode)
         {
             this.Regex = regex;
