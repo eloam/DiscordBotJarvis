@@ -105,6 +105,9 @@
     <Content Include="ResourcePacks\fr-FR\SayDeRien.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="ResourcePacks\fr-FR\SayImFine.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ResourcePacks\fr-FR\SayYesOrder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

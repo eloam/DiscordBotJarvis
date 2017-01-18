@@ -18,6 +18,7 @@ namespace DiscordBotJarvis.Cortana.Dal
             // Créationde la liste temporaire des "Sentences"
             List<Sentence> sentences = new List<Sentence>();
 
+            /*
             // Say "Hello"
             sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
@@ -54,6 +55,27 @@ namespace DiscordBotJarvis.Cortana.Dal
                 },
                 callBotRequired: false));
 
+            // Say "I'm fine"
+            sentences.Add(new Sentence(
+                sentences: new SentenceConfig[]
+                {
+                    new SentenceConfig("SayImFine")
+                },
+                keywords: new List<string[]>()
+                {
+                    new string[] { "comment" },
+                    new string[] { "vas tu", "tu vas", "ca va" }
+                }));
+            sentences.Add(new Sentence(
+                sentences: new SentenceConfig[]
+                {
+                    new SentenceConfig("SayImFine")
+                },
+                keywords: new List<string[]>()
+                {
+                    new string[] { "tu vas bien", "la forme" }
+                }));
+
             // Say "De rien"
             sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
@@ -64,6 +86,20 @@ namespace DiscordBotJarvis.Cortana.Dal
                 {
                     new string[] { "merci", "remerci", "nice", "thank you", "thanks", "thx", "ty" }
                 }));
+
+            // Play csgo russian song
+            sentences.Add(new Sentence(
+                sentences: new SentenceConfig[]
+                {
+                    new SentenceConfig("SayYesOrder", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }),
+                    new SentenceConfig("PlayCsGoRussianSong")
+                },
+                keywords: new List<string[]>()
+                {
+                    new string[] { "joue", "jouer", "play" },
+                    new string[] { "musique", "music" },
+                    new string[] { "cs", "csgo", "cs go" }
+                }));*/
 
             // Play a song
             sentences.Add(new Sentence(
@@ -78,19 +114,7 @@ namespace DiscordBotJarvis.Cortana.Dal
                     new string[] { "musique", "music" }
                 }));
 
-            // Play csgo russian song
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
-                {
-                    new SentenceConfig("SayYesOrder", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }),
-                    new SentenceConfig("PlayCsGoRussianSong")
-                },
-                keywords: new List<string[]>()
-                {
-                    new string[] { "musique" },
-                    new string[] { "cs", "csgo", "cs go" }
-                }));
-
+            /*
             // Say punchline sentence
             sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
@@ -129,7 +153,7 @@ namespace DiscordBotJarvis.Cortana.Dal
             sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
                 {
-                    new SentenceConfig("SayToutAFait")
+                    new SentenceConfig("SayToutAFait", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
                 },
                 keywords: new List<string[]>()
                 {
@@ -140,7 +164,7 @@ namespace DiscordBotJarvis.Cortana.Dal
             sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
                 {
-                    new SentenceConfig("SayStatsJeuOverwatch")
+                    new SentenceConfig("SayStatsJeuOverwatch", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
                 },
                 keywords: new List<string[]>()
                 {
@@ -152,13 +176,13 @@ namespace DiscordBotJarvis.Cortana.Dal
             sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
                 {
-                    new SentenceConfig("SayStatsJeuOverwatch", null, SentenceExtractionTypeEnum.OneSentenceSpecified, 0)
+                    new SentenceConfig("SayStatsJeuOverwatch", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }, SentenceExtractionTypeEnum.OneSentenceSpecified, 0)
                 },
                 regex: new List<Regex[]>()
                 {
                     new Regex[] { new Regex(@"([a-zA-ZÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ])([\wÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ]{2,11})#\d{4}") },
                 },
-                callBotRequired: false));
+                callBotRequired: false));*/
 
             return sentences;
         }

@@ -52,6 +52,7 @@ namespace DiscordBotCaptainObvious.Cortana.Models
         private Sentence(SentenceConfig[] sentences, bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains)
         {
             this.Sentences = sentences;
+            this.CallBotRequired = callBotRequired;
             this.ComparisonMode = comparisonMode;
         }
 

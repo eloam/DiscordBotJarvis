@@ -123,8 +123,8 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
 
                     // Si au moins un des mot-clé est trouvé dans la liste, on continue la vérification pour tableaux de regex suivants,
                     // dans le cas contraite on sort de la boucle
-                    if (!rowRegexSentence.Any(pattern => Regex.IsMatch(request, pattern.ToString())))
-                        keywordsMatch = false;
+                    if (!rowRegexSentence.Any(pattern => Regex.Match(request, pattern.ToString()).Success))
+                        regexMatch = false;
 
                     index++;
                 } while ((index > regex.Count) && !regexMatch);
@@ -148,7 +148,7 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
             string[] callBotContains = new string[] { "bot", "jarvis" };
             bool triggerBot = false;
 
-            if ((callBotContains.Any(botname => request.Contains(botname) && callBotRequired)) || !callBotRequired)
+            if ((callBotContains.Any(botname => request.Contains(botname)) && callBotRequired) || !callBotRequired)
             {
                 triggerBot = true;
             }
