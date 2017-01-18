@@ -18,7 +18,6 @@ namespace DiscordBotJarvis.Cortana.Dal
             // Créationde la liste temporaire des "Sentences"
             List<Sentence> sentences = new List<Sentence>();
 
-            /*
             // Say "Hello"
             sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
@@ -99,7 +98,7 @@ namespace DiscordBotJarvis.Cortana.Dal
                     new string[] { "joue", "jouer", "play" },
                     new string[] { "musique", "music" },
                     new string[] { "cs", "csgo", "cs go" }
-                }));*/
+                }));
 
             // Play a song
             sentences.Add(new Sentence(
@@ -114,7 +113,6 @@ namespace DiscordBotJarvis.Cortana.Dal
                     new string[] { "musique", "music" }
                 }));
 
-            /*
             // Say punchline sentence
             sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
@@ -182,7 +180,7 @@ namespace DiscordBotJarvis.Cortana.Dal
                 {
                     new Regex[] { new Regex(@"([a-zA-ZÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ])([\wÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ]{2,11})#\d{4}") },
                 },
-                callBotRequired: false));*/
+                callBotRequired: false));
 
             return sentences;
         }
