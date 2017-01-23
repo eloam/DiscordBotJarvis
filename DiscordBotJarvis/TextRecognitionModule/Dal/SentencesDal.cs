@@ -1,6 +1,7 @@
 ﻿using DiscordBotJarvis.TextRecognitionModule.Enums;
 using DiscordBotJarvis.TextRecognitionModule.Models;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace DiscordBotJarvis.TextRecognitionModule.Dal
 {
