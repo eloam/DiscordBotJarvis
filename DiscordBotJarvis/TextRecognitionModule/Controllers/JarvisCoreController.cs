@@ -17,7 +17,6 @@ namespace DiscordBotJarvis.TextRecognitionModule.Controllers
         public static void ExecuteQuery(MessageCreateEventArgs e, IEnumerable<Sentence> sentences)
         {
             string request = e.Message.Content.Trim().AddWhiteSpaceAroundString().ToLower().RemoveDiacritics();
-
             string response = string.Empty;
 
             // On parcours toutes les lignes de la liste de phrases
@@ -109,7 +108,7 @@ namespace DiscordBotJarvis.TextRecognitionModule.Controllers
                         keywordsMatch = false;
 
                     index++;
-                } while ((index > keywords.Count) && !keywordsMatch);
+                } while ((index < keywords.Count) && keywordsMatch);
             }
             
             // Recherche si la requête de l'utilisateur correspond aux expressions régulières de l'objet Sentence
@@ -128,7 +127,7 @@ namespace DiscordBotJarvis.TextRecognitionModule.Controllers
                         regexMatch = false;
 
                     index++;
-                } while ((index > regex.Count) && !regexMatch);
+                } while ((index < regex.Count) && regexMatch);
             }
 
             // Determination du résultat
