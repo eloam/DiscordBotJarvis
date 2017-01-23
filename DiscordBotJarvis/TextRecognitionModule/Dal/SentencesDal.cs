@@ -12,7 +12,7 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
             List<Sentence> sentences = new List<Sentence>();
 
             // Say "Hello"
-            /*sentences.Add(new Sentence(
+            sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
                 {
                     new SentenceConfig("SayHello", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
@@ -77,7 +77,7 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 keywords: new List<string[]>()
                 {
                     new string[] { "merci", "remerci", "nice", "thank you", "thanks", "thx", "ty" }
-                }));*/
+                }));
 
             // Play csgo russian song
             sentences.Add(new Sentence(
@@ -107,7 +107,7 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 }));
 
             // Say punchline sentence
-            /*sentences.Add(new Sentence(
+            sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
                 {
                     new SentenceConfig("SayPunchlineSentence")
@@ -173,7 +173,7 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 {
                     new Regex[] { new Regex(@"([a-zA-ZÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ])([\wÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ]{2,11})#\d{4}") },
                 },
-                callBotRequired: false));*/
+                callBotRequired: false));
 
             return sentences;
         }
