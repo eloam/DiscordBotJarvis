@@ -1,13 +1,8 @@
-﻿using DiscordBotCaptainObvious.Cortana.Enums;
-using DiscordBotJarvis.Cortana.Models;
-using System;
+﻿using DiscordBotJarvis.TextRecognitionModule.Enums;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-namespace DiscordBotCaptainObvious.Cortana.Models
+namespace DiscordBotJarvis.TextRecognitionModule.Models
 {
     public class Sentence
     {
@@ -57,7 +52,7 @@ namespace DiscordBotCaptainObvious.Cortana.Models
         }
 
         public Sentence(SentenceConfig[] sentences, IEnumerable<string[]> keywords, 
-            bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, callBotRequired ,comparisonMode)
+            bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, callBotRequired, comparisonMode)
         {
             this.Keywords = keywords;
         }

@@ -79,7 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TextRecognitionModule\Controllers\CortanaCore.cs" />
+    <Compile Include="TextRecognitionModule\Controllers\JarvisCoreController.cs" />
     <Compile Include="TextRecognitionModule\Dal\SentencesDal.cs" />
     <Compile Include="TextRecognitionModule\Enums\ClientStatutEnum.cs" />
     <Compile Include="TextRecognitionModule\Enums\ComparisonModeEnum.cs" />

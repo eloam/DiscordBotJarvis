@@ -1,12 +1,6 @@
-﻿using DiscordBotCaptainObvious.Cortana.Enums;
-using DiscordBotJarvis.Cortana.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DiscordBotJarvis.TextRecognitionModule.Enums;
 
-namespace DiscordBotJarvis.Cortana.Models
+namespace DiscordBotJarvis.TextRecognitionModule.Models
 {
     public class SentenceConfig
     {

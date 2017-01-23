@@ -1,17 +1,14 @@
-﻿using DiscordBotCaptainObvious.Cortana.Enums;
-using DiscordBotCaptainObvious.Cortana.Helpers;
-using DiscordBotCaptainObvious.Cortana.Models;
-using DiscordBotJarvis.Cortana.Extensions;
-using DiscordBotJarvis.Cortana.Models;
+﻿using DiscordBotJarvis.TextRecognitionModule.Enums;
+using DiscordBotJarvis.TextRecognitionModule.Extensions;
+using DiscordBotJarvis.TextRecognitionModule.Helpers;
+using DiscordBotJarvis.TextRecognitionModule.Models;
 using DSharpPlus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-namespace DiscordBotCaptainObvious.Cortana.Controllers
+namespace DiscordBotJarvis.TextRecognitionModule.Controllers
 {
     static class CortanaCore
     {
@@ -19,7 +16,8 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
 
         public static void ExecuteQuery(MessageCreateEventArgs e, IEnumerable<Sentence> sentences)
         {
-            string request = e.Message.Content.Trim().ToLower().RemoveDiacritics();
+            string request = e.Message.Content.Trim().AddWhiteSpaceAroundString().ToLower().RemoveDiacritics();
+
             string response = string.Empty;
 
             // On parcours toutes les lignes de la liste de phrases
@@ -36,13 +34,13 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
                         string[] parameters = sentenceConfig.Parameters != null ? ConvertParametersToValues(e, sentenceConfig.Parameters) : new string[0];
                         switch (sentenceConfig.SentenceExtractionType)
                         {
-                            case DiscordBotJarvis.Cortana.Enums.SentenceExtractionTypeEnum.OneSentenceRandom:
+                            case SentenceExtractionTypeEnum.OneSentenceRandom:
                                 response = String.Format(GetSentenceHelper.SayRandom(sentenceConfig.Filename), parameters);
                                 break;
-                            case DiscordBotJarvis.Cortana.Enums.SentenceExtractionTypeEnum.OneSentenceSpecified:
+                            case SentenceExtractionTypeEnum.OneSentenceSpecified:
                                 response = String.Format(GetSentenceHelper.Say(sentenceConfig.Filename, sentenceConfig.IndexSaySentence), parameters);
                                 break;
-                            case DiscordBotJarvis.Cortana.Enums.SentenceExtractionTypeEnum.File:
+                            case SentenceExtractionTypeEnum.File:
                                 response = String.Format(GetSentenceHelper.ReadFile(sentenceConfig.Filename), parameters);
                                 break;
                             default:
@@ -91,8 +89,11 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
                 return result;
             };
 
-            // Recherche si la requête de l'utilisateur correspond aux-mots-clés de l'objet Sentence
+            // Déclaration des booléens indiquants si la requetes correspond aux mots clés et expression regulières de l'objet Sentence'
             bool keywordsMatch = false;
+            bool regexMatch = false;
+
+            // Recherche si la requête de l'utilisateur correspond aux mots-clés de l'objet Sentence
             if (!lstKeywordsIsNull)
             {
                 int index = 0;
@@ -104,14 +105,14 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
 
                     // Si au moins un des mot-clé est trouvé dans la liste, on continue la vérification pour tableaux de mots-clés suivants,
                     // dans le cas contraite on sort de la boucle
-                    if (!rowKeywordsSentence.Any(keyword => comparisonModeDel(keyword)))
+                    if (!rowKeywordsSentence.Any(keyword => comparisonModeDel(keyword.AddWhiteSpaceAroundString())))
                         keywordsMatch = false;
 
                     index++;
                 } while ((index > keywords.Count) && !keywordsMatch);
             }
-
-            bool regexMatch = false;
+            
+            // Recherche si la requête de l'utilisateur correspond aux expressions régulières de l'objet Sentence
             if (!lstRegexIsNull)
             {
                 int index = 0;
@@ -130,7 +131,6 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
                 } while ((index > regex.Count) && !regexMatch);
             }
 
-
             // Determination du résultat
             bool resultMatch = false;
             if (!lstKeywordsIsNull && !lstRegexIsNull)
@@ -148,7 +148,7 @@ namespace DiscordBotCaptainObvious.Cortana.Controllers
             string[] callBotContains = new string[] { "bot", "jarvis" };
             bool triggerBot = false;
 
-            if ((callBotContains.Any(botname => request.Contains(botname)) && callBotRequired) || !callBotRequired)
+            if ((callBotContains.Any(botname => request.Contains(botname.AddWhiteSpaceAroundString())) && callBotRequired) || !callBotRequired)
             {
                 triggerBot = true;
             }

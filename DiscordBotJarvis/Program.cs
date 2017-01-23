@@ -1,20 +1,15 @@
-﻿using DiscordBotCaptainObvious.Cortana.Controllers;
-using DiscordBotCaptainObvious.Cortana.Enums;
-using DiscordBotCaptainObvious.Cortana.Helpers;
-using DiscordBotCaptainObvious.Cortana.Models;
-using DiscordBotJarvis.Cortana.Dal;
+﻿using DiscordBotJarvis.TextRecognitionModule.Controllers;
+using DiscordBotJarvis.TextRecognitionModule.Dal;
+using DiscordBotJarvis.TextRecognitionModule.Enums;
+using DiscordBotJarvis.TextRecognitionModule.Models;
 using DSharpPlus;
 using DSharpPlus.Commands;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace DiscordBotCaptainObvious
+namespace DiscordBotJarvis
 {
     class Program
     {
@@ -145,9 +140,11 @@ namespace DiscordBotCaptainObvious
         {
             _client.MessageCreated += (sender, e) =>
             {
+                DateTime t1 = DateTime.Now;
                 if (e.Message.Author.ID != _client.Me.ID)
                 {
                     CortanaCore.ExecuteQuery(e, ListSentences);
+                    Console.WriteLine($"Traitement effectué en {(DateTime.Now - t1).TotalMilliseconds}.");
                 }
             };
 

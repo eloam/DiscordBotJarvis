@@ -1,15 +1,8 @@
-﻿using DiscordBotCaptainObvious.Cortana.Enums;
-using DiscordBotCaptainObvious.Cortana.Models;
-using DiscordBotJarvis.Cortana.Enums;
-using DiscordBotJarvis.Cortana.Models;
-using System;
+﻿using DiscordBotJarvis.TextRecognitionModule.Enums;
+using DiscordBotJarvis.TextRecognitionModule.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-namespace DiscordBotJarvis.Cortana.Dal
+namespace DiscordBotJarvis.TextRecognitionModule.Dal
 {
     public static class SentencesDal
     {
@@ -19,7 +12,7 @@ namespace DiscordBotJarvis.Cortana.Dal
             List<Sentence> sentences = new List<Sentence>();
 
             // Say "Hello"
-            sentences.Add(new Sentence(
+            /*sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
                 {
                     new SentenceConfig("SayHello", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
@@ -84,7 +77,7 @@ namespace DiscordBotJarvis.Cortana.Dal
                 keywords: new List<string[]>()
                 {
                     new string[] { "merci", "remerci", "nice", "thank you", "thanks", "thx", "ty" }
-                }));
+                }));*/
 
             // Play csgo russian song
             sentences.Add(new Sentence(
@@ -114,7 +107,7 @@ namespace DiscordBotJarvis.Cortana.Dal
                 }));
 
             // Say punchline sentence
-            sentences.Add(new Sentence(
+            /*sentences.Add(new Sentence(
                 sentences: new SentenceConfig[]
                 {
                     new SentenceConfig("SayPunchlineSentence")
@@ -180,7 +173,7 @@ namespace DiscordBotJarvis.Cortana.Dal
                 {
                     new Regex[] { new Regex(@"([a-zA-ZÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ])([\wÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ]{2,11})#\d{4}") },
                 },
-                callBotRequired: false));
+                callBotRequired: false));*/
 
             return sentences;
         }

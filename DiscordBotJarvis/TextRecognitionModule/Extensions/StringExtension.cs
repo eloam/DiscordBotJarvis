@@ -1,10 +1,15 @@
 ﻿using System.Globalization;
 using System.Text;
 
-namespace DiscordBotJarvis.Cortana.Extensions
+namespace DiscordBotJarvis.TextRecognitionModule.Extensions
 {
     public static class StringExtension
     {
+        public static string AddWhiteSpaceAroundString(this string str)
+        {
+            return " " + str + " ";
+        }
+
         public static string RemoveDiacritics(this string str)
         {
             var normalizedString = str.Normalize(NormalizationForm.FormD);

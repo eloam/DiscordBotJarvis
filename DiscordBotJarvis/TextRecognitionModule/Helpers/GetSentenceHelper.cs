@@ -1,12 +1,9 @@
-﻿using DiscordBotCaptainObvious.Cortana.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DiscordBotCaptainObvious.Cortana.Helpers
+namespace DiscordBotJarvis.TextRecognitionModule.Helpers
 {
     static class GetSentenceHelper
     {
