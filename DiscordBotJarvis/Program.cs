@@ -7,6 +7,7 @@ using DSharpPlus.Commands;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 
 namespace DiscordBotJarvis
@@ -14,19 +15,22 @@ namespace DiscordBotJarvis
     class Program
     {
         private static IEnumerable<Sentence> ListSentences { get; set; } = new List<Sentence>();
-        private static List<String> ListObviousSentences { get; set; } = new List<string>();
-        private static List<String> ListCsGoSentences { get; set; } = new List<string>();
-        private static List<String> ListPunchlineSentences { get; set; } = new List<string>();
-
-
-        private static readonly object syncLock = new object();
         private static ClientStatutEnum clientStatut;
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Jarvis : a Discord bot");
-            Console.WriteLine("======================");
-            Console.WriteLine("Démarrage du bot...");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("                                          ██╗ █████╗ ██████╗ ██╗   ██╗██╗███████╗");
+            Console.WriteLine("                                          ██║██╔══██╗██╔══██╗██║   ██║██║██╔════╝");
+            Console.WriteLine("                                          ██║███████║██████╔╝██║   ██║██║███████╗");
+            Console.WriteLine("                                     ██   ██║██╔══██║██╔══██╗╚██╗ ██╔╝██║╚════██║");
+            Console.WriteLine("                                     ╚█████╔╝██║  ██║██║  ██║ ╚████╔╝ ██║███████║");
+            Console.WriteLine("                                      ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝");
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine($"Version {Assembly.GetEntryAssembly().GetName().Version}");
 
             DiscordClient _client = new DiscordClient(new DiscordConfig()
             {
@@ -46,67 +50,18 @@ namespace DiscordBotJarvis
             ListSentences = SentencesDal.BuildListSentences();
 
             CreateCommands(_client);
-            Cortana(_client);
+            Jarvis(_client);
 
             Thread.Sleep(1000);
-            Console.WriteLine("Statut du bot : Connecté");
-            DisplayMainMenu(_client);
-        }
+            Console.WriteLine("Jarvis is connected.");
+            Console.WriteLine("Press the 'Q' key to exit...");
 
-        private static void DisplayMainMenu(DiscordClient _client)
-        {
-            Console.WriteLine("Actions possibles : (C) Connexion du bot - (D) Déconnexion du bot - (R) Redémarrer le bot - (Q) Quitter");
-            while (true)
+            do
             {
-                char response = char.ToUpper(Console.ReadKey(true).KeyChar);
-                switch (response)
-                {
-                    case 'C':
-                        if (clientStatut == ClientStatutEnum.Disconnected)
-                        {
-                            _client.Connect();
-                            clientStatut = ClientStatutEnum.Connected;
-                            Thread.Sleep(1000);
-                            Console.WriteLine("Statut du bot : Connecté");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Echec de la connection : Le client est déjà connecté !");
-                        }
-                        break;
-                    case 'D':
-                        if (clientStatut == ClientStatutEnum.Connected)
-                        {
-                            _client.Disconnect();
-                            clientStatut = ClientStatutEnum.Disconnected;
-                            Thread.Sleep(1000);
-                            Console.WriteLine("Statut du bot : Déconnecté");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Echec de la déconnection : Le client est déjà déconnecté !");
-                        }
-                        break;
-                    case 'R':
-                        Console.WriteLine("Redémarrage en cours...");
-                        _client.Reconnect();
-                        clientStatut = ClientStatutEnum.Connected;
-                        Thread.Sleep(1000);
-                        Console.WriteLine("Le client a été redémarré avec succès !");
-                        break;
-                    case 'Q':
-                        Console.WriteLine("Arrêt du bot en cours...");
-                        if (clientStatut == ClientStatutEnum.Connected)
-                        {
-                            _client.Disconnect();
-                            Thread.Sleep(1000);
-                        }
-                        Environment.Exit(0);
-                        break;
-                    default:
-                        break;
-                }
-            }
+                char response = Console.ReadKey(true).KeyChar;
+                if (response.ToString().ToUpper() == "Q")
+                    Environment.Exit(0);
+            } while (true);
         }
 
         private static void CreateCommands(DiscordClient _client)
@@ -136,7 +91,7 @@ namespace DiscordBotJarvis
             });
         }
 
-        private static void Cortana(DiscordClient _client)
+        private static void Jarvis(DiscordClient _client)
         {
             _client.MessageCreated += (sender, e) =>
             {
