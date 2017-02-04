@@ -57,7 +57,7 @@ namespace DiscordBotJarvis.TextRecognitionModule.Controllers
                 if (resultMatch && triggerBot)
                 {
                     // On parcours toutes les objets SentenceConfig afin d'afficher leurs contenus
-                    foreach (Sentence sentenceConfig in command.Sentences)
+                    foreach (SentenceFile sentenceConfig in command.Sentences)
                     {
                         string[] parameters = sentenceConfig.Parameters != null ? ConvertParametersToValues(e, sentenceConfig.Parameters, request) : new string[0];
                         switch (sentenceConfig.SentenceExtractionType)

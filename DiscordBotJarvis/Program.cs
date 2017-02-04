@@ -16,7 +16,7 @@ namespace DiscordBotJarvis
 {
     class Program
     {
-        private static IEnumerable<Sentence> ListSentences { get; set; } = new List<Sentence>();
+        private static IEnumerable<CommandDefinition> ListSentences { get; set; } = new List<CommandDefinition>();
 
         static void Main(string[] args)
         {

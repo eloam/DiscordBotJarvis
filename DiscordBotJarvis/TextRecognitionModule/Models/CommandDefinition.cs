@@ -7,13 +7,13 @@ namespace DiscordBotJarvis.TextRecognitionModule.Models
     public class CommandDefinition
     {
         // Property
-        private Sentence[] sentences;
+        private SentenceFile[] sentences;
         private IEnumerable<string[]> keywords;
         private IEnumerable<Regex[]> regex;
         private bool callBotRequired;
         private ComparisonModeEnum comparisonMode;
 
-        public Sentence[] Sentences
+        public SentenceFile[] Sentences
         {
             get { return sentences; }
             set { sentences = value; }
@@ -60,26 +60,26 @@ namespace DiscordBotJarvis.TextRecognitionModule.Models
         }
 
         // Contructors
-        private CommandDefinition(Sentence[] sentences, bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains)
+        private CommandDefinition(SentenceFile[] sentences, bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains)
         {
             this.Sentences = sentences;
             this.CallBotRequired = callBotRequired;
             this.ComparisonMode = comparisonMode;
         }
 
-        public CommandDefinition(Sentence[] sentences, IEnumerable<string[]> keywords, 
+        public CommandDefinition(SentenceFile[] sentences, IEnumerable<string[]> keywords, 
             bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, callBotRequired, comparisonMode)
         {
             this.Keywords = keywords;
         }
 
-        public CommandDefinition(Sentence[] sentences, IEnumerable<Regex[]> regex, 
+        public CommandDefinition(SentenceFile[] sentences, IEnumerable<Regex[]> regex, 
             bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, callBotRequired, comparisonMode)
         {
             this.Regex = regex;
         }
 
-        public CommandDefinition(Sentence[] sentences, IEnumerable<string[]> keywords, IEnumerable<Regex[]> regex, 
+        public CommandDefinition(SentenceFile[] sentences, IEnumerable<string[]> keywords, IEnumerable<Regex[]> regex, 
             bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, keywords, callBotRequired, comparisonMode)
         {
             this.Regex = regex;
