@@ -93,10 +93,12 @@
     <Compile Include="TextRecognitionModule\Enums\SentencesEnum.cs" />
     <Compile Include="TextRecognitionModule\Extensions\StringExtension.cs" />
     <Compile Include="TextRecognitionModule\Helpers\GetSentenceHelper.cs" />
+    <Compile Include="TextRecognitionModule\Models\CommandDefinition.cs" />
+    <Compile Include="TextRecognitionModule\Models\Feedback.cs" />
     <Compile Include="TextRecognitionModule\Models\Sentence.cs" />
-    <Compile Include="TextRecognitionModule\Models\SentenceConfig.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextRecognitionModule\Models\Service.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

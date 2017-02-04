@@ -7,15 +7,16 @@ using DSharpPlus.Commands;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Threading;
+using System.Net.Security;
 
 namespace DiscordBotJarvis
 {
     class Program
     {
         private static IEnumerable<Sentence> ListSentences { get; set; } = new List<Sentence>();
-        private static ClientStatutEnum clientStatut;
 
         static void Main(string[] args)
         {
@@ -39,7 +40,6 @@ namespace DiscordBotJarvis
             });
 
             _client.Connect();
-            clientStatut = ClientStatutEnum.Connected;
 
             _client.UseCommands(new CommandConfig()
             {
@@ -53,7 +53,7 @@ namespace DiscordBotJarvis
             Jarvis(_client);
 
             Thread.Sleep(1000);
-            Console.WriteLine("Jarvis is connected.");
+            Console.WriteLine("Jarvis is connected to Discord.");
             Console.WriteLine("Press the 'Q' key to exit...");
 
             do
@@ -98,7 +98,7 @@ namespace DiscordBotJarvis
                 DateTime t1 = DateTime.Now;
                 if (e.Message.Author.ID != _client.Me.ID)
                 {
-                    CortanaCore.ExecuteQuery(e, ListSentences);
+                    JarvisCoreController.ExecuteQuery(e, ListSentences);
                     Console.WriteLine($"Traitement effectué en {(DateTime.Now - t1).TotalMilliseconds}.");
                 }
             };

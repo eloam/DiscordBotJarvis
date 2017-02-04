@@ -7,16 +7,16 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
 {
     public static class SentencesDal
     {
-        public static IEnumerable<Sentence> BuildListSentences()
+        public static IEnumerable<CommandDefinition> BuildListSentences()
         {
             // Créationde la liste temporaire des "Sentences"
-            List<Sentence> sentences = new List<Sentence>();
+            List<CommandDefinition> commandDefinitions = new List<CommandDefinition>();
 
             // Say "Hello"
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayHello", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
+                    new Sentence("SayHello", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
                 },
                 keywords: new List<string[]>()
                 {
@@ -26,10 +26,10 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 comparisonMode: ComparisonModeEnum.StartsWith));
 
             // Say "Goodbye"
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayGoodbye", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
+                    new Sentence("SayGoodbye", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
                 },
                 keywords: new List<string[]>()
                 {
@@ -37,10 +37,10 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 },
                 callBotRequired: false,
                 comparisonMode: ComparisonModeEnum.StartsWith));
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayGoodbye", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
+                    new Sentence("SayGoodbye", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
                 },
                 keywords: new List<string[]>()
                 {
@@ -49,20 +49,20 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 callBotRequired: false));
 
             // Say "I'm fine"
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayImFine")
+                    new Sentence("SayImFine")
                 },
                 keywords: new List<string[]>()
                 {
                     new string[] { "comment" },
                     new string[] { "vas tu", "tu vas", "ca va" }
                 }));
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayImFine")
+                    new Sentence("SayImFine")
                 },
                 keywords: new List<string[]>()
                 {
@@ -70,10 +70,10 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 }));
 
             // Say "De rien"
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayDeRien", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
+                    new Sentence("SayDeRien", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
                 },
                 keywords: new List<string[]>()
                 {
@@ -81,11 +81,11 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 }));
 
             // Play csgo russian song
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayYesOrder", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }),
-                    new SentenceConfig("PlayCsGoRussianSong")
+                    new Sentence("SayYesOrder", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }),
+                    new Sentence("PlayCsGoRussianSong")
                 },
                 keywords: new List<string[]>()
                 {
@@ -95,11 +95,11 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 }));
 
             // Play a song
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayYesOrder", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }),
-                    new SentenceConfig("PlaySong")
+                    new Sentence("SayYesOrder", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }),
+                    new Sentence("PlaySong")
                 },
                 keywords: new List<string[]>()
                 {
@@ -108,10 +108,10 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 }));
 
             // Say punchline sentence
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayPunchlineSentence")
+                    new Sentence("SayPunchlineSentence")
                 },
                 keywords: new List<string[]>()
                 {
@@ -119,10 +119,10 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 }));
 
             // Say obvious sentence
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayObviousSentence")
+                    new Sentence("SayObviousSentence")
                 },
                 keywords: new List<string[]>()
                 {
@@ -130,10 +130,10 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 }));
 
             // Say russian sentence
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayRussianInsult")
+                    new Sentence("SayRussianInsult")
                 },
                 keywords: new List<string[]>()
                 {
@@ -142,10 +142,10 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 }));
 
             // Say "tout a fait"
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayToutAFait", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
+                    new Sentence("SayToutAFait", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
                 },
                 keywords: new List<string[]>()
                 {
@@ -153,10 +153,10 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 }));
 
             // Say "Quel est ton battletag"
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayStatsJeuOverwatch", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
+                    new Sentence("SayStatsJeuOverwatch", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
                 },
                 keywords: new List<string[]>()
                 {
@@ -165,10 +165,10 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 }));
 
             // Regex Battletag (UserName#9999)
-            sentences.Add(new Sentence(
-                sentences: new SentenceConfig[]
+            commandDefinitions.Add(new CommandDefinition(
+                sentences: new Sentence[]
                 {
-                    new SentenceConfig("SayStatsJeuOverwatch", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }, SentenceExtractionTypeEnum.OneSentenceSpecified, 0)
+                    new Sentence("SayStatsJeuOverwatch", new ParametersEnum[] { ParametersEnum.StatsGameOverwatch }, SentenceExtractionTypeEnum.OneSentenceSpecified, 0)
                 },
                 regex: new List<Regex[]>()
                 {
@@ -176,7 +176,7 @@ namespace DiscordBotJarvis.TextRecognitionModule.Dal
                 },
                 callBotRequired: false));
 
-            return sentences;
+            return commandDefinitions;
         }
     }
 }

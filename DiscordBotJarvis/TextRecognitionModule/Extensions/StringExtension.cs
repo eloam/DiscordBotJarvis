@@ -10,6 +10,11 @@ namespace DiscordBotJarvis.TextRecognitionModule.Extensions
             return " " + str + " ";
         }
 
+        public static string ReplaceSpecialsChar(this string str)
+        {
+            return str.Replace("-", "");
+        }
+
         public static string RemoveDiacritics(this string str)
         {
             var normalizedString = str.Normalize(NormalizationForm.FormD);

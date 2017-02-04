@@ -1,72 +1,46 @@
 ﻿using DiscordBotJarvis.TextRecognitionModule.Enums;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace DiscordBotJarvis.TextRecognitionModule.Models
 {
-    public class Sentence
+    public class Sentence : Feedback
     {
-        // Property
-        private SentenceConfig[] sentences;
-        private IEnumerable<string[]> keywords;
-        private IEnumerable<Regex[]> regex;
-        private bool callBotRequired;
-        private ComparisonModeEnum comparisonMode;
+        private string filename;
+        private ParametersEnum[] parameters;
+        private SentenceExtractionTypeEnum sentenceExtractionType;
+        private int indexSaySentence;
 
-        public SentenceConfig[] Sentences
+        public string Filename
         {
-            get { return sentences; }
-            set { sentences = value; }
+            get { return filename; }
+            set { filename = value; }
         }
 
-        public IEnumerable<string[]> Keywords
+        public ParametersEnum[] Parameters
         {
-            get { return keywords; }
-            set { keywords = value; }
+            get { return parameters; }
+            set { parameters = value; }
         }
 
-        public IEnumerable<Regex[]> Regex
+        public SentenceExtractionTypeEnum SentenceExtractionType
         {
-            get { return regex; }
-            set { regex = value; }
+            get { return sentenceExtractionType; }
+            set { sentenceExtractionType = value; }
         }
 
-        public bool CallBotRequired
+        public int IndexSaySentence
         {
-            get { return callBotRequired; }
-            set { callBotRequired = value; }
+            get { return indexSaySentence; }
+            set { indexSaySentence = value; }
         }
 
-        public ComparisonModeEnum ComparisonMode
+        public Sentence(string filename, ParametersEnum[] parameters = null,
+            SentenceExtractionTypeEnum sentenceExtractionType = SentenceExtractionTypeEnum.OneSentenceRandom, 
+            int indexSaySentence = 0)
         {
-            get { return comparisonMode; }
-            set { comparisonMode = value; }
-        }
-
-        // Contructors
-        private Sentence(SentenceConfig[] sentences, bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains)
-        {
-            this.Sentences = sentences;
-            this.CallBotRequired = callBotRequired;
-            this.ComparisonMode = comparisonMode;
-        }
-
-        public Sentence(SentenceConfig[] sentences, IEnumerable<string[]> keywords, 
-            bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, callBotRequired, comparisonMode)
-        {
-            this.Keywords = keywords;
-        }
-
-        public Sentence(SentenceConfig[] sentences, IEnumerable<Regex[]> regex, 
-            bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, callBotRequired, comparisonMode)
-        {
-            this.Regex = regex;
-        }
-
-        public Sentence(SentenceConfig[] sentences, IEnumerable<string[]> keywords, IEnumerable<Regex[]> regex, 
-            bool callBotRequired = true, ComparisonModeEnum comparisonMode = ComparisonModeEnum.Contains) : this (sentences, keywords, callBotRequired, comparisonMode)
-        {
-            this.Regex = regex;
+            this.Filename = filename;
+            this.Parameters = parameters;
+            this.SentenceExtractionType = sentenceExtractionType;
+            this.IndexSaySentence = indexSaySentence;
         }
     }
 }
