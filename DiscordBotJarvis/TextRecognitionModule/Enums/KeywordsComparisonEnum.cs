@@ -1,6 +1,6 @@
 ﻿namespace DiscordBotJarvis.TextRecognitionModule.Enums
 {
-    public enum ComparisonModeEnum
+    public enum KeywordsComparisonEnum
     {
         StartsWith,
         Contains,

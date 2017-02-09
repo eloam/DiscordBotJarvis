@@ -1,22 +1,19 @@
 ﻿using DiscordBotJarvis.TextRecognitionModule.Controllers;
 using DiscordBotJarvis.TextRecognitionModule.Dal;
-using DiscordBotJarvis.TextRecognitionModule.Enums;
-using DiscordBotJarvis.TextRecognitionModule.Models;
+using DiscordBotJarvis.TextRecognitionModule.Models.CommandDefinitions;
 using DSharpPlus;
 using DSharpPlus.Commands;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using System.Threading;
-using System.Net.Security;
 
 namespace DiscordBotJarvis
 {
     class Program
     {
-        private static IEnumerable<CommandDefinition> ListSentences { get; set; } = new List<CommandDefinition>();
+        private static IEnumerable<CommandSet> ListSentences { get; set; } = new List<CommandSet>();
 
         static void Main(string[] args)
         {
@@ -99,7 +96,7 @@ namespace DiscordBotJarvis
                 if (e.Message.Author.ID != _client.Me.ID)
                 {
                     JarvisCoreController.ExecuteQuery(e, ListSentences);
-                    Console.WriteLine($"Traitement effectué en {(DateTime.Now - t1).TotalMilliseconds}.");
+                    Console.WriteLine($"Processing performed in {(DateTime.Now - t1).TotalMilliseconds} ms.");
                 }
             };
 

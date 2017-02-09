@@ -1,6 +1,6 @@
 ﻿namespace DiscordBotJarvis.TextRecognitionModule.Enums
 {
-    public enum SentenceExtractionTypeEnum
+    public enum FileReadEnum
     {
         OneSentenceRandom,
         OneSentenceSpecified,

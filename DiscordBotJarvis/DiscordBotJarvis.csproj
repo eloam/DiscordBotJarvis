@@ -85,21 +85,22 @@
     <Compile Include="CommandsModule\CommandModule.cs" />
     <Compile Include="CommandsModule\EventArgs\CommandEventArgs.cs" />
     <Compile Include="TextRecognitionModule\Controllers\JarvisCoreController.cs" />
+    <Compile Include="TextRecognitionModule\Dal\ConfigDal.cs" />
     <Compile Include="TextRecognitionModule\Dal\SentencesDal.cs" />
-    <Compile Include="TextRecognitionModule\Enums\ClientStatutEnum.cs" />
-    <Compile Include="TextRecognitionModule\Enums\ComparisonModeEnum.cs" />
+    <Compile Include="TextRecognitionModule\Enums\KeywordsComparisonEnum.cs" />
     <Compile Include="TextRecognitionModule\Enums\ParametersEnum.cs" />
-    <Compile Include="TextRecognitionModule\Enums\SentenceExtractionTypeEnum.cs" />
-    <Compile Include="TextRecognitionModule\Enums\SentencesEnum.cs" />
+    <Compile Include="TextRecognitionModule\Enums\FileReadEnum.cs" />
     <Compile Include="TextRecognitionModule\Extensions\StringExtension.cs" />
     <Compile Include="TextRecognitionModule\Helpers\GetSentenceHelper.cs" />
-    <Compile Include="TextRecognitionModule\Models\CommandDefinition.cs" />
-    <Compile Include="TextRecognitionModule\Models\Feedback.cs" />
-    <Compile Include="TextRecognitionModule\Models\Sentence.cs" />
-    <Compile Include="TextRecognitionModule\Models\SentenceFile.cs" />
+    <Compile Include="TextRecognitionModule\Models\CommandDefinitions\CommandSet.cs" />
+    <Compile Include="TextRecognitionModule\Models\CommandDefinitions\Feedback.cs" />
+    <Compile Include="TextRecognitionModule\Models\CommandDefinitions\Sentence.cs" />
+    <Compile Include="TextRecognitionModule\Models\CommandDefinitions\SentenceFile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextRecognitionModule\Models\Service.cs" />
+    <Compile Include="TextRecognitionModule\Models\CommandDefinitions\Service.cs" />
+    <Compile Include="TextRecognitionModule\Models\CreateConfigFile\ConfigFile.cs" />
+    <Compile Include="TextRecognitionModule\Models\CreateConfigFile\Path.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

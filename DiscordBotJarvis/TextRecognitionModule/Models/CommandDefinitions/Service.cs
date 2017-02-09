@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace DiscordBotJarvis.TextRecognitionModule.Models
+namespace DiscordBotJarvis.TextRecognitionModule.Models.CommandDefinitions
 {
     public class Service : Feedback
     {
