@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace DiscordBotJarvis.TextRecognitionModule.Controllers
 {
-    static class JarvisCoreController
+    public static class JarvisCoreController
     {
         delegate bool comparisonModeDelegate(string keyword);
 
@@ -19,7 +19,7 @@ namespace DiscordBotJarvis.TextRecognitionModule.Controllers
             // Requête de l'utilisateur
             string request = e.Message.Content;
             // Requête de l'utilisateur après traitement
-            string requestPrepared = request.ToLower().Trim().AddWhiteSpaceAroundString().RemoveDiacritics().ReplaceSpecialsChar();
+            string requestProcessed = request.ProcessingUserRequest();
 
             // On parcours toutes les lignes de la liste de phrases
             foreach (CommandSet command in commandsList)
@@ -27,22 +27,8 @@ namespace DiscordBotJarvis.TextRecognitionModule.Controllers
                 if (command.IsListKeywordsEmpty && command.IsListRegexEmpty)
                     throw new ArgumentNullException("Au moins un des deux liste de tableaux, keywords ou regex doivent être valorisées.");
 
-                bool keywordsMatch = false;
-                if (!command.IsListKeywordsEmpty)
-                    keywordsMatch = CheckKeywordsMatch(requestPrepared, (List<string[]>)command.KeywordsList ?? null, command.KeywordsComparisonMode);
-
-                bool regexMatch = false;
-                if (!command.IsListRegexEmpty)
-                    regexMatch = CheckRegexMatch(request, (List<string[]>)command.RegexList ?? null);
-
-                // Determination du résultat
-                bool resultMatch = false;
-                if (!command.IsListKeywordsEmpty && !command.IsListRegexEmpty)
-                    resultMatch = keywordsMatch && regexMatch;
-                else if (!command.IsListKeywordsEmpty)
-                    resultMatch = keywordsMatch;
-                else if (!command.IsListRegexEmpty)
-                    resultMatch = regexMatch;
+                // On regarde si les arguments (mots-clés et expressions regulières) correspondent à la requête
+                bool resultMatch = ArgumentsMatch(request, requestProcessed, command);
 
                 // On regarde si le bot a besoin d'être appelé et que si c'est le cas, que son nom figure dans la requête de l'utilisateur
                 bool triggerBot = CheckTriggerBot(request, command.BotMentionRequired);
@@ -56,6 +42,31 @@ namespace DiscordBotJarvis.TextRecognitionModule.Controllers
             }
         }
 
+        private static bool ArgumentsMatch(string request, string requestProcessed, CommandSet command)
+        {
+            // Resultat définitif
+            bool resultMatch = false;
+            // Indique si l'objet de type Feedback en cours de traitement correspond aux mot-clés et regex definies dans la requête provenant de l'utilisateur
+            bool keywordsMatch = false;
+            bool regexMatch = false;
+
+            if (!command.IsListKeywordsEmpty)
+                keywordsMatch = CheckKeywordsMatch(requestProcessed, command.KeywordsList as List<string[]>, command.KeywordsComparisonMode);
+
+            if (!command.IsListRegexEmpty)
+                regexMatch = CheckRegexMatch(request, command.RegexList as List<string[]>);
+
+            // Determination du résultat
+            if (!command.IsListKeywordsEmpty && !command.IsListRegexEmpty)
+                resultMatch = keywordsMatch && regexMatch;
+            else if (!command.IsListKeywordsEmpty)
+                resultMatch = keywordsMatch;
+            else if (!command.IsListRegexEmpty)
+                resultMatch = regexMatch;
+
+            return resultMatch;
+        }
+
         private static void DisplayFeedbacks(MessageCreateEventArgs e, Feedback[] feedbacks)
         {
             // On parcours toutes les objets SentenceConfig afin d'afficher leurs contenus
@@ -67,7 +78,7 @@ namespace DiscordBotJarvis.TextRecognitionModule.Controllers
                 if (feedback is Sentence)
                 {
                     Sentence sentence = (Sentence)feedback;
-                    string[] parameters = sentence.Parameters != null ? ConvertParametersToValues(e, sentence.Parameters) : new string[0];
+                    string[] parameters = sentence.Parameters != null ? ParametersToStringValuesConverter(e, sentence.Parameters) : new string[0];
 
                     response = String.Format(sentence.Phrase, parameters);
                 }
@@ -75,7 +86,7 @@ namespace DiscordBotJarvis.TextRecognitionModule.Controllers
                 {
                     SentenceFile sentence = (SentenceFile)feedback;
 
-                    string[] parameters = sentence.Parameters != null ? ConvertParametersToValues(e, sentence.Parameters) : new string[0];
+                    string[] parameters = sentence.Parameters != null ? ParametersToStringValuesConverter(e, sentence.Parameters) : new string[0];
                     switch (sentence.FileReadMode)
                     {
                         case FileReadEnum.OneSentenceRandom:
@@ -92,13 +103,13 @@ namespace DiscordBotJarvis.TextRecognitionModule.Controllers
                     }
                 }
 
-                // Si le message fournit par le bot à l'utilisateur est différent de null, vide ou composer uniquement d'espaces blancs.
+                // Si le message fournit par le bot à l'utilisateur est différent de null, vide ou composé uniquement d'espaces blancs.
                 if (!String.IsNullOrWhiteSpace(response))
                     e.Message.Respond(response);
             }
         }
 
-        private static bool CheckKeywordsMatch(string request, List<string[]> keywords, KeywordsComparisonEnum comparisonMode)
+        private static bool CheckKeywordsMatch(string requestProcessed, List<string[]> keywords, KeywordsComparisonEnum comparisonMode)
         {
             // Delegate permettant de définir le mode de comparaison de la requête (en début/fin de str ou n'importe ou dans la requete)
             comparisonModeDelegate comparisonModeDel = keyword =>
@@ -107,13 +118,13 @@ namespace DiscordBotJarvis.TextRecognitionModule.Controllers
                 switch (comparisonMode)
                 {
                     case KeywordsComparisonEnum.StartsWith:
-                        result = request.StartsWith(keyword);
+                        result = requestProcessed.StartsWith(keyword);
                         break;
                     case KeywordsComparisonEnum.Contains:
-                        result = request.Contains(keyword);
+                        result = requestProcessed.Contains(keyword);
                         break;
                     case KeywordsComparisonEnum.EndsWith:
-                        result = request.EndsWith(keyword);
+                        result = requestProcessed.EndsWith(keyword);
                         break;
                     default:
                         break;
@@ -180,7 +191,7 @@ namespace DiscordBotJarvis.TextRecognitionModule.Controllers
             return triggerBot;
         }
 
-        private static string[] ConvertParametersToValues(MessageCreateEventArgs e, ParametersEnum[] parameters)
+        private static string[] ParametersToStringValuesConverter(MessageCreateEventArgs e, ParametersEnum[] parameters)
         {
             List<string> valuesParameters = new List<string>();
             foreach (ParametersEnum item in parameters)

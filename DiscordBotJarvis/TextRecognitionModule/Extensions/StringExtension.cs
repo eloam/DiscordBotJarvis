@@ -12,7 +12,7 @@ namespace DiscordBotJarvis.TextRecognitionModule.Extensions
 
         public static string ReplaceSpecialsChar(this string str)
         {
-            return str.Replace("-", "");
+            return str.Replace("-", " ");
         }
 
         public static string RemoveDiacritics(this string str)
@@ -30,6 +30,11 @@ namespace DiscordBotJarvis.TextRecognitionModule.Extensions
             }
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        public static string ProcessingUserRequest(this string str)
+        {
+            return str.RemoveDiacritics().ReplaceSpecialsChar().ToLower().Trim().AddWhiteSpaceAroundString();
         }
     }
 }
