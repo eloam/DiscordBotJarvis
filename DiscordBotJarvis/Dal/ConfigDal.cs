@@ -1,25 +1,20 @@
-﻿using DiscordBotJarvis.TextRecognitionModule.Models.CreateConfigFile;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DiscordBotJarvis.Models.CreateConfigFile;
 
-namespace DiscordBotJarvis.TextRecognitionModule.Dal
+namespace DiscordBotJarvis.Dal
 {
     public class ConfigDal
     {
         public static ConfigFile GetConfig()
         {
-            ConfigFile cf = new ConfigFile();
-
-            // General
-            cf.Title = "Titre";
-            cf.Author = "Auteur";
-            cf.Description = "Description";
-            cf.Language = "fr-FR";
-            cf.AppVersion = 0.1;
-            cf.ResourcePackVersion = 1.0;
+            ConfigFile cf = new ConfigFile
+            {
+                Title = "Titre",
+                Author = "Auteur",
+                Description = "Description",
+                Language = "fr-FR",
+                AppVersion = 0.1,
+                ResourcePackVersion = 1.0
+            };
 
             // Paths
             cf.Paths.Files.Add("Changelog", ".");

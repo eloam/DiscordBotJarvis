@@ -1,4 +1,4 @@
-﻿namespace DiscordBotJarvis.TextRecognitionModule.Enums
+﻿namespace DiscordBotJarvis.Enums
 {
     public enum FileReadEnum
     {

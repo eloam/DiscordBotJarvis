@@ -1,9 +1,8 @@
 ﻿using DSharpPlus;
-using System;
 
-namespace CommandsModule.Commands
+namespace DiscordBotJarvis.Controllers.CommandsModule.EventArgs
 {
-    public class CommandEventArgs : EventArgs
+    public class CommandEventArgs : System.EventArgs
     {
         public DiscordMessage Message { get; }
         public Command Command { get; }
@@ -13,9 +12,9 @@ namespace CommandsModule.Commands
         {
             Message = message;
             Command = command;
-            if (message.Content.Length > (CommandModule.instance.config.Prefix.Length + command.Name.Length))
+            if (message.Content.Length > (CommandModule.Instance.Config.Prefix.Length + command.Name.Length))
             {
-                string args = message.Content.Substring(CommandModule.instance.config.Prefix.Length + command.Name.Length + 1);
+                string args = message.Content.Substring(CommandModule.Instance.Config.Prefix.Length + command.Name.Length + 1);
                 Arguments = args.Split(new char[] { ' ' });
             }
         }

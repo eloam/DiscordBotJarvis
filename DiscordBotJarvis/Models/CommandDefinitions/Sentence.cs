@@ -1,7 +1,7 @@
-﻿using DiscordBotJarvis.TextRecognitionModule.Enums;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
+using DiscordBotJarvis.Enums;
 
-namespace DiscordBotJarvis.TextRecognitionModule.Models.CommandDefinitions
+namespace DiscordBotJarvis.Models.CommandDefinitions
 {
     public class Sentence : Feedback
     {
@@ -16,12 +16,12 @@ namespace DiscordBotJarvis.TextRecognitionModule.Models.CommandDefinitions
 
         public Sentence(string phrase)
         {
-            this.Phrase = phrase;
+            Phrase = phrase;
         }
 
         public Sentence(string phrase, ParametersEnum[] parameters) : this(phrase)
         {
-            this.Parameters = parameters;
+            Parameters = parameters;
         }
     }
 }

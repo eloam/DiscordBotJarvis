@@ -1,8 +1,8 @@
-﻿using DiscordBotJarvis.TextRecognitionModule.Enums;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Xml.Serialization;
+using DiscordBotJarvis.Enums;
 
-namespace DiscordBotJarvis.TextRecognitionModule.Models.CommandDefinitions
+namespace DiscordBotJarvis.Models.CommandDefinitions
 {
     public class SentenceFile : Feedback
     {
@@ -25,12 +25,12 @@ namespace DiscordBotJarvis.TextRecognitionModule.Models.CommandDefinitions
             FileReadEnum fileReadMode = FileReadEnum.OneSentenceRandom,
             int indexSaySentence = 0)
         {
-            this.FileName = fileName;
-            this.Parameters = parameters;
-            this.FileReadMode = fileReadMode;
+            FileName = fileName;
+            Parameters = parameters;
+            FileReadMode = fileReadMode;
 
             if (fileReadMode == FileReadEnum.OneSentenceSpecified)
-                this.ReadLineOfFile = indexSaySentence;
+                ReadLineOfFile = indexSaySentence;
         }
     }
 }

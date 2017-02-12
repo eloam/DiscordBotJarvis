@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace DiscordBotJarvis.TextRecognitionModule.Helpers
+namespace DiscordBotJarvis.Helpers
 {
-    static class GetSentenceHelper
+    internal static class GetSentenceHelper
     {
-        private static readonly object syncLock = new object();
+        private static readonly object SyncLock = new object();
 
         private static IEnumerable<string> BuildListSentences(string filename)
         {
@@ -24,15 +24,15 @@ namespace DiscordBotJarvis.TextRecognitionModule.Helpers
 
         public static string SayRandom(string filename)
         {
-            List<String> lstSentences = BuildListSentences(filename).ToList();
-            int nbelements = lstSentences.Count();
+            List<string> lstSentences = BuildListSentences(filename).ToList();
+            int nbelements = lstSentences.Count;
             int idSentence = 0;
 
             if (nbelements > 1)
             {
                 Random random = new Random();
 
-                lock (syncLock)
+                lock (SyncLock)
                     idSentence = random.Next(nbelements);
             }
 

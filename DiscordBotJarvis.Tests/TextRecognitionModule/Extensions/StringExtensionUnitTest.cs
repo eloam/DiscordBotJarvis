@@ -1,6 +1,6 @@
 ﻿using System;
+using DiscordBotJarvis.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DiscordBotJarvis.TextRecognitionModule.Extensions;
 
 namespace DiscordBotJarvis.Tests.TextRecognitionModule.Extensions
 {

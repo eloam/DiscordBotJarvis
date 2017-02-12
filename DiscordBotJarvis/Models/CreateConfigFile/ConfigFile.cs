@@ -1,4 +1,4 @@
-﻿namespace DiscordBotJarvis.TextRecognitionModule.Models.CreateConfigFile
+﻿namespace DiscordBotJarvis.Models.CreateConfigFile
 {
     public class ConfigFile
     {
@@ -12,19 +12,18 @@
 
         public ConfigFile()
         {
-            this.Paths = new Path();
+            Paths = new Path();
         }
-
 
         public ConfigFile(string title, string author, string description, string language, double appVersion, double resourcePackVersion, Path paths)
         {
-            this.Title = title;
-            this.Author = author;
-            this.Description = description;
-            this.Language = language;
-            this.AppVersion = appVersion;
-            this.ResourcePackVersion = resourcePackVersion;
-            this.Paths = paths;
+            Title = title;
+            Author = author;
+            Description = description;
+            Language = language;
+            AppVersion = appVersion;
+            ResourcePackVersion = resourcePackVersion;
+            Paths = paths;
         }
     }
 }

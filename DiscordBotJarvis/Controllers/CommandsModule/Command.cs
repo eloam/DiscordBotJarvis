@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DiscordBotJarvis.Controllers.CommandsModule.EventArgs;
 
-namespace CommandsModule.Commands
+namespace DiscordBotJarvis.Controllers.CommandsModule
 {
     public class Command
     {
-        public string Name { get; set; } = "";
-        public Func<CommandEventArgs, Task> Func { get; set; } = null;
+        public string Name { get; set; }
+        public Func<CommandEventArgs, Task> Func { get; set; }
 
         public Command(string command, Func<CommandEventArgs, Task> func)
         {

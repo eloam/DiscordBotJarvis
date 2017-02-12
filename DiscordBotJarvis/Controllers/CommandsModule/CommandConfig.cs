@@ -1,4 +1,4 @@
-﻿namespace CommandsModule.Commands
+﻿namespace DiscordBotJarvis.Controllers.CommandsModule
 {
     public class CommandConfig
     {

@@ -1,32 +1,33 @@
-﻿using DSharpPlus;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DiscordBotJarvis.Controllers.CommandsModule.EventArgs;
+using DSharpPlus;
 
-namespace CommandsModule.Commands
+namespace DiscordBotJarvis.Controllers.CommandsModule
 {
     public class CommandModule : IModule
     {
-        internal static CommandModule instance;
+        internal static CommandModule Instance;
 
-        internal CommandConfig config { get; set; }
+        internal CommandConfig Config { get; set; }
 
         public DiscordClient Client { get; set; }
 
-        List<Command> _commands = new List<Command>();
+        private readonly List<Command> _commands = new List<Command>();
 
         public CommandModule()
         {
-            config = new CommandConfig();
+            Config = new CommandConfig();
 
-            instance = this;
+            Instance = this;
         }
 
         public CommandModule(CommandConfig config)
         {
-            this.config = config;
+            Config = config;
 
-            instance = this;
+            Instance = this;
         }
 
         public void Setup(DiscordClient client)
@@ -35,11 +36,11 @@ namespace CommandsModule.Commands
 
             Client.MessageCreated += (sender, e) =>
             {
-                if (((e.Message.Author.ID != Client.Me.ID && !config.SelfBot) || (e.Message.Author.ID == Client.Me.ID && config.SelfBot))
-                        && e.Message.Content.StartsWith(config.Prefix))
+                if (((e.Message.Author.ID != Client.Me.ID && !Config.SelfBot) || (e.Message.Author.ID == Client.Me.ID && Config.SelfBot))
+                        && e.Message.Content.StartsWith(Config.Prefix))
                 {
                     string[] split = e.Message.Content.Split(new char[] { ' ' });
-                    string cmdName = split[0].Substring(config.Prefix.Length);
+                    string cmdName = split[0].Substring(Config.Prefix.Length);
 
                     foreach (Command command in _commands)
                     {

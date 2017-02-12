@@ -1,21 +1,22 @@
-﻿using DiscordBotJarvis.TextRecognitionModule.Controllers;
-using DiscordBotJarvis.TextRecognitionModule.Dal;
-using DiscordBotJarvis.TextRecognitionModule.Models.CommandDefinitions;
-using DSharpPlus;
-using DSharpPlus.Commands;
+﻿using DSharpPlus;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
+using DiscordBotJarvis.Controllers.TextRecognitionModule;
+using DiscordBotJarvis.Dal;
+using DiscordBotJarvis.Models.CommandDefinitions;
+using DiscordBotJarvis.Controllers.CommandsModule;
 
 namespace DiscordBotJarvis
 {
-    class Program
+    internal class Program
     {
         private static IEnumerable<CommandSet> ListSentences { get; set; } = new List<CommandSet>();
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine();
             Console.WriteLine();
@@ -30,15 +31,18 @@ namespace DiscordBotJarvis
 
             Console.WriteLine($"Version {Assembly.GetEntryAssembly().GetName().Version}");
 
-            DiscordClient _client = new DiscordClient(new DiscordConfig()
+            DiscordClient client = new DiscordClient(new DiscordConfig()
             {
                 Token = File.ReadAllText("token.txt"),
                 AutoReconnect = true
             });
 
-            _client.Connect();
-
-            _client.UseCommands(new CommandConfig()
+            Task.Run(async delegate
+            {
+                await client.Connect();
+            });
+            
+            client.UseCommands(new CommandConfig()
             {
                 Prefix = "!",
                 SelfBot = false
@@ -46,8 +50,8 @@ namespace DiscordBotJarvis
 
             ListSentences = SentencesDal.BuildListSentences();
 
-            CreateCommands(_client);
-            Jarvis(_client);
+            CreateCommands(client);
+            Jarvis(client);
 
             Thread.Sleep(1000);
             Console.WriteLine("Jarvis is connected to Discord.");
@@ -61,17 +65,17 @@ namespace DiscordBotJarvis
             } while (true);
         }
 
-        private static void CreateCommands(DiscordClient _client)
+        private static void CreateCommands(DiscordClient client)
         {
-            _client.AddCommand("help", async (e) =>
+            client.AddCommand("help", async (e) =>
             {
-                DiscordDMChannel dm = await _client.CreateDM(e.Message.Author.ID);
-                DiscordMessage x = await _client.SendMessage(dm, File.ReadAllText("../../files/help.txt"));
+                DiscordDMChannel dm = await client.CreateDM(e.Message.Author.ID);
+                await client.SendMessage(dm, File.ReadAllText("../../files/help.txt"));
             });
 
-            _client.AddCommand("statut", async (e) =>
+            client.AddCommand("statut", async (e) =>
             {
-                DiscordPresence p = _client.GetUserPresence(e.Message.Author.ID);
+                DiscordPresence p = client.GetUserPresence(e.Message.Author.ID);
 
                 string info = "Ton statut sur le serveur mon cher camarade :";
                 info += "\nID : " + p.UserID;
@@ -88,22 +92,20 @@ namespace DiscordBotJarvis
             });
         }
 
-        private static void Jarvis(DiscordClient _client)
+        private static void Jarvis(DiscordClient client)
         {
-            _client.MessageCreated += (sender, e) =>
+            client.MessageCreated += (sender, e) =>
             {
                 DateTime t1 = DateTime.Now;
-                if (e.Message.Author.ID != _client.Me.ID)
-                {
-                    JarvisCoreController.ExecuteQuery(e, ListSentences);
-                    Console.WriteLine($"Processing performed in {(DateTime.Now - t1).TotalMilliseconds} ms.");
-                }
+                if (e.Message.Author.ID == client.Me.ID) return;
+                JarvisCoreController.ExecuteQuery(e, ListSentences);
+                Console.WriteLine($"Processing performed in {(DateTime.Now - t1).TotalMilliseconds} ms.");
             };
 
-            _client.PresenceUpdate += (sender, e) =>
+            client.PresenceUpdate += async (sender, e) =>
             {
                 if (e.User != null && e.Game != string.Empty)
-                    _client.SendMessage(e.GuildID, $"{e.User.Mention} joue à {e.Game}.");
+                    await client.SendMessage(e.GuildID, $"{e.User.Mention} joue à {e.Game}.");
             };
         }
     }
