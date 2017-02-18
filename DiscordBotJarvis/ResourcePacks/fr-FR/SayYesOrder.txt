@@ -1,9 +1,0 @@
-﻿Oui {0} !
-Avec plaisir {0} :-)
-Ca marche {0} !
-Ca marche !
-Et voilà...
-Et voilà {0} ;)
-Voilà, c'est fait !
-Et voici, mon cher {0} !
-C'est ce que tu voulais {0} ?!

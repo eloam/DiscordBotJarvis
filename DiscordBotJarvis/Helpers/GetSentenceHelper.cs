@@ -9,39 +9,31 @@ namespace DiscordBotJarvis.Helpers
     {
         private static readonly object SyncLock = new object();
 
-        private static IEnumerable<string> BuildListSentences(string filename)
-        {
-            string destinationSentenceFile = $"ResourcePacks/fr-FR/{filename}.txt";
+        private static IEnumerable<string> BuildListSentences(string filePath) => File.ReadAllLines(filePath).ToList();
 
-            return File.ReadAllLines(destinationSentenceFile).ToList();
-        }
+        public static string ReadFile(string filePath) => File.ReadAllText(filePath);
 
-        public static string Say(string filename, int pos)
+        public static string ReadLineSpecified(string filePath, int pos)
         {
-            List<String> lstSentences = BuildListSentences(filename).ToList();
+            List<string> lstSentences = BuildListSentences(filePath).ToList();
             return lstSentences[pos];
         }
 
-        public static string SayRandom(string filename)
+        public static string ReadLineRandom(string filePath)
         {
-            List<string> lstSentences = BuildListSentences(filename).ToList();
-            int nbelements = lstSentences.Count;
+            List<string> lstSentences = BuildListSentences(filePath).ToList();
             int idSentence = 0;
 
-            if (nbelements > 1)
+            if (lstSentences?.Count > 1)
             {
                 Random random = new Random();
 
                 lock (SyncLock)
-                    idSentence = random.Next(nbelements);
+                    idSentence = random.Next(lstSentences.Count);
             }
 
             return lstSentences[idSentence];
         }
 
-        public static string ReadFile(string filename)
-        {
-            return File.ReadAllText($"../../TextRecognitionModule/Resources/{filename}.txt");
-        }
     }
 }

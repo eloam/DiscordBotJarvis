@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using DiscordBotJarvis.Enums;
-using DiscordBotJarvis.Models.CommandDefinitions;
+using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
 
 namespace DiscordBotJarvis.Dal
 {

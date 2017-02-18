@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DiscordBotJarvis.Controllers.CommandsModule.EventArgs;
+using DiscordBotJarvis.Controllers;
+using DiscordBotJarvis.EventArgs;
+using DiscordBotJarvis.Models.Commands;
 using DSharpPlus;
 
-namespace DiscordBotJarvis.Controllers.CommandsModule
+namespace DiscordBotJarvis.Extensions
 {
     public static class CommandExtension
     {

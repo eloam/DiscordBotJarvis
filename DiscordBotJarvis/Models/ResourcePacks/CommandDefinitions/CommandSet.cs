@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Xml.Serialization;
 using DiscordBotJarvis.Enums;
 
-namespace DiscordBotJarvis.Models.CommandDefinitions
+namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
 {
     [XmlInclude(typeof(Sentence))]
     [XmlInclude(typeof(SentenceFile))]
@@ -26,10 +26,10 @@ namespace DiscordBotJarvis.Models.CommandDefinitions
         public KeywordsComparisonEnum KeywordsComparisonMode { get; set; }
 
         [XmlIgnore]
-        public bool IsListKeywordsEmpty => KeywordsList?.Count > 0;
+        public bool IsListKeywordsEmpty => KeywordsList?.Count == 0;
 
         [XmlIgnore]
-        public bool IsListRegexEmpty => RegexList?.Count > 0;
+        public bool IsListRegexEmpty => RegexList?.Count == 0;
 
         // Contructors
         public CommandSet()

@@ -1,23 +1,32 @@
 ﻿using DSharpPlus;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using DiscordBotJarvis.Controllers.TextRecognitionModule;
+using DiscordBotJarvis.Controllers;
 using DiscordBotJarvis.Dal;
-using DiscordBotJarvis.Models.CommandDefinitions;
-using DiscordBotJarvis.Controllers.CommandsModule;
+using DiscordBotJarvis.Extensions;
+using DiscordBotJarvis.Helpers;
+using DiscordBotJarvis.Models.Commands;
+using DiscordBotJarvis.Models.ResourcePacks;
+using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
+using DiscordBotJarvis.Models.ResourcePacks.ConfigFile;
+using DiscordBotJarvis.Models.Settings;
 
 namespace DiscordBotJarvis
 {
     internal class Program
     {
-        private static IEnumerable<CommandSet> ListSentences { get; set; } = new List<CommandSet>();
+        private static IEnumerable<ResourcePack> ResourcePacksList { get; set; } = new List<ResourcePack>();
 
         private static void Main(string[] args)
         {
+            Console.Title = "DiscordBotJarvis";
+
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("                                          ██╗ █████╗ ██████╗ ██╗   ██╗██╗███████╗");
@@ -28,6 +37,8 @@ namespace DiscordBotJarvis
             Console.WriteLine("                                      ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝");
             Console.WriteLine();
             Console.WriteLine();
+
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
             Console.WriteLine($"Version {Assembly.GetEntryAssembly().GetName().Version}");
 
@@ -48,13 +59,20 @@ namespace DiscordBotJarvis
                 SelfBot = false
             });
 
-            ListSentences = SentencesDal.BuildListSentences();
+            AppConfig appConfig = XmlSerializationHelper.Decode<AppConfig>("AppConfig.xml");
+            ResourcePacksList = ResourcePackModule.LoadAll(appConfig.ResourcePacksCurrentCulture);
 
             CreateCommands(client);
             Jarvis(client);
 
-            Thread.Sleep(1000);
             Console.WriteLine("Jarvis is connected to Discord.");
+            Console.WriteLine("[INFO] Jarvis is currently in DEBUG mode.");
+
+            CultureInfo culture = new CultureInfo("fr-FR");
+            Console.WriteLine($"[INFO] The current language of the resource packs is {culture.EnglishName}.");
+            Console.WriteLine("[INFO] You can change it by editing the AppConfig.xml file.");
+            
+
             Console.WriteLine("Press the 'Q' key to exit...");
 
             do
@@ -94,11 +112,12 @@ namespace DiscordBotJarvis
 
         private static void Jarvis(DiscordClient client)
         {
+            // Evénement lancé lors de la création d'un message dans le client Discord
             client.MessageCreated += (sender, e) =>
             {
                 DateTime t1 = DateTime.Now;
                 if (e.Message.Author.ID == client.Me.ID) return;
-                JarvisCoreController.ExecuteQuery(e, ListSentences);
+                UserQueryProcessing.ExecuteQuery(e, ResourcePacksList);
                 Console.WriteLine($"Processing performed in {(DateTime.Now - t1).TotalMilliseconds} ms.");
             };
 

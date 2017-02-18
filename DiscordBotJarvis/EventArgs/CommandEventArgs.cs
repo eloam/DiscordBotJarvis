@@ -1,6 +1,8 @@
-﻿using DSharpPlus;
+﻿using DiscordBotJarvis.Controllers;
+using DiscordBotJarvis.Models.Commands;
+using DSharpPlus;
 
-namespace DiscordBotJarvis.Controllers.CommandsModule.EventArgs
+namespace DiscordBotJarvis.EventArgs
 {
     public class CommandEventArgs : System.EventArgs
     {

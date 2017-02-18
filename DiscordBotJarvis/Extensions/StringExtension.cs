@@ -9,6 +9,11 @@ namespace DiscordBotJarvis.Extensions
 
         public static string ReplaceSpecialsChar(this string str) => str.Replace("-", " ");
 
+        /// <summary>
+        /// Supprime les diacritiques d'une chaine de caractères
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns>Chaine de caractères sans diacritiques</returns>
         public static string RemoveDiacritics(this string str)
         {
             string normalizedString = str.Normalize(NormalizationForm.FormD);

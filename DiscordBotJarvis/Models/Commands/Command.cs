@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DiscordBotJarvis.Controllers.CommandsModule.EventArgs;
+using DiscordBotJarvis.EventArgs;
 
-namespace DiscordBotJarvis.Controllers.CommandsModule
+namespace DiscordBotJarvis.Models.Commands
 {
     public class Command
     {

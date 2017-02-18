@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DiscordBotJarvis.Controllers.CommandsModule.EventArgs;
+using DiscordBotJarvis.EventArgs;
 using DSharpPlus;
 
-namespace DiscordBotJarvis.Controllers.CommandsModule
+namespace DiscordBotJarvis.Models.Commands
 {
     public class CommandModule : IModule
     {

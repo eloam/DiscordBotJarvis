@@ -6,48 +6,54 @@ using System.Threading.Tasks;
 using DiscordBotJarvis.Enums;
 using DiscordBotJarvis.Extensions;
 using DiscordBotJarvis.Helpers;
-using DiscordBotJarvis.Models.CommandDefinitions;
+using DiscordBotJarvis.Models.ResourcePacks;
+using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
 using DSharpPlus;
-using static System.String;
 
-namespace DiscordBotJarvis.Controllers.TextRecognitionModule
+namespace DiscordBotJarvis.Controllers
 {
-    public static class JarvisCoreController
+    public static class UserQueryProcessing
     {
         private delegate bool ComparisonModeDelegate(string keyword);
 
-        public static async void ExecuteQuery(MessageCreateEventArgs e, IEnumerable<CommandSet> commandsList)
+        public static async void ExecuteQuery(MessageCreateEventArgs e, IEnumerable<ResourcePack> resourcePacksList)
         {
             // Requête de l'utilisateur
             string request = e.Message.Content;
             // Requête de l'utilisateur après traitement
             string requestProcessed = request.ProcessingUserRequest();
 
-            // On parcours toutes les lignes de la liste de phrases
-            foreach (CommandSet command in commandsList)
+            // On parcours tous les packs de ressources afin de lire le dictionnaire CommandsList associé
+            foreach (ResourcePack currentResourcePack in resourcePacksList)
             {
-                if (command.IsListKeywordsEmpty && command.IsListRegexEmpty)  
-                    throw new ArgumentNullException($"{nameof(command.KeywordsList)}, {nameof(command.RegexList)}", "Au moins un des deux listes (keywords ou regex) doivent être valorisées.");
-
-                // On regarde si les arguments (mots-clés et expressions regulières) correspondent à la requête
-                bool resultMatch = ArgumentsMatch(request, requestProcessed, command);
-
-                // On regarde si le bot a besoin d'être appelé et que si c'est le cas, que son nom figure dans la requête de l'utilisateur
-                bool triggerBot = CheckTriggerBot(request, command.BotMentionRequired);
-
-                // Si le résultat correspond aux mots-clés et expressions régulières définit dans l'objet et si le bot doit être appelé, alors...
-                if (resultMatch && triggerBot)
+                // On parcours tous les fichiers xml situés dans le répertoire "CommandDefinitions" du pack de ressources courant
+                foreach (KeyValuePair<string, List<CommandSet>> currentCommandDefinitionsKeyValuePair in currentResourcePack.CommandsDictionary)
                 {
-                    await DisplayFeedbacks(e, command.Feedbacks);
-                    break;
+                    // On parcours toutes les commandes que contient le fichier xml courant, afin de recherche une correspondance eventuelle avec la requête utilisateur
+                    foreach (CommandSet command in currentCommandDefinitionsKeyValuePair.Value)
+                    {
+                        // On regarde si les arguments (mots-clés et expressions regulières) correspondent à la requête
+                        bool resultMatch = ArgumentsMatch(request, requestProcessed, command);
+
+                        // On regarde si le bot a besoin d'être appelé et que si c'est le cas, que son nom figure dans la requête de l'utilisateur
+                        bool triggerBot = CheckTriggerBot(request, command.BotMentionRequired);
+
+                        // Si le résultat correspond aux mots-clés et expressions régulières définit dans l'objet et si le bot doit être appelé, alors...
+                        if (resultMatch && triggerBot)
+                        {
+                            await DisplayFeedbacks(e, currentResourcePack, command.Feedbacks);
+                            return;
+                        }
+                    }
                 }
-            }
+            }     
         }
 
         private static bool ArgumentsMatch(string request, string requestProcessed, CommandSet command)
         {
             // Resultat définitif
             bool resultMatch = false;
+            
             // Indique si l'objet de type Feedback en cours de traitement correspond aux mot-clés et regex definies dans la requête provenant de l'utilisateur
             bool keywordsMatch = false;
             bool regexMatch = false;
@@ -69,7 +75,7 @@ namespace DiscordBotJarvis.Controllers.TextRecognitionModule
             return resultMatch;
         }
 
-        private static async Task DisplayFeedbacks(MessageCreateEventArgs e, Feedback[] feedbacks)
+        private static async Task DisplayFeedbacks(MessageCreateEventArgs e, ResourcePack resourcePack, Feedback[] feedbacks)
         {
             // On parcours toutes les objets SentenceConfig afin d'afficher leurs contenus
             foreach (Feedback feedback in feedbacks)
@@ -84,7 +90,7 @@ namespace DiscordBotJarvis.Controllers.TextRecognitionModule
                     if (sentence.Parameters != null)
                     {
                         object[] parameters = ParametersToValuesConverter(e, sentence.Parameters);
-                        response = Format(sentence.Phrase, parameters);
+                        response = String.Format(sentence.Phrase, parameters);
                     }
                     else
                     {
@@ -94,20 +100,23 @@ namespace DiscordBotJarvis.Controllers.TextRecognitionModule
                 else if (feedback is SentenceFile)
                 {
                     SentenceFile sentence = (SentenceFile)feedback;
+                    string filePath = Endpoints.ResourcePacksDirectory + Endpoints.SeparatorDirectory + 
+                                      resourcePack.DirectoryName + Endpoints.ResourcesDirectory +
+                                      Endpoints.SeparatorDirectory + sentence.FileName + ".txt";
 
                     switch (sentence.FileReadMode)
                     {
                         case FileReadEnum.OneSentenceRandom:
-                            response = GetSentenceHelper.SayRandom(sentence.FileName);
+                            response = GetSentenceHelper.ReadLineRandom(filePath);
                             break;
                         case FileReadEnum.OneSentenceSpecified:
-                            response = GetSentenceHelper.Say(sentence.FileName, sentence.ReadLineOfFile);
+                            response = GetSentenceHelper.ReadLineSpecified(filePath, sentence.ReadLineOfFile);
                             break;
                         case FileReadEnum.File:
-                            response = GetSentenceHelper.ReadFile(sentence.FileName);
+                            response = GetSentenceHelper.ReadFile(filePath);
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(nameof(sentence.FileReadMode), sentence.FileReadMode, "Arguement not specificed.");
+                            throw new ArgumentOutOfRangeException(nameof(sentence.FileReadMode), sentence.FileReadMode, "Argument not specified.");
                     }
 
                     if (sentence.Parameters != null)
@@ -119,7 +128,7 @@ namespace DiscordBotJarvis.Controllers.TextRecognitionModule
                 }
 
                 // Si le message fournit par le bot à l'utilisateur est différent de null, vide ou composé uniquement d'espaces blancs.
-                if (!IsNullOrWhiteSpace(response))
+                if (!String.IsNullOrWhiteSpace(response))
                     await e.Message.Respond(response);
             }
         }
