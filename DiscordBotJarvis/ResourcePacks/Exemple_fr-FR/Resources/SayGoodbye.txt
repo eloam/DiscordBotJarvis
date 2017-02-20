@@ -1,0 +1,3 @@
+Bonne nuit {0} !
+Au revoir {0} !
+A plus {0} !

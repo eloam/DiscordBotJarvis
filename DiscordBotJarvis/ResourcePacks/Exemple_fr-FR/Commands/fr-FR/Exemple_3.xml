@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandDefinitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- Dernier exemple -->
+  <CommandSet>
+    <Feedbacks>
+      <Feedback xsi:type="SentenceFile">
+        <FileName>SayImFine</FileName>
+        <!-- (Facultatif) Spécifier comment on va lire la phrase dans le fichier (aléatoire ou une ligne précise) 
+             Valeurs possibles : "OneSentenceSpecified" = Lire une ligne spécifiée du fichier contenant la liste de phrases, 
+                                 "OneSentenceRandom" = Choisir une ligne (une phrase) au hasard, 
+                                 "File" = Lire le fichier en entier        
+        -->
+        <FileReadMode>OneSentenceSpecified</FileReadMode>
+        <!-- (Obligatoire uniquement si la balise <FileReadMode> à pour valeur : "OneSentenceSpecified") 
+             Définir le numéro de la ligne à lire-->
+        <ReadLineOfFile>2</ReadLineOfFile>
+      </Feedback>
+    </Feedbacks>
+    <!-- Petite particularité 
+         Le bot se déclenchera lorsque les mots clés correspondront à un des exemples suivants :
+         - "comment" ET "vas-tu" ET "?"
+           OU
+         - "comment" ET "tu vas" ET "?"
+           OU
+         - "comment" ET "ça va" ET "?"
+    -->
+    <KeywordsList>
+      <Keywords>
+        <string>comment</string>
+      </Keywords>
+      <!-- Condition ET -->
+      <Keywords>
+        <string>vas tu</string>
+        <!-- Condition OU -->
+        <string>tu vas</string>
+        <!-- Condition OU -->
+        <string>ca va</string>
+      </Keywords>
+      <!-- Condition ET -->      
+      <Keywords>
+        <string>?</string>
+      </Keywords>
+    </KeywordsList>
+  </CommandSet>
+</CommandDefinitions>

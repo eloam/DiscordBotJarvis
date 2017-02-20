@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandDefinitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- Définition d'une commande -->
+  <CommandSet>
+    <Feedbacks>
+      <!-- Type de retour : Lire dans un fichier contenant une liste de phrases (SentenceFile) ou lire directement une phrase (Sentence) -->
+      <Feedback xsi:type="Sentence">
+        <!-- Phrase en guise de réponse de la part du bot
+             Si l'auteur de la requête est 'Elooam', le système répondra : "Bonjour Elooam !" -->
+        <Phrase>Bonjour {0} !</Phrase>
+        <!-- Paramètres à inclure dans la phrase de retour (ex. pseudo de l'auteur de la requête initial -->
+        <Parameters>
+          <Item>MessageAuthorMention</Item>
+        </Parameters>
+      </Feedback>
+    </Feedbacks>
+
+    <!-- Liste de mots-clés -->
+    <KeywordsList>
+      <Keywords>
+        <string>bonjour</string>
+        <string>bjr</string>
+        <string>salut</string>
+        <string>salut</string>
+        <string>hi</string>
+        <string>hello</string>
+        <string>yo</string>
+      </Keywords>
+    </KeywordsList>
+
+    <!-- (Facultatif) Indique si le nom du bot (Jarvis) doit être mentionné dans la requête de l'utilisateur pour être prise en compte
+         Si non spécifié, le bot devrat être mentionné dans la phrase de la requête -->
+    <CallBotRequired>false</CallBotRequired>
+  </CommandSet>
+</CommandDefinitions>

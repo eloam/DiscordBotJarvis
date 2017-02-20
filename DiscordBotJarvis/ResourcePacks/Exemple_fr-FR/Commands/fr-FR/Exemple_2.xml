@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandDefinitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  
+  <!-- Définition d'une commande -->
+  <CommandSet>
+    <Feedbacks>
+      <!-- Type de retour : Lire dans un fichier contenant une liste de phrases (SentenceFile) ou lire directement une phrase (Sentence) -->
+      <Feedback xsi:type="SentenceFile">
+        <!-- Nom du fichier .txt contenant la liste des phrases situé dans le répertoire "Resources" -->
+        <FileName>SayGoodbye</FileName>
+        <!-- (Facultatif) Paramètres à inclure dans la phrase de retour (ex. pseudo de l'auteur de la requête initial -->
+        <Parameters>
+          <Item>MessageAuthorMention</Item>
+        </Parameters>
+        <!-- (Facultatif) Spécifier comment on va lire la phrase dans le fichier (aléatoire ou une ligne précise) 
+             Valeurs possibles : "OneSentenceSpecified" = Lire une ligne spécifiée du fichier contenant la liste de phrases, 
+                                 "OneSentenceRandom" = Choisir une ligne (une phrase) au hasard, 
+                                 "File" = Lire le fichier en entier        
+        -->
+        <FileReadMode>OneSentenceRandom</FileReadMode>
+        <!-- (Obligatoire uniquement si la balise <FileReadMode> à pour valeur : "OneSentenceSpecified") 
+             Définir le numéro de la ligne à lire-->
+        <!-- <ReadLineOfFile>7</ReadLineOfFile> -->
+      </Feedback>
+    </Feedbacks>
+
+    <!-- Liste de mots-clés -->
+    <KeywordsList>
+      <Keywords>
+        <string>bonne nuit</string>
+        <string>au revoir</string>
+        <string>j'y vais</string>
+        <string>a+ tlm</string>
+      </Keywords>
+    </KeywordsList>
+  </CommandSet>
+</CommandDefinitions>
