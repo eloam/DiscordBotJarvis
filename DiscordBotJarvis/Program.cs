@@ -65,7 +65,6 @@ namespace DiscordBotJarvis
             AppConfig appConfig = XmlSerializationHelper.Decode<AppConfig>("AppConfig.xml");
             ResourcePacksList = ResourcePacksCore.LoadAll(appConfig.ResourcePacksCurrentCulture);
 
-            CreateCommands(client);
             Jarvis(client);
 
             Console.WriteLine("Jarvis is connected to Discord.");
@@ -90,33 +89,6 @@ namespace DiscordBotJarvis
         {
             Console.WriteLine((e.ExceptionObject as Exception).Message, "Unhandled UI Exception");
             // here you can log the exception ...
-        }
-
-        private static void CreateCommands(DiscordClient client)
-        {
-            client.AddCommand("help", async (e) =>
-            {
-                DiscordDMChannel dm = await client.CreateDM(e.Message.Author.ID);
-                await client.SendMessage(dm, File.ReadAllText("../../files/help.txt"));
-            });
-
-            client.AddCommand("statut", async (e) =>
-            {
-                DiscordPresence p = client.GetUserPresence(e.Message.Author.ID);
-
-                string info = "Ton statut sur le serveur mon cher camarade :";
-                info += "\nID : " + p.UserID;
-                info += "\nJeu en cours : ";
-
-                if (p.Game != string.Empty)
-                    info += $"Tu est en train de jouer à {p.Game}.";
-                else
-                    info += "Tu joue à aucun jeu, si ce n'est pas triste !";
-
-                info += "\nStatus : " + p.Status;
-
-                await e.Message.Respond(info);
-            });
         }
 
         private static void Jarvis(DiscordClient client)

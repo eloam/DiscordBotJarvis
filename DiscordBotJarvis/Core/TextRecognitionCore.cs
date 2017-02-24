@@ -117,7 +117,7 @@ namespace DiscordBotJarvis.Core
                     SentenceFile sentence = (SentenceFile)feedback;
                     string fileSentencesPath = string.Format(EndPoints.Path.ResourcePacksResources, resourcePack.DirectoryName, sentence.FileName);
 
-                    if (!File.Exists(fileSentencesPath))
+                    if (File.Exists(fileSentencesPath))
                     {
                         switch (sentence.FileReadMode)
                         {

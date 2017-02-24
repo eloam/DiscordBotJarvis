@@ -123,10 +123,16 @@
     <Content Include="ResourcePacks\Exemple_fr-FR\Commands\fr-FR\Exemple_3.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="ResourcePacks\Exemple_fr-FR\Commands\fr-FR\Exemple_5.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ResourcePacks\Exemple_fr-FR\Commands\fr-FR\Exemple_4.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ResourcePacks\Exemple_fr-FR\Config.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ResourcePacks\Exemple_fr-FR\Resources\Help.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ResourcePacks\Exemple_fr-FR\Resources\PlaySong.txt">
@@ -144,7 +150,6 @@
     <Content Include="Token.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="files\help.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

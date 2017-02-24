@@ -7,7 +7,7 @@
       <!-- Type de retour : Lire dans un fichier contenant une liste de phrases (SentenceFile) ou lire directement une phrase (Sentence) -->
       <Feedback xsi:type="SentenceFile">
         <!-- Nom du fichier .txt contenant la liste des phrases situé dans le répertoire "Resources" -->
-        <FileName>SayGoodbye</FileName>
+        <FileName>SayGoodbye.txt</FileName>
         <!-- (Facultatif) Paramètres à inclure dans la phrase de retour (ex. pseudo de l'auteur de la requête initial -->
         <Parameters>
           <Item>MessageAuthorMention</Item>
