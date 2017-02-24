@@ -4,10 +4,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DiscordBotJarvis.Tests.TextRecognitionModule.Extensions
 {
     [TestClass]
-    public class StringExtensionUnitTest
+    public class StringExtensionUnitTests
     {
         [TestMethod]
-        public void AddWhiteSpaceAroundStringTestMethod_Sentence()
+        public void AddWhiteSpaceAroundString_Sentence()
         {
             // Arrange
             string actual = "This is a sentence.";
@@ -21,7 +21,7 @@ namespace DiscordBotJarvis.Tests.TextRecognitionModule.Extensions
         }
 
         [TestMethod]
-        public void ReplaceSpecialsCharTestMethod()
+        public void ReplaceSpecialsChar()
         {
             // Arrange
             string actual = "How-are-you ?";
@@ -35,7 +35,7 @@ namespace DiscordBotJarvis.Tests.TextRecognitionModule.Extensions
         }
 
         [TestMethod]
-        public void RemoveDiacriticsTestMethod()
+        public void RemoveDiacritics()
         {
             // Arrange
             string actual = "ÀÁÂÃÄÅÇÑñÇçÈÉÊËÌÍÎÏÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöøùúûüýÿ";
@@ -49,7 +49,7 @@ namespace DiscordBotJarvis.Tests.TextRecognitionModule.Extensions
         }
 
         [TestMethod]
-        public void ProcessingUserRequestTestMethod_Sentence_001()
+        public void ProcessingUserRequest_Sentence_001()
         {
             // Arrange
             string actual = "This is a sentence.";
@@ -63,7 +63,7 @@ namespace DiscordBotJarvis.Tests.TextRecognitionModule.Extensions
         }
 
         [TestMethod]
-        public void ProcessingUserRequestTestMethod_Sentence_002()
+        public void ProcessingUserRequest_Sentence_002()
         {
             // Arrange
             string actual = "   Aenean tempus donéc éléfantid euismod nequé, tristique libéro porté maécènas convallis, " 
@@ -81,7 +81,7 @@ namespace DiscordBotJarvis.Tests.TextRecognitionModule.Extensions
         }
 
         [TestMethod]
-        public void ProcessingUserRequestTestMethod_Sentence_003()
+        public void ProcessingUserRequest_Sentence_003()
         {
             // Arrange
             string actual = @"Sociosqu commodoé in l'suspendisse mattis massè cél a magnès, mauris j'duis pélléntésque "

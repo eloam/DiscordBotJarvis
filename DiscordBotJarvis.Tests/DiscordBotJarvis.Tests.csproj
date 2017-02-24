@@ -53,14 +53,17 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextRecognitionModule\Controllers\JarvisCoreControllerUnitTest.cs" />
-    <Compile Include="TextRecognitionModule\Extensions\StringExtensionUnitTest.cs" />
+    <Compile Include="TextRecognitionModule\Extensions\StringExtensionUnitTests.cs" />
+    <Compile Include="TextRecognitionModule\Helpers\GetSentenceHelperUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DiscordBotJarvis\DiscordBotJarvis.csproj">
       <Project>{EBFDE000-13A9-4E9C-97AD-8DB9F9A36FF0}</Project>
       <Name>DiscordBotJarvis</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TextRecognitionModule\Core\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -2,7 +2,7 @@
 using DiscordBotJarvis.Enums;
 using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
 
-namespace DiscordBotJarvis.Dal
+namespace DiscordBotJarvis.Data
 {
     public static class SentencesDal
     {

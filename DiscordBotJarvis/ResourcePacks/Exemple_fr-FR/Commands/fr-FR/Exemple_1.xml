@@ -30,6 +30,6 @@
 
     <!-- (Facultatif) Indique si le nom du bot (Jarvis) doit être mentionné dans la requête de l'utilisateur pour être prise en compte
          Si non spécifié, le bot devrat être mentionné dans la phrase de la requête -->
-    <CallBotRequired>false</CallBotRequired>
+    <BotMentionRequired>false</BotMentionRequired>
   </CommandSet>
 </CommandDefinitions>

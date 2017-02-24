@@ -15,6 +15,10 @@ namespace DiscordBotJarvis.Helpers
     {
         public static void Encode<T>(object obj, string path, XmlRootAttribute xmlRootAttribute = null)
         {
+            // Vérification si les paramètres en entrées de fonction ne sont pas à 'null'
+            if (obj == null) throw new ArgumentNullException(nameof(obj));
+            if (path == null) throw new ArgumentNullException(nameof(path));
+
             XmlSerializer serializer = new XmlSerializer(obj.GetType(), xmlRootAttribute);
             using (StreamWriter writer = new StreamWriter(path))
             {
@@ -24,6 +28,9 @@ namespace DiscordBotJarvis.Helpers
 
         public static T Decode<T>(string path, XmlRootAttribute xmlRootAttribute = null)
         {
+            // Vérification si les paramètres en entrées de fonction ne sont pas à 'null'
+            if (path == null) throw new ArgumentNullException(nameof(path));
+
             T commands;
 
             XmlSerializer serializer = new XmlSerializer(typeof(T), xmlRootAttribute);
@@ -33,16 +40,6 @@ namespace DiscordBotJarvis.Helpers
             }
 
             return commands;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <returns></returns>
-        public static string Test()
-        {
-            throw new ArgumentNullException();
         }
     }
 }

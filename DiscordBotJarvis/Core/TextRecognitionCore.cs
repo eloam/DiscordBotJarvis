@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -10,14 +11,18 @@ using DiscordBotJarvis.Models.ResourcePacks;
 using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
 using DSharpPlus;
 
-namespace DiscordBotJarvis.Controllers
+namespace DiscordBotJarvis.Core
 {
-    public static class UserQueryProcessing
+    public static class TextRecognitionCore
     {
         private delegate bool ComparisonModeDelegate(string keyword);
 
         public static async void ExecuteQuery(MessageCreateEventArgs e, IEnumerable<ResourcePack> resourcePacksList)
         {
+            // Vérification si un ou plusieurs paramètres sont 'null'
+            if (e == null) throw new ArgumentNullException(nameof(e));
+            if (resourcePacksList == null) throw new ArgumentNullException(nameof(resourcePacksList));
+
             // Requête de l'utilisateur
             string request = e.Message.Content;
             // Requête de l'utilisateur après traitement
@@ -36,7 +41,7 @@ namespace DiscordBotJarvis.Controllers
                         bool resultMatch = ArgumentsMatch(request, requestProcessed, command);
 
                         // On regarde si le bot a besoin d'être appelé et que si c'est le cas, que son nom figure dans la requête de l'utilisateur
-                        bool triggerBot = CheckTriggerBot(request, command.BotMentionRequired);
+                        bool triggerBot = CheckTriggerBot(requestProcessed, command.BotMentionRequired);
 
                         // Si le résultat correspond aux mots-clés et expressions régulières définit dans l'objet et si le bot doit être appelé, alors...
                         if (resultMatch && triggerBot)
@@ -51,6 +56,11 @@ namespace DiscordBotJarvis.Controllers
 
         private static bool ArgumentsMatch(string request, string requestProcessed, CommandSet command)
         {
+            // Vérification si les paramètres en entrées de fonction ne sont pas à 'null'
+            if (string.IsNullOrWhiteSpace(request)) throw new ArgumentException(nameof(request));
+            if (string.IsNullOrWhiteSpace(requestProcessed)) throw new ArgumentException(nameof(requestProcessed));
+            if (command == null) throw new ArgumentNullException(nameof(command));
+
             // Resultat définitif
             bool resultMatch = false;
             
@@ -77,6 +87,11 @@ namespace DiscordBotJarvis.Controllers
 
         private static async Task DisplayFeedbacks(MessageCreateEventArgs e, ResourcePack resourcePack, Feedback[] feedbacks)
         {
+            // Vérification si les paramètres en entrées de fonction ne sont pas à 'null'
+            if (e == null) throw new ArgumentNullException(nameof(e));
+            if (resourcePack == null) throw new ArgumentNullException(nameof(resourcePack));
+            if (feedbacks == null) throw new ArgumentNullException(nameof(feedbacks));
+
             // On parcours toutes les objets SentenceConfig afin d'afficher leurs contenus
             foreach (Feedback feedback in feedbacks)
             {
@@ -90,7 +105,7 @@ namespace DiscordBotJarvis.Controllers
                     if (sentence.Parameters != null)
                     {
                         object[] parameters = ParametersToValuesConverter(e, sentence.Parameters);
-                        response = String.Format(sentence.Phrase, parameters);
+                        response = string.Format(sentence.Phrase, parameters);
                     }
                     else
                     {
@@ -100,35 +115,35 @@ namespace DiscordBotJarvis.Controllers
                 else if (feedback is SentenceFile)
                 {
                     SentenceFile sentence = (SentenceFile)feedback;
-                    string filePath = Endpoints.ResourcePacksDirectory + Endpoints.SeparatorDirectory + 
-                                      resourcePack.DirectoryName + Endpoints.ResourcesDirectory +
-                                      Endpoints.SeparatorDirectory + sentence.FileName + ".txt";
+                    string fileSentencesPath = string.Format(EndPoints.Path.ResourcePacksResources, resourcePack.DirectoryName, sentence.FileName);
 
-                    switch (sentence.FileReadMode)
+                    if (!File.Exists(fileSentencesPath))
                     {
-                        case FileReadEnum.OneSentenceRandom:
-                            response = GetSentenceHelper.ReadLineRandom(filePath);
-                            break;
-                        case FileReadEnum.OneSentenceSpecified:
-                            response = GetSentenceHelper.ReadLineSpecified(filePath, sentence.ReadLineOfFile);
-                            break;
-                        case FileReadEnum.File:
-                            response = GetSentenceHelper.ReadFile(filePath);
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException(nameof(sentence.FileReadMode), sentence.FileReadMode, "Argument not specified.");
-                    }
+                        switch (sentence.FileReadMode)
+                        {
+                            case FileReadEnum.OneSentenceRandom:
+                                response = GetSentenceHelper.ReadLineRandom(fileSentencesPath);
+                                break;
+                            case FileReadEnum.OneSentenceSpecified:
+                                response = GetSentenceHelper.ReadLineSpecified(fileSentencesPath, sentence.ReadLineOfFile);
+                                break;
+                            case FileReadEnum.File:
+                                response = GetSentenceHelper.ReadFile(fileSentencesPath);
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(sentence.FileReadMode), sentence.FileReadMode, "Argument not specified.");
+                        }
 
-                    if (sentence.Parameters != null)
-                    {
-                        object[] parameters = ParametersToValuesConverter(e, sentence.Parameters);
-                        if (response != null) response = string.Format(response, parameters);
+                        if (sentence.Parameters != null)
+                        {
+                            object[] parameters = ParametersToValuesConverter(e, sentence.Parameters);
+                            if (response != null) response = string.Format(response, parameters);
+                        }
                     }
-                    
                 }
 
                 // Si le message fournit par le bot à l'utilisateur est différent de null, vide ou composé uniquement d'espaces blancs.
-                if (!String.IsNullOrWhiteSpace(response))
+                if (!string.IsNullOrWhiteSpace(response))
                     await e.Message.Respond(response);
             }
         }
@@ -200,10 +215,10 @@ namespace DiscordBotJarvis.Controllers
             return regexMatch;
         }
 
-        private static bool CheckTriggerBot(string request, bool callBotRequired)
+        private static bool CheckTriggerBot(string requestProcessed, bool callBotRequired)
         {
             string[] callBotContains = { "bot", "jarvis" };
-            bool triggerBot = (callBotContains.Any(botname => request.Contains(botname.AddWhiteSpaceAroundString())) && callBotRequired) || !callBotRequired;
+            bool triggerBot = (callBotContains.Any(botname => requestProcessed.Contains(botname.AddWhiteSpaceAroundString())) && callBotRequired) || !callBotRequired;
 
             return triggerBot;
         }

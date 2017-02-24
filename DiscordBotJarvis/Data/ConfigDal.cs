@@ -1,6 +1,6 @@
 ﻿using DiscordBotJarvis.Models.ResourcePacks.ConfigFile;
 
-namespace DiscordBotJarvis.Dal
+namespace DiscordBotJarvis.Data
 {
     public class ConfigDal
     {

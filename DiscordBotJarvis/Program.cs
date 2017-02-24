@@ -5,10 +5,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using DiscordBotJarvis.Controllers;
-using DiscordBotJarvis.Dal;
+using DiscordBotJarvis.Core;
 using DiscordBotJarvis.Extensions;
 using DiscordBotJarvis.Helpers;
 using DiscordBotJarvis.Models.Commands;
@@ -16,6 +16,7 @@ using DiscordBotJarvis.Models.ResourcePacks;
 using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
 using DiscordBotJarvis.Models.ResourcePacks.ConfigFile;
 using DiscordBotJarvis.Models.Settings;
+using WebSocketSharp;
 
 namespace DiscordBotJarvis
 {
@@ -25,6 +26,8 @@ namespace DiscordBotJarvis
 
         private static void Main(string[] args)
         {
+            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);         
+
             Console.Title = "DiscordBotJarvis";
 
             Console.WriteLine();
@@ -60,7 +63,7 @@ namespace DiscordBotJarvis
             });
 
             AppConfig appConfig = XmlSerializationHelper.Decode<AppConfig>("AppConfig.xml");
-            ResourcePacksList = ResourcePackModule.LoadAll(appConfig.ResourcePacksCurrentCulture);
+            ResourcePacksList = ResourcePacksCore.LoadAll(appConfig.ResourcePacksCurrentCulture);
 
             CreateCommands(client);
             Jarvis(client);
@@ -81,6 +84,12 @@ namespace DiscordBotJarvis
                 if (response.ToString().ToUpper() == "Q")
                     Environment.Exit(0);
             } while (true);
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Console.WriteLine((e.ExceptionObject as Exception).Message, "Unhandled UI Exception");
+            // here you can log the exception ...
         }
 
         private static void CreateCommands(DiscordClient client)
@@ -117,7 +126,7 @@ namespace DiscordBotJarvis
             {
                 DateTime t1 = DateTime.Now;
                 if (e.Message.Author.ID == client.Me.ID) return;
-                UserQueryProcessing.ExecuteQuery(e, ResourcePacksList);
+                TextRecognitionCore.ExecuteQuery(e, ResourcePacksList);
                 Console.WriteLine($"Processing performed in {(DateTime.Now - t1).TotalMilliseconds} ms.");
             };
 

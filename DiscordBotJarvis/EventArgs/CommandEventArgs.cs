@@ -1,5 +1,4 @@
-﻿using DiscordBotJarvis.Controllers;
-using DiscordBotJarvis.Models.Commands;
+﻿using DiscordBotJarvis.Models.Commands;
 using DSharpPlus;
 
 namespace DiscordBotJarvis.EventArgs

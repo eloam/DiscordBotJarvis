@@ -4,7 +4,7 @@
   <CommandSet>
     <Feedbacks>
       <Feedback xsi:type="SentenceFile">
-        <FileName>PlaySong</FileName>
+        <FileName>PlaySong.txt</FileName>
         <ComparisonMode>OneSentenceRandom</ComparisonMode>
       </Feedback>
     </Feedbacks>

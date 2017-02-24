@@ -4,7 +4,7 @@
   <CommandSet>
     <Feedbacks>
       <Feedback xsi:type="SentenceFile">
-        <FileName>SayImFine</FileName>
+        <FileName>SayImFine.txt</FileName>
         <!-- (Facultatif) Spécifier comment on va lire la phrase dans le fichier (aléatoire ou une ligne précise) 
              Valeurs possibles : "OneSentenceSpecified" = Lire une ligne spécifiée du fichier contenant la liste de phrases, 
                                  "OneSentenceRandom" = Choisir une ligne (une phrase) au hasard, 

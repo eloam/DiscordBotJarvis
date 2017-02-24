@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DiscordBotJarvis.Controllers;
 using DiscordBotJarvis.EventArgs;
 using DiscordBotJarvis.Models.Commands;
 using DSharpPlus;
