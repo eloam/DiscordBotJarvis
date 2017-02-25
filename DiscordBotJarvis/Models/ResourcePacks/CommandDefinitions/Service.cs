@@ -1,33 +1,45 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 
 namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
 {
     public class Service : Feedback
     {
-        public string ServiceName { get; set; }
-        public string LibraryName { get; set; }
-        public string ClassName { get; set; }
+        private string _serviceName;
+
+        public string ServiceName
+        {
+            get { return _serviceName; }
+            set
+            {
+                if (value == null) throw new ArgumentNullException(nameof(value));
+
+                if (new Regex(@"(\w*)\.(\w*)").Match(value).Success)
+                {
+                    _serviceName = value;
+                }
+                else
+                {
+                    throw new ArgumentException(nameof(ServiceName));
+                }
+            }
+        }
+
+        [XmlIgnore]
+        public string LibraryName => $"{ServiceName.Split('.')[0]}.dll";
+
+        [XmlIgnore]
+        public string ClassName => $"{ServiceName.Split('.')[1]}";
+        
+        public Service()
+        {
+            
+        }
 
         public Service(string serviceName)
         {
-            Regex rgx = new Regex(@"(\w*)\.(\w*)");
-
-            if (!rgx.Match(serviceName).Success)
-                throw new ArgumentException("ServiceName is invalid. Expected : 'LibraryName.ClassName'.", nameof(serviceName));
-
-            string[] path = serviceName.Split('.');
-
             ServiceName = serviceName;
-            LibraryName = path[0];
-            ClassName = path[1];
-        }
-
-        public Service(string libraryName, string className)
-        {
-            ServiceName = $"{libraryName}.{className}";
-            LibraryName = libraryName;
-            ClassName = className;
         }
     }
 }

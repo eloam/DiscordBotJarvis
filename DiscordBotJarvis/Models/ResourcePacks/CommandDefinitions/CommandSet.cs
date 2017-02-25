@@ -8,6 +8,7 @@ namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
 {
     [XmlInclude(typeof(Sentence))]
     [XmlInclude(typeof(SentenceFile))]
+    [XmlInclude(typeof(Service))]
     public class CommandSet
     {
         // Property

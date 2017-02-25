@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DiscordBotJarvis.Enums;
@@ -9,6 +10,7 @@ using DiscordBotJarvis.Extensions;
 using DiscordBotJarvis.Helpers;
 using DiscordBotJarvis.Models.ResourcePacks;
 using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
+using DiscordBotJarvis.Services;
 using DSharpPlus;
 
 namespace DiscordBotJarvis.Core
@@ -138,6 +140,32 @@ namespace DiscordBotJarvis.Core
                         {
                             object[] parameters = ParametersToValuesConverter(e, sentence.Parameters);
                             if (response != null) response = string.Format(response, parameters);
+                        }
+                    }
+                }
+                else if (feedback is Service)
+                {
+                    Service service = (Service)feedback;
+                    string libraryPath = string.Format(EndPoints.Path.ResourcePacksServices, resourcePack.DirectoryName, service.LibraryName);
+
+                    if (File.Exists(libraryPath))
+                    {
+                        AssemblyName assemblyName = AssemblyName.GetAssemblyName(libraryPath);
+                        Assembly assembly = Assembly.Load(assemblyName);
+                        Type pluginType = typeof(IService);
+
+                        if (assembly != null)
+                        {
+                            Type[] types = assembly.GetTypes();
+                            Type serviceType = types.Where(type => !type.IsInterface && !type.IsAbstract && !type.IsEnum)
+                                .Where(type => type.GetInterface(pluginType.FullName) != null)
+                                .FirstOrDefault(type => type.Name == service.ClassName);
+
+                            if (serviceType != null)
+                            {
+                                IService plugin = (IService)Activator.CreateInstance(serviceType);
+                                response = plugin.Do("request", "requestProcessed", "fr-FR");
+                            }
                         }
                     }
                 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandDefinitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  
+  <!-- Définition d'une commande -->
+  <CommandSet>
+    
+    <Feedbacks>
+      <Feedback xsi:type="Service">
+        <ServiceName>ServiceTest.FirstService</ServiceName>
+      </Feedback>
+    </Feedbacks>
+
+    <KeywordsList>
+      <Keywords>
+        <string>test plugin</string>
+      </Keywords>
+    </KeywordsList>
+    
+    <BotMentionRequired>false</BotMentionRequired>
+  </CommandSet>
+</CommandDefinitions>
