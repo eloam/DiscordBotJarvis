@@ -5,6 +5,6 @@
   <ResourcePacksCurrentCulture>fr-FR</ResourcePacksCurrentCulture>
   
   <!-- Possible values : None, ResourcePacksDebug -->
-  <ExectureMode>None</ExectureMode>
+  <ExecuteMode>None</ExecuteMode>
   
 </AppConfig>

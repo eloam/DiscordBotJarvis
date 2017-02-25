@@ -104,6 +104,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\ResourcePacks\CommandDefinitions\Service.cs" />
     <Compile Include="Models\ResourcePacks\ConfigFile\ResourcePackConfig.cs" />
+    <Compile Include="ResourcePacks\Exemple_fr-FR\Services\src\FirstService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -121,6 +122,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ResourcePacks\Exemple_fr-FR\Commands\fr-FR\Exemple_3.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ResourcePacks\Exemple_fr-FR\Commands\fr-FR\Exemple_6.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ResourcePacks\Exemple_fr-FR\Commands\fr-FR\Exemple_5.xml">
@@ -144,7 +148,7 @@
     <Content Include="ResourcePacks\Exemple_fr-FR\Resources\SayImFine.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ResourcePacks\Exemple_fr-FR\Services\Soon.txt">
+    <Content Include="ResourcePacks\Exemple_fr-FR\Services\ServiceTest.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Token.txt">
@@ -163,7 +167,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DiscordBotJarvis.Services\DiscordBotJarvis.Services.csproj">
+      <Project>{e7fa3b87-4e57-4e4e-880e-ab4759cd8c1e}</Project>
+      <Name>DiscordBotJarvis.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Baseclass.Contrib.Nuget.Output.2.1.0\build\net40\Baseclass.Contrib.Nuget.Output.targets" Condition="Exists('..\packages\Baseclass.Contrib.Nuget.Output.2.1.0\build\net40\Baseclass.Contrib.Nuget.Output.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -7,7 +7,7 @@ namespace DiscordBotJarvis.Models.Settings
     public class AppConfig
     {
         public string ResourcePacksCurrentCulture { get; set; }
-        public ModeApplicationExecutionEnum ExectureMode { get; set; }
+        public ModeApplicationExecutionEnum ExecuteMode { get; set; }
 
         public AppConfig()
         {
@@ -16,7 +16,7 @@ namespace DiscordBotJarvis.Models.Settings
         public AppConfig(string resourcePacksCurrentCulture, ModeApplicationExecutionEnum executeMode)
         {
             ResourcePacksCurrentCulture = resourcePacksCurrentCulture;
-            ExectureMode = executeMode;
+            ExecuteMode = executeMode;
         }
     }
 }
