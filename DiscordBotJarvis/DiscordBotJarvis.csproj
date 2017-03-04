@@ -64,6 +64,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -76,14 +78,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Logger.cs" />
+    <Compile Include="Core\XmlCallbackSerializer.cs" />
+    <Compile Include="Extensions\TypeExtension.cs" />
+    <Compile Include="Interfaces\IXmlDeserializationCallback.cs" />
+    <Compile Include="Interfaces\IXmlFeedbacksDeserializationCallback.cs" />
     <Compile Include="Models\Commands\Command.cs" />
     <Compile Include="Models\Commands\CommandConfig.cs" />
     <Compile Include="Extensions\CommandExtension.cs" />
     <Compile Include="Models\Commands\CommandModule.cs" />
     <Compile Include="EventArgs\CommandEventArgs.cs" />
     <Compile Include="Core\Endpoints.cs" />
-    <Compile Include="Core\ResourcePacksCore.cs" />
-    <Compile Include="Core\TextRecognitionCore.cs" />
+    <Compile Include="Core\ResourcePacks.cs" />
+    <Compile Include="Core\TextRecognition.cs" />
     <Compile Include="Data\ConfigDal.cs" />
     <Compile Include="Data\SentencesDal.cs" />
     <Compile Include="Enums\ModeApplicationExecutionEnum.cs" />
@@ -93,7 +100,7 @@
     <Compile Include="Helpers\ResourcePacksHelper.cs" />
     <Compile Include="Extensions\StringExtension.cs" />
     <Compile Include="Helpers\GetSentenceHelper.cs" />
-    <Compile Include="Helpers\XmlSerializationHelper.cs" />
+    <Compile Include="Helpers\XmlSerializerHelper.cs" />
     <Compile Include="Models\ResourcePacks\CommandDefinitions\CommandSet.cs" />
     <Compile Include="Models\ResourcePacks\CommandDefinitions\Feedback.cs" />
     <Compile Include="Models\ResourcePacks\CommandDefinitions\Sentence.cs" />
@@ -117,6 +124,7 @@
     </Content>
     <Content Include="ResourcePacks\Exemple_fr-FR\Commands\fr-FR\Exemple_1.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="ResourcePacks\Exemple_fr-FR\Commands\fr-FR\Exemple_2.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

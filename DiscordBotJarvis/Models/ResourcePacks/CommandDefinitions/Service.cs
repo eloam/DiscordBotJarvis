@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using DiscordBotJarvis.Core;
+using DiscordBotJarvis.Extensions;
+using DiscordBotJarvis.Interfaces;
 
 namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
 {
-    public class Service : Feedback
+    public class Service : Feedback, IXmlDeserializationCallback
     {
         private string _serviceName;
 
@@ -13,16 +16,14 @@ namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
             get { return _serviceName; }
             set
             {
-                if (value == null) throw new ArgumentNullException(nameof(value));
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("La balise est vide ou est composé uniquement d'espaces blancs.", nameof(ServiceName));
 
-                if (new Regex(@"(\w*)\.(\w*)").Match(value).Success)
-                {
-                    _serviceName = value;
-                }
-                else
-                {
-                    throw new ArgumentException(nameof(ServiceName));
-                }
+                if (!new Regex(@"(\w*)\.(\w*)").Match(value).Success)
+                    throw new ArgumentException("La valeur de la balise doit correspondre au modèle suivant : " +
+                                                $"[{nameof(LibraryName)}].[{nameof(ClassName)}]", nameof(ServiceName));
+
+                _serviceName = value;
             }
         }
 
@@ -31,15 +32,20 @@ namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
 
         [XmlIgnore]
         public string ClassName => $"{ServiceName.Split('.')[1]}";
-        
+
         public Service()
         {
-            
+
         }
 
         public Service(string serviceName)
         {
             ServiceName = serviceName;
+        }
+
+        public new void OnXmlDeserialization(object sender)
+        {
+            if (ServiceName == null) throw new ArgumentNullException(nameof(ServiceName), "La balise est manquante.");
         }
     }
 }

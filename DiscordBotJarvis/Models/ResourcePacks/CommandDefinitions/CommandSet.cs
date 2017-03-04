@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
+using DiscordBotJarvis.Core;
 using DiscordBotJarvis.Enums;
+using DiscordBotJarvis.Interfaces;
 
 namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
 {
     [XmlInclude(typeof(Sentence))]
     [XmlInclude(typeof(SentenceFile))]
     [XmlInclude(typeof(Service))]
-    public class CommandSet
+    public class CommandSet : IXmlFeedbacksDeserializationCallback
     {
         // Property
         public Feedback[] Feedbacks { get; set; }
-
+ 
         [XmlArrayItem("Keywords")]
         public List<string[]> KeywordsList { get; set; }
 
@@ -73,6 +75,10 @@ namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
 
             KeywordsList = keywords;
             RegexList = regex;
+        }
+
+        public void OnXmlDeserialization(object sender)
+        {
         }
     }
 }

@@ -5,10 +5,13 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using DiscordBotJarvis.Core;
+using DiscordBotJarvis.Data;
 using DiscordBotJarvis.Extensions;
 using DiscordBotJarvis.Helpers;
 using DiscordBotJarvis.Models.Commands;
@@ -26,8 +29,6 @@ namespace DiscordBotJarvis
 
         private static void Main(string[] args)
         {
-            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);         
-
             Console.Title = "DiscordBotJarvis";
 
             Console.WriteLine();
@@ -40,8 +41,6 @@ namespace DiscordBotJarvis
             Console.WriteLine("                                      ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝");
             Console.WriteLine();
             Console.WriteLine();
-
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
             Console.WriteLine($"Version {Assembly.GetEntryAssembly().GetName().Version}");
 
@@ -62,10 +61,10 @@ namespace DiscordBotJarvis
                 SelfBot = false
             });
 
-            AppConfig appConfig = XmlSerializationHelper.Decode<AppConfig>("AppConfig.xml");
-            ResourcePacksList = ResourcePacksCore.LoadAll(appConfig.ResourcePacksCurrentCulture);
+            AppConfig appConfig = XmlSerializerHelper.Decode<AppConfig>("AppConfig.xml");
+            ResourcePacksList = ResourcePacks.LoadAll(appConfig.ResourcePacksCurrentCulture);
 
-            Jarvis(client);
+            ProcessingEvents(client);
 
             Console.WriteLine("Jarvis is connected to Discord.");
             Console.WriteLine("[INFO] Jarvis is currently in DEBUG mode.");
@@ -85,20 +84,14 @@ namespace DiscordBotJarvis
             } while (true);
         }
 
-        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            Console.WriteLine((e.ExceptionObject as Exception).Message, "Unhandled UI Exception");
-            // here you can log the exception ...
-        }
-
-        private static void Jarvis(DiscordClient client)
+        private static void ProcessingEvents(DiscordClient client)
         {
             // Evénement lancé lors de la création d'un message dans le client Discord
             client.MessageCreated += (sender, e) =>
             {
                 DateTime t1 = DateTime.Now;
                 if (e.Message.Author.ID == client.Me.ID) return;
-                TextRecognitionCore.ExecuteQuery(e, ResourcePacksList);
+                TextRecognition.ExecuteQuery(e, ResourcePacksList);
                 Console.WriteLine($"Processing performed in {(DateTime.Now - t1).TotalMilliseconds} ms.");
             };
 

@@ -1,6 +1,6 @@
 ﻿namespace DiscordBotJarvis.Enums
 {
-    public enum FileReadEnum
+    public enum ReadFileMode
     {
         OneSentenceRandom,
         OneSentenceSpecified,

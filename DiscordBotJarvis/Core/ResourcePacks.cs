@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Xml.Serialization;
 using DiscordBotJarvis.Helpers;
 using DiscordBotJarvis.Models.ResourcePacks;
 using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
 using DiscordBotJarvis.Models.ResourcePacks.ConfigFile;
+using System.Xml.Serialization;
 
 namespace DiscordBotJarvis.Core
 {
-    public static class ResourcePacksCore
+    public static class ResourcePacks
     {
         /// <summary>
         /// Charger tous les ressources packs définies dans un répertoire
@@ -34,7 +34,7 @@ namespace DiscordBotJarvis.Core
             {
                 ResourcePack currentResourcePack = Load(resourcePackPath, currentCulture);
                 
-                if (currentResourcePack != null)
+                if (currentResourcePack?.Commands != null)
                     resourcePacks.Add(currentResourcePack);           
             }
 
@@ -65,9 +65,9 @@ namespace DiscordBotJarvis.Core
             // Lecture du fichier "Config.xml" du ressource pack
             try
             {
-                currentResourcePack.Infos = XmlSerializationHelper.Decode<ResourcePackConfig>(configFilePath);
+                currentResourcePack.Config = XmlSerializerHelper.Decode<ResourcePackConfig>(configFilePath);
             }
-            catch (InvalidOperationException e)
+            catch (Exception e)
             {
                 Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] [ERROR] Error reading the \"Config.xml\" file from the \"{currentResourcePack.DirectoryName}\" resource pack.");
                 Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] [ERROR] {e.Message} {e.InnerException?.Message}");
@@ -90,17 +90,20 @@ namespace DiscordBotJarvis.Core
             {
                 try
                 {
-                    currentResourcePack.CommandsDictionary.Add(Path.GetFileName(xmlFilePath), 
-                        XmlSerializationHelper.Decode<List<CommandSet>>(xmlFilePath, new XmlRootAttribute("CommandDefinitions")));
+                   // XmlSchemaSet schemaSet = new XmlSchemaSet();
+                    //schemaSet.Add("test", @"D:\Documents\Visual Studio 2015\Projects\DiscordBotJarvis\DiscordBotJarvis\ResourcePacks\Exemple_fr-FR\Commands\fr-FR\Full.xsd");
+                    IEnumerable<CommandSet> commands = XmlSerializerHelper.Decode<List<CommandSet>>(xmlFilePath, new XmlRootAttribute("CommandDefinitions"));
+
+                    currentResourcePack.Commands.Add(Path.GetFileName(xmlFilePath), commands);
                 }
-                catch (InvalidOperationException e)
+                catch (Exception e)
                 {
                     Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] [ERROR] Error reading the \"{new DirectoryInfo(xmlFilePath).Name}\" file from the \"{currentResourcePack.DirectoryName}\" resource pack.");
                     Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] [ERROR] {e.Message} {e.InnerException?.Message}");
                 }
             }
 
-            if (currentResourcePack.CommandsDictionary.Count <= 0) return null;
+            if (currentResourcePack.Commands.Count <= 0) return null;
             
             // On charge le resource pack (valide)
             return currentResourcePack;

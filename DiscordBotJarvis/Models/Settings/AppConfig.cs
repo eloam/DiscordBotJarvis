@@ -7,6 +7,8 @@ namespace DiscordBotJarvis.Models.Settings
     public class AppConfig
     {
         public string ResourcePacksCurrentCulture { get; set; }
+   
+        public string LogFileName { get; set; }
         public ModeApplicationExecutionEnum ExecuteMode { get; set; }
 
         public AppConfig()

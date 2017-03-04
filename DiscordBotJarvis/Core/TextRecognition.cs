@@ -15,7 +15,7 @@ using DSharpPlus;
 
 namespace DiscordBotJarvis.Core
 {
-    public static class TextRecognitionCore
+    public static class TextRecognition
     {
         private delegate bool ComparisonModeDelegate(string keyword);
 
@@ -34,7 +34,7 @@ namespace DiscordBotJarvis.Core
             foreach (ResourcePack currentResourcePack in resourcePacksList)
             {
                 // On parcours tous les fichiers xml situés dans le répertoire "CommandDefinitions" du pack de ressources courant
-                foreach (KeyValuePair<string, List<CommandSet>> currentCommandDefinitionsKeyValuePair in currentResourcePack.CommandsDictionary)
+                foreach (KeyValuePair<string, IEnumerable<CommandSet>> currentCommandDefinitionsKeyValuePair in currentResourcePack.Commands)
                 {
                     // On parcours toutes les commandes que contient le fichier xml courant, afin de recherche une correspondance eventuelle avec la requête utilisateur
                     foreach (CommandSet command in currentCommandDefinitionsKeyValuePair.Value)
@@ -123,13 +123,13 @@ namespace DiscordBotJarvis.Core
                     {
                         switch (sentence.FileReadMode)
                         {
-                            case FileReadEnum.OneSentenceRandom:
+                            case ReadFileMode.OneSentenceRandom:
                                 response = GetSentenceHelper.ReadLineRandom(fileSentencesPath);
                                 break;
-                            case FileReadEnum.OneSentenceSpecified:
+                            case ReadFileMode.OneSentenceSpecified:
                                 response = GetSentenceHelper.ReadLineSpecified(fileSentencesPath, sentence.ReadLineOfFile);
                                 break;
-                            case FileReadEnum.File:
+                            case ReadFileMode.File:
                                 response = GetSentenceHelper.ReadFile(fileSentencesPath);
                                 break;
                             default:
