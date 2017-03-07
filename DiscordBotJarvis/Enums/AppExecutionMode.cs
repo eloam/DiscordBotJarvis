@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DiscordBotJarvis.Enums
 {
-    public enum ModeApplicationExecutionEnum
+    public enum AppExecutionMode
     {
         None,
         ResourcePacksDebug

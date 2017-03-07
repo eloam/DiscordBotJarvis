@@ -1,6 +1,6 @@
 ﻿namespace DiscordBotJarvis.Enums
 {
-    public enum ParametersEnum
+    public enum SentenceParameters
     {
         MessageAuthorMention
     }

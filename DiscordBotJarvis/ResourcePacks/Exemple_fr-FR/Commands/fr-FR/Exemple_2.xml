@@ -19,7 +19,7 @@
         -->
         <FileReadMode>OneSentenceRandom</FileReadMode>
         <!-- (Obligatoire uniquement si la balise <FileReadMode> à pour valeur : "OneSentenceSpecified") 
-             Définir le numéro de la ligne à lire-->
+             Définir le numéro de la ligne à lire -->
         <!-- <ReadLineOfFile>7</ReadLineOfFile> -->
       </Feedback>
     </Feedbacks>

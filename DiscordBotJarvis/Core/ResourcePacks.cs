@@ -69,7 +69,7 @@ namespace DiscordBotJarvis.Core
             }
             catch (Exception e)
             {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] [ERROR] Error reading the \"Config.xml\" file from the \"{currentResourcePack.DirectoryName}\" resource pack.");
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] [ERROR] Une erreur s'est produite lors de la lecture du fichier \"Config.xml\" provenant du pack de ressources : \"{currentResourcePack.DirectoryName}\".");
                 Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] [ERROR] {e.Message} {e.InnerException?.Message}");
                 return null;
             }
@@ -81,7 +81,7 @@ namespace DiscordBotJarvis.Core
             // Si aucun fichier xml de définition de commands est trouvé, on passe a la lecture du pack de ressources suivant
             if (xmlFilesPaths.Length == 0)
             {
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] [ERROR] No command definition file found in the \"Commands\" folder of the \"{currentResourcePack.DirectoryName}\" resource pack.");
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] [ERROR] Aucun fichier xml est présent dans le dossier \"Commands\" provenant du pack de ressources : \"{currentResourcePack.DirectoryName}\".");
                 return null;
             }
 
@@ -98,7 +98,7 @@ namespace DiscordBotJarvis.Core
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] [ERROR] Error reading the \"{new DirectoryInfo(xmlFilePath).Name}\" file from the \"{currentResourcePack.DirectoryName}\" resource pack.");
+                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] [ERROR] Une erreur s'est produite lors de la lecture du fichier \"{new DirectoryInfo(xmlFilePath).Name}\" provenant du pack de ressources : \"{currentResourcePack.DirectoryName}\".");
                     Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] [ERROR] {e.Message} {e.InnerException?.Message}");
                 }
             }

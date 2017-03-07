@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Core\Logger.cs" />
     <Compile Include="Core\XmlCallbackSerializer.cs" />
+    <Compile Include="Enums\LogLevel.cs" />
     <Compile Include="Extensions\TypeExtension.cs" />
     <Compile Include="Interfaces\IXmlDeserializationCallback.cs" />
     <Compile Include="Interfaces\IXmlFeedbacksDeserializationCallback.cs" />
@@ -93,10 +94,10 @@
     <Compile Include="Core\TextRecognition.cs" />
     <Compile Include="Data\ConfigDal.cs" />
     <Compile Include="Data\SentencesDal.cs" />
-    <Compile Include="Enums\ModeApplicationExecutionEnum.cs" />
-    <Compile Include="Enums\KeywordsComparisonEnum.cs" />
-    <Compile Include="Enums\ParametersEnum.cs" />
-    <Compile Include="Enums\FileReadEnum.cs" />
+    <Compile Include="Enums\AppExecutionMode.cs" />
+    <Compile Include="Enums\KeywordsComparison.cs" />
+    <Compile Include="Enums\SentenceParameters.cs" />
+    <Compile Include="Enums\ReadFileMode.cs" />
     <Compile Include="Helpers\ResourcePacksHelper.cs" />
     <Compile Include="Extensions\StringExtension.cs" />
     <Compile Include="Helpers\GetSentenceHelper.cs" />

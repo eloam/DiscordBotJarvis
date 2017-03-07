@@ -25,7 +25,7 @@ namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
         }
 
         [XmlArrayItem("Item")]
-        public ParametersEnum[] Parameters { get; set; }
+        public SentenceParameters[] Parameters { get; set; }
 
         [DefaultValue(ReadFileMode.OneSentenceRandom)]
         public ReadFileMode FileReadMode { get; set; }
@@ -37,7 +37,7 @@ namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
         {
         }
 
-        public SentenceFile(string fileName, ParametersEnum[] parameters = null,
+        public SentenceFile(string fileName, SentenceParameters[] parameters = null,
             ReadFileMode readFileMode = ReadFileMode.OneSentenceRandom,
             int indexSaySentence = 0)
         {

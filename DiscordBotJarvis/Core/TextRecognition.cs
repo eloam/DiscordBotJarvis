@@ -176,7 +176,7 @@ namespace DiscordBotJarvis.Core
             }
         }
 
-        private static bool CheckKeywordsMatch(string requestProcessed, IReadOnlyList<string[]> keywords, KeywordsComparisonEnum comparisonMode)
+        private static bool CheckKeywordsMatch(string requestProcessed, IReadOnlyList<string[]> keywords, KeywordsComparison comparisonMode)
         {
             // Delegate permettant de définir le mode de comparaison de la requête (en début/fin de str ou n'importe ou dans la requete)
             ComparisonModeDelegate comparisonModeDel = keyword =>
@@ -184,13 +184,13 @@ namespace DiscordBotJarvis.Core
                 bool result;
                 switch (comparisonMode)
                 {
-                    case KeywordsComparisonEnum.StartsWith:
+                    case KeywordsComparison.StartsWith:
                         result = requestProcessed.StartsWith(keyword);
                         break;
-                    case KeywordsComparisonEnum.Contains:
+                    case KeywordsComparison.Contains:
                         result = requestProcessed.Contains(keyword);
                         break;
-                    case KeywordsComparisonEnum.EndsWith:
+                    case KeywordsComparison.EndsWith:
                         result = requestProcessed.EndsWith(keyword);
                         break;
                     default:
@@ -251,14 +251,14 @@ namespace DiscordBotJarvis.Core
             return triggerBot;
         }
 
-        private static object[] ParametersToValuesConverter(MessageCreateEventArgs e, ParametersEnum[] parameters)
+        private static object[] ParametersToValuesConverter(MessageCreateEventArgs e, SentenceParameters[] parameters)
         {
             List<object> valuesParameters = new List<object>();
-            foreach (ParametersEnum item in parameters)
+            foreach (SentenceParameters item in parameters)
             {
                 switch (item)
                 {
-                    case ParametersEnum.MessageAuthorMention:
+                    case SentenceParameters.MessageAuthorMention:
                         valuesParameters.Add(e.Message.Author.Mention);
                         break;
                     default:

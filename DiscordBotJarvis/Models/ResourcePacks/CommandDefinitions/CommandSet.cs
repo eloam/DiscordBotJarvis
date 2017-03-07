@@ -25,8 +25,8 @@ namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
         [DefaultValue(true)]
         public bool BotMentionRequired { get; set; }
 
-        [DefaultValue(KeywordsComparisonEnum.Contains)]
-        public KeywordsComparisonEnum KeywordsComparisonMode { get; set; }
+        [DefaultValue(KeywordsComparison.Contains)]
+        public KeywordsComparison KeywordsComparisonMode { get; set; }
 
         [XmlIgnore]
         public bool IsListKeywordsEmpty => KeywordsList?.Count == 0;
@@ -40,10 +40,10 @@ namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
             KeywordsList = new List<string[]>();
             RegexList = new List<string[]>();
             BotMentionRequired = true;
-            KeywordsComparisonMode = KeywordsComparisonEnum.Contains;
+            KeywordsComparisonMode = KeywordsComparison.Contains;
         }
 
-        private CommandSet(Feedback[] feedbacks, bool botMentionRequired = true, KeywordsComparisonEnum keywordsComparisonMode = KeywordsComparisonEnum.Contains)
+        private CommandSet(Feedback[] feedbacks, bool botMentionRequired = true, KeywordsComparison keywordsComparisonMode = KeywordsComparison.Contains)
         {
             Feedbacks = feedbacks;
             BotMentionRequired = botMentionRequired;
@@ -51,7 +51,7 @@ namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
         }
 
         public CommandSet(Feedback[] feedbacks, List<string[]> keywords,
-            bool botMentionRequired = true, KeywordsComparisonEnum keywordsComparisonMode = KeywordsComparisonEnum.Contains) : this(feedbacks, botMentionRequired, keywordsComparisonMode)
+            bool botMentionRequired = true, KeywordsComparison keywordsComparisonMode = KeywordsComparison.Contains) : this(feedbacks, botMentionRequired, keywordsComparisonMode)
         {
             if (keywords == null)
                 throw new ArgumentNullException(nameof(keywords));
@@ -68,7 +68,7 @@ namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
         }
 
         public CommandSet(Feedback[] feedbacks, List<string[]> keywords, List<string[]> regex,
-            bool botMentionRequired = true, KeywordsComparisonEnum keywordsComparisonMode = KeywordsComparisonEnum.Contains) : this(feedbacks, botMentionRequired, keywordsComparisonMode)
+            bool botMentionRequired = true, KeywordsComparison keywordsComparisonMode = KeywordsComparison.Contains) : this(feedbacks, botMentionRequired, keywordsComparisonMode)
         {
             if (keywords == null && regex == null)
                 throw new ArgumentNullException($"{nameof(keywords)}, {nameof(regex)}");

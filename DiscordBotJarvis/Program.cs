@@ -1,25 +1,17 @@
 ﻿using DSharpPlus;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using DiscordBotJarvis.Core;
-using DiscordBotJarvis.Data;
 using DiscordBotJarvis.Extensions;
 using DiscordBotJarvis.Helpers;
 using DiscordBotJarvis.Models.Commands;
 using DiscordBotJarvis.Models.ResourcePacks;
-using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
-using DiscordBotJarvis.Models.ResourcePacks.ConfigFile;
 using DiscordBotJarvis.Models.Settings;
-using WebSocketSharp;
+using LogLevel = DiscordBotJarvis.Enums.LogLevel;
 
 namespace DiscordBotJarvis
 {
@@ -42,17 +34,25 @@ namespace DiscordBotJarvis
             Console.WriteLine();
             Console.WriteLine();
 
-            Console.WriteLine($"Version {Assembly.GetEntryAssembly().GetName().Version}");
+            Logger logger = new Logger("Lastest.log", logLevelDisplayConsole: LogLevel.Verbose);
+
+            logger.Verbose($"Démarrage en cours de {Console.Title}");
+            logger.Verbose($"Version de l'application {Assembly.GetEntryAssembly().GetName().Version}");
+
+            logger.LogLevelDisplayConsole = LogLevel.Info;
+            logger.Info($"Consultez le fichier de log {logger.LogFilePath} pour plus de détails en cas d'erreurs");
 
             DiscordClient client = new DiscordClient(new DiscordConfig()
             {
-                Token = File.ReadAllText("token.txt"),
+                Token = File.ReadAllText("Token.txt"),
                 AutoReconnect = true
             });
 
             Task.Run(async delegate
             {
+                logger.Verbose("Etablissement de la connexion du client à Discord...");
                 await client.Connect();
+                logger.Verbose("Etablissement de la connexion du client à Discord... [Terminé]");
             });
             
             client.UseCommands(new CommandConfig()
@@ -61,20 +61,25 @@ namespace DiscordBotJarvis
                 SelfBot = false
             });
 
-            AppConfig appConfig = XmlSerializerHelper.Decode<AppConfig>("AppConfig.xml");
+            logger.Verbose("Lecture du fichier de configuration de l'application...");
+
+            AppConfig appConfig = XmlSerializerHelper.Decode<AppConfig>("AppConfig.xml") ?? new AppConfig();
+
+            logger.Verbose("Lecture du fichier de configuration de l'application... [Terminé]");
+            CultureInfo culture = new CultureInfo("fr-FR");
+            logger.Info($"La langue actuelle des pack de ressources est : {culture.EnglishName}");
+            logger.Info("Vous pouvez le changer en éditant le fichier AppConfig.xml.");
+            logger.Verbose("Chargement de tous les packs de ressources...");
+
             ResourcePacksList = ResourcePacks.LoadAll(appConfig.ResourcePacksCurrentCulture);
+
+            logger.Verbose("Chargement de tous les packs de ressources... [Terminé]");
 
             ProcessingEvents(client);
 
-            Console.WriteLine("Jarvis is connected to Discord.");
-            Console.WriteLine("[INFO] Jarvis is currently in DEBUG mode.");
+            logger.Info("En attente de requête...");
 
-            CultureInfo culture = new CultureInfo("fr-FR");
-            Console.WriteLine($"[INFO] The current language of the resource packs is {culture.EnglishName}.");
-            Console.WriteLine("[INFO] You can change it by editing the AppConfig.xml file.");
-            
-
-            Console.WriteLine("Press the 'Q' key to exit...");
+            Console.WriteLine("Pressez la touche Q pour quitter...");
 
             do
             {

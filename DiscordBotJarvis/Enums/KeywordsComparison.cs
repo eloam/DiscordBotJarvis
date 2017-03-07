@@ -1,6 +1,6 @@
 ﻿namespace DiscordBotJarvis.Enums
 {
-    public enum KeywordsComparisonEnum
+    public enum KeywordsComparison
     {
         StartsWith,
         Contains,

@@ -15,7 +15,7 @@ namespace DiscordBotJarvis.Data
                 new CommandSet(
                     feedbacks: new Feedback[]
                     {
-                        new Sentence("Bonjour {0} !", new ParametersEnum[] {ParametersEnum.MessageAuthorMention})
+                        new Sentence("Bonjour {0} !", new SentenceParameters[] {SentenceParameters.MessageAuthorMention})
                     },
                     keywords: new List<string[]>()
                     {
@@ -25,31 +25,31 @@ namespace DiscordBotJarvis.Data
                 new CommandSet(
                     feedbacks: new Feedback[]
                     {
-                        new SentenceFile("SayHello", new ParametersEnum[] {ParametersEnum.MessageAuthorMention})
+                        new SentenceFile("SayHello", new SentenceParameters[] {SentenceParameters.MessageAuthorMention})
                     },
                     keywords: new List<string[]>()
                     {
                         new string[] {"bjr", "salut", "salut", "hi", "hello", "yo"}
                     },
                     botMentionRequired: false,
-                    keywordsComparisonMode: KeywordsComparisonEnum.StartsWith),
+                    keywordsComparisonMode: KeywordsComparison.StartsWith),
 
                 // Say "Goodbye"
                 new CommandSet(
                     feedbacks: new Feedback[]
                     {
-                        new SentenceFile("SayGoodbye", new ParametersEnum[] {ParametersEnum.MessageAuthorMention})
+                        new SentenceFile("SayGoodbye", new SentenceParameters[] {SentenceParameters.MessageAuthorMention})
                     },
                     keywords: new List<string[]>()
                     {
                         new string[] {"bye", "a+", "++", "@+"}
                     },
                     botMentionRequired: false,
-                    keywordsComparisonMode: KeywordsComparisonEnum.StartsWith),
+                    keywordsComparisonMode: KeywordsComparison.StartsWith),
                 new CommandSet(
                     feedbacks: new Feedback[]
                     {
-                        new SentenceFile("SayGoodbye", new ParametersEnum[] {ParametersEnum.MessageAuthorMention})
+                        new SentenceFile("SayGoodbye", new SentenceParameters[] {SentenceParameters.MessageAuthorMention})
                     },
                     keywords: new List<string[]>()
                     {
@@ -80,7 +80,7 @@ namespace DiscordBotJarvis.Data
                 new CommandSet(
                     feedbacks: new Feedback[]
                     {
-                        new SentenceFile("SayDeRien", new ParametersEnum[] {ParametersEnum.MessageAuthorMention})
+                        new SentenceFile("SayDeRien", new SentenceParameters[] {SentenceParameters.MessageAuthorMention})
                     },
                     keywords: new List<string[]>()
                     {
@@ -90,7 +90,7 @@ namespace DiscordBotJarvis.Data
                 new CommandSet(
                     feedbacks: new Feedback[]
                     {
-                        new SentenceFile("SayYesOrder", new ParametersEnum[] {ParametersEnum.MessageAuthorMention}),
+                        new SentenceFile("SayYesOrder", new SentenceParameters[] {SentenceParameters.MessageAuthorMention}),
                         new SentenceFile("PlayCsGoRussianSong")
                     },
                     keywords: new List<string[]>()
@@ -103,7 +103,7 @@ namespace DiscordBotJarvis.Data
                 new CommandSet(
                     feedbacks: new Feedback[]
                     {
-                        new SentenceFile("SayYesOrder", new ParametersEnum[] {ParametersEnum.MessageAuthorMention}),
+                        new SentenceFile("SayYesOrder", new SentenceParameters[] {SentenceParameters.MessageAuthorMention}),
                         new SentenceFile("PlaySong")
                     },
                     keywords: new List<string[]>()
@@ -146,7 +146,7 @@ namespace DiscordBotJarvis.Data
                 new CommandSet(
                     feedbacks: new Feedback[]
                     {
-                        new SentenceFile("SayToutAFait", new ParametersEnum[] {ParametersEnum.MessageAuthorMention})
+                        new SentenceFile("SayToutAFait", new SentenceParameters[] {SentenceParameters.MessageAuthorMention})
                     },
                     keywords: new List<string[]>()
                     {
@@ -157,7 +157,7 @@ namespace DiscordBotJarvis.Data
                     feedbacks: new Feedback[]
                     {
                         new SentenceFile("SayStatsJeuOverwatch",
-                            new ParametersEnum[] {ParametersEnum.MessageAuthorMention})
+                            new SentenceParameters[] {SentenceParameters.MessageAuthorMention})
                     },
                     keywords: new List<string[]>()
                     {
@@ -169,7 +169,7 @@ namespace DiscordBotJarvis.Data
                     feedbacks: new Feedback[]
                     {
                         new SentenceFile("SayStatsJeuOverwatch",
-                            new ParametersEnum[] {ParametersEnum.MessageAuthorMention},
+                            new SentenceParameters[] {SentenceParameters.MessageAuthorMention},
                             ReadFileMode.OneSentenceSpecified, 0)
                     },
                     regex: new List<string[]>()
@@ -192,7 +192,7 @@ namespace DiscordBotJarvis.Data
                 new CommandSet(
                     feedbacks: new Feedback[]
                     {
-                        new Sentence("Bonjour {0} !", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
+                        new Sentence("Bonjour {0} !", new SentenceParameters[] { SentenceParameters.MessageAuthorMention })
                     },
                     keywords: new List<string[]>()
                     {
@@ -210,7 +210,7 @@ namespace DiscordBotJarvis.Data
                 new CommandSet(
                     feedbacks: new Feedback[]
                     {
-                        new SentenceFile("SayGoodbye.txt", new ParametersEnum[] { ParametersEnum.MessageAuthorMention })
+                        new SentenceFile("SayGoodbye.txt", new SentenceParameters[] { SentenceParameters.MessageAuthorMention })
                     },
                     keywords: new List<string[]>()
                     {
@@ -227,7 +227,7 @@ namespace DiscordBotJarvis.Data
                 new CommandSet(
                     feedbacks: new Feedback[]
                     {
-                        new SentenceFile("SayImFine.txt", new ParametersEnum[] { ParametersEnum.MessageAuthorMention }, ReadFileMode.OneSentenceSpecified, 2)
+                        new SentenceFile("SayImFine.txt", new SentenceParameters[] { SentenceParameters.MessageAuthorMention }, ReadFileMode.OneSentenceSpecified, 2)
                     },
                     keywords: new List<string[]>()
                     {

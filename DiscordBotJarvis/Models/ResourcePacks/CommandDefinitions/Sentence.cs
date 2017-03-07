@@ -24,7 +24,7 @@ namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
         }
 
         [XmlArrayItem("Item")]
-        public ParametersEnum[] Parameters { get; set; }
+        public SentenceParameters[] Parameters { get; set; }
 
         public Sentence()
         {
@@ -35,7 +35,7 @@ namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
             Phrase = phrase;
         }
 
-        public Sentence(string phrase, ParametersEnum[] parameters) : this(phrase)
+        public Sentence(string phrase, SentenceParameters[] parameters) : this(phrase)
         {
             Parameters = parameters;
         }
