@@ -5,7 +5,7 @@ namespace DiscordBotJarvis.Extensions
 {
     public static class StringExtension
     {
-        public static string AddWhiteSpaceAroundString(this string str) => " " + str + " ";
+        public static string AddWhiteSpaceAroundString(this string str) => $" {str} ";
 
         public static string ReplaceSpecialsChar(this string str) => str.Replace("-", " ");
 
@@ -31,7 +31,7 @@ namespace DiscordBotJarvis.Extensions
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
 
-        public static string ProcessingUserRequest(this string str) 
+        public static string NormalizeUserQuery(this string str) 
             => str.RemoveDiacritics().ReplaceSpecialsChar().ToLower().Trim().AddWhiteSpaceAroundString();
     }
 }

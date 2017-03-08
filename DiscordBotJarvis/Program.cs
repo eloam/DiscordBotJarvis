@@ -1,6 +1,7 @@
 ﻿using DSharpPlus;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -9,6 +10,7 @@ using DiscordBotJarvis.Core;
 using DiscordBotJarvis.Extensions;
 using DiscordBotJarvis.Helpers;
 using DiscordBotJarvis.Models.Commands;
+using DiscordBotJarvis.Models.Queries;
 using DiscordBotJarvis.Models.ResourcePacks;
 using DiscordBotJarvis.Models.Settings;
 using LogLevel = DiscordBotJarvis.Enums.LogLevel;
@@ -92,12 +94,34 @@ namespace DiscordBotJarvis
         private static void ProcessingEvents(DiscordClient client)
         {
             // Evénement lancé lors de la création d'un message dans le client Discord
-            client.MessageCreated += (sender, e) =>
+            client.MessageCreated += async (sender, e) =>
             {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+
                 DateTime t1 = DateTime.Now;
+
                 if (e.Message.Author.ID == client.Me.ID) return;
-                TextRecognition.ExecuteQuery(e, ResourcePacksList);
-                Console.WriteLine($"Processing performed in {(DateTime.Now - t1).TotalMilliseconds} ms.");
+
+                // Creation de l'objet Query
+                AuthorQuery author = new AuthorQuery(e.Message.Author.ID.ToString(), e.Message.Author.Username);
+                UserQuery query = new UserQuery(e.Message.Content, author);
+
+                Console.WriteLine($"T01 {sw.Elapsed} ms.");
+
+                string[] responses = TextRecognition.ExecuteQuery(query, ResourcePacksList);
+
+                Console.WriteLine($"T02 {sw.Elapsed} ms.");
+
+                if (responses == null) return;
+
+                Console.WriteLine($"T03 {sw.Elapsed} ms.");
+
+                foreach (string response in responses)
+                    await e.Message.Respond(response);
+
+                sw.Stop();
+                Console.WriteLine($"Processing performed in {sw.Elapsed} ms.");
             };
 
             client.PresenceUpdate += async (sender, e) =>

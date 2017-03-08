@@ -56,7 +56,7 @@ namespace DiscordBotJarvis.Tests.TextRecognitionModule.Extensions
             string expected = " this is a sentence. ";
 
             // Act
-            actual = actual.ProcessingUserRequest();
+            actual = actual.NormalizeUserQuery();
 
             // Assert
             Assert.AreEqual(expected, actual);
@@ -74,7 +74,7 @@ namespace DiscordBotJarvis.Tests.TextRecognitionModule.Extensions
                 + "rhoncus, varius adipiscing eu sit elementum. ";
 
             // Act
-            actual = actual.ProcessingUserRequest();
+            actual = actual.NormalizeUserQuery();
 
             // Assert
             Assert.AreEqual(expected, actual);
@@ -94,7 +94,7 @@ namespace DiscordBotJarvis.Tests.TextRecognitionModule.Extensions
                 + "nulla turpus venesatis egestas et id justo. ";
 
             // Act
-            actual = actual.ProcessingUserRequest();
+            actual = actual.NormalizeUserQuery();
 
             // Assert
             Assert.AreEqual(expected, actual);

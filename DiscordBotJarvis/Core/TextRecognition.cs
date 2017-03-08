@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using DiscordBotJarvis.Enums;
 using DiscordBotJarvis.Extensions;
 using DiscordBotJarvis.Helpers;
+using DiscordBotJarvis.Models.Queries;
 using DiscordBotJarvis.Models.ResourcePacks;
 using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
 using DiscordBotJarvis.Services;
@@ -19,16 +20,11 @@ namespace DiscordBotJarvis.Core
     {
         private delegate bool ComparisonModeDelegate(string keyword);
 
-        public static async void ExecuteQuery(MessageCreateEventArgs e, IEnumerable<ResourcePack> resourcePacksList)
+        public static string[] ExecuteQuery(UserQuery userQuery, IEnumerable<ResourcePack> resourcePacksList)
         {
             // Vérification si un ou plusieurs paramètres sont 'null'
-            if (e == null) throw new ArgumentNullException(nameof(e));
+            if (userQuery == null) throw new ArgumentNullException(nameof(userQuery));
             if (resourcePacksList == null) throw new ArgumentNullException(nameof(resourcePacksList));
-
-            // Requête de l'utilisateur
-            string request = e.Message.Content;
-            // Requête de l'utilisateur après traitement
-            string requestProcessed = request.ProcessingUserRequest();
 
             // On parcours tous les packs de ressources afin de lire le dictionnaire CommandsList associé
             foreach (ResourcePack currentResourcePack in resourcePacksList)
@@ -40,27 +36,26 @@ namespace DiscordBotJarvis.Core
                     foreach (CommandSet command in currentCommandDefinitionsKeyValuePair.Value)
                     {
                         // On regarde si les arguments (mots-clés et expressions regulières) correspondent à la requête
-                        bool resultMatch = ArgumentsMatch(request, requestProcessed, command);
+                        bool resultMatch = ArgumentsMatch(userQuery, command);
 
                         // On regarde si le bot a besoin d'être appelé et que si c'est le cas, que son nom figure dans la requête de l'utilisateur
-                        bool triggerBot = CheckTriggerBot(requestProcessed, command.BotMentionRequired);
+                        bool triggerBot = CheckTriggerBot(userQuery, command.BotMentionRequired);
 
                         // Si le résultat correspond aux mots-clés et expressions régulières définit dans l'objet et si le bot doit être appelé, alors...
                         if (resultMatch && triggerBot)
-                        {
-                            await DisplayFeedbacks(e, currentResourcePack, command.Feedbacks);
-                            return;
-                        }
+                            return GetFeedbacks(userQuery, currentResourcePack, command.Feedbacks);
                     }
                 }
-            }     
+            }
+
+            // Si aucune commande correspondant à la requête initial à été trouvée, on retourne null
+            return null;
         }
 
-        private static bool ArgumentsMatch(string request, string requestProcessed, CommandSet command)
+        private static bool ArgumentsMatch(UserQuery userQuery, CommandSet command)
         {
             // Vérification si les paramètres en entrées de fonction ne sont pas à 'null'
-            if (string.IsNullOrWhiteSpace(request)) throw new ArgumentException(nameof(request));
-            if (string.IsNullOrWhiteSpace(requestProcessed)) throw new ArgumentException(nameof(requestProcessed));
+            if (userQuery == null) throw new ArgumentNullException(nameof(userQuery));
             if (command == null) throw new ArgumentNullException(nameof(command));
 
             // Resultat définitif
@@ -71,10 +66,10 @@ namespace DiscordBotJarvis.Core
             bool regexMatch = false;
 
             if (!command.IsListKeywordsEmpty)
-                keywordsMatch = CheckKeywordsMatch(requestProcessed, command.KeywordsList, command.KeywordsComparisonMode);
+                keywordsMatch = CheckKeywordsMatch(userQuery, command.KeywordsList, command.KeywordsComparisonMode);
 
             if (!command.IsListRegexEmpty)
-                regexMatch = CheckRegexMatch(request, command.RegexList);
+                regexMatch = CheckRegexMatch(userQuery, command.RegexList);
 
             // Determination du résultat
             if (!command.IsListKeywordsEmpty && !command.IsListRegexEmpty)
@@ -87,12 +82,15 @@ namespace DiscordBotJarvis.Core
             return resultMatch;
         }
 
-        private static async Task DisplayFeedbacks(MessageCreateEventArgs e, ResourcePack resourcePack, Feedback[] feedbacks)
+        private static string[] GetFeedbacks(UserQuery userQuery, ResourcePack resourcePack, Feedback[] feedbacks)
         {
             // Vérification si les paramètres en entrées de fonction ne sont pas à 'null'
-            if (e == null) throw new ArgumentNullException(nameof(e));
+            if (userQuery == null) throw new ArgumentNullException(nameof(userQuery));
             if (resourcePack == null) throw new ArgumentNullException(nameof(resourcePack));
             if (feedbacks == null) throw new ArgumentNullException(nameof(feedbacks));
+
+            // Initialisation de la liste de retour
+            List<string> reponses = new List<string>();
 
             // On parcours toutes les objets SentenceConfig afin d'afficher leurs contenus
             foreach (Feedback feedback in feedbacks)
@@ -106,7 +104,7 @@ namespace DiscordBotJarvis.Core
 
                     if (sentence.Parameters != null)
                     {
-                        object[] parameters = ParametersToValuesConverter(e, sentence.Parameters);
+                        object[] parameters = ParametersToValuesConverter(userQuery, sentence.Parameters);
                         response = string.Format(sentence.Phrase, parameters);
                     }
                     else
@@ -138,7 +136,7 @@ namespace DiscordBotJarvis.Core
 
                         if (sentence.Parameters != null)
                         {
-                            object[] parameters = ParametersToValuesConverter(e, sentence.Parameters);
+                            object[] parameters = ParametersToValuesConverter(userQuery, sentence.Parameters);
                             if (response != null) response = string.Format(response, parameters);
                         }
                     }
@@ -172,11 +170,13 @@ namespace DiscordBotJarvis.Core
 
                 // Si le message fournit par le bot à l'utilisateur est différent de null, vide ou composé uniquement d'espaces blancs.
                 if (!string.IsNullOrWhiteSpace(response))
-                    await e.Message.Respond(response);
+                    reponses.Add(response);
             }
+
+            return reponses.ToArray();
         }
 
-        private static bool CheckKeywordsMatch(string requestProcessed, IReadOnlyList<string[]> keywords, KeywordsComparison comparisonMode)
+        private static bool CheckKeywordsMatch(UserQuery userQuery, IReadOnlyList<string[]> keywords, KeywordsComparison comparisonMode)
         {
             // Delegate permettant de définir le mode de comparaison de la requête (en début/fin de str ou n'importe ou dans la requete)
             ComparisonModeDelegate comparisonModeDel = keyword =>
@@ -185,13 +185,13 @@ namespace DiscordBotJarvis.Core
                 switch (comparisonMode)
                 {
                     case KeywordsComparison.StartsWith:
-                        result = requestProcessed.StartsWith(keyword);
+                        result = userQuery.QueryProcessed.StartsWith(keyword);
                         break;
                     case KeywordsComparison.Contains:
-                        result = requestProcessed.Contains(keyword);
+                        result = userQuery.QueryProcessed.Contains(keyword);
                         break;
                     case KeywordsComparison.EndsWith:
-                        result = requestProcessed.EndsWith(keyword);
+                        result = userQuery.QueryProcessed.EndsWith(keyword);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(comparisonMode), comparisonMode, "Argument not specified.");
@@ -220,7 +220,7 @@ namespace DiscordBotJarvis.Core
             return keywordsMatch;
         }
 
-        private static bool CheckRegexMatch(string request, List<string[]> regexList)
+        private static bool CheckRegexMatch(UserQuery userQuery, List<string[]> regexList)
         {
             // Déclaration d'un booléen indiquant si la requete correspond aux expressions regulières définit dans l'objet Sentence'
             bool regexMatch = true;
@@ -234,7 +234,7 @@ namespace DiscordBotJarvis.Core
 
                 // Si au moins un des mot-clé est trouvé dans la liste, on continue la vérification pour tableaux de regex suivants,
                 // dans le cas contraite on sort de la boucle
-                if (!rowRegexSentence.Any(pattern => Regex.Match(request, pattern).Success))
+                if (!rowRegexSentence.Any(pattern => Regex.Match(userQuery.Query, pattern).Success))
                     regexMatch = false;
 
                 index++;
@@ -243,15 +243,15 @@ namespace DiscordBotJarvis.Core
             return regexMatch;
         }
 
-        private static bool CheckTriggerBot(string requestProcessed, bool callBotRequired)
+        private static bool CheckTriggerBot(UserQuery userQuery, bool callBotRequired)
         {
             string[] callBotContains = { "bot", "jarvis" };
-            bool triggerBot = (callBotContains.Any(botname => requestProcessed.Contains(botname.AddWhiteSpaceAroundString())) && callBotRequired) || !callBotRequired;
+            bool triggerBot = (callBotContains.Any(botname => userQuery.QueryProcessed.Contains(botname.AddWhiteSpaceAroundString())) && callBotRequired) || !callBotRequired;
 
             return triggerBot;
         }
 
-        private static object[] ParametersToValuesConverter(MessageCreateEventArgs e, SentenceParameters[] parameters)
+        private static object[] ParametersToValuesConverter(UserQuery userQuery, SentenceParameters[] parameters)
         {
             List<object> valuesParameters = new List<object>();
             foreach (SentenceParameters item in parameters)
@@ -259,7 +259,7 @@ namespace DiscordBotJarvis.Core
                 switch (item)
                 {
                     case SentenceParameters.MessageAuthorMention:
-                        valuesParameters.Add(e.Message.Author.Mention);
+                        valuesParameters.Add(userQuery.Author.UserName);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(parameters), parameters, "Argument not specified.");
