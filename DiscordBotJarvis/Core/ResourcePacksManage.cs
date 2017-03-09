@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using DiscordBotJarvis.Helpers;
 using DiscordBotJarvis.Models.ResourcePacks;
@@ -10,15 +10,15 @@ using System.Xml.Serialization;
 
 namespace DiscordBotJarvis.Core
 {
-    public static class ResourcePacks
+    public static class ResourcePacksManage
     {
         /// <summary>
         /// Charger tous les ressources packs définies dans un répertoire
         /// </summary>
-        public static List<ResourcePack> LoadAll(string currentCulture)
+        public static List<ResourcePack> LoadAll(CultureInfo cultureInfo)
         {
             // Vérification si le paramètre n'est pas 'null'
-            if (currentCulture == null) throw new ArgumentNullException(nameof(currentCulture));
+            if (cultureInfo == null) throw new ArgumentNullException(nameof(cultureInfo));
 
             // Déclaration de la variable destiné à contenir l'ensemble des commandes des différents packs de ressources
             List<ResourcePack> resourcePacks = new List<ResourcePack>();
@@ -32,7 +32,7 @@ namespace DiscordBotJarvis.Core
             // Lecture de tous les répertoires (ResourcePacks)
             foreach (string resourcePackPath in resourcesPacksPaths)
             {
-                ResourcePack currentResourcePack = Load(resourcePackPath, currentCulture);
+                ResourcePack currentResourcePack = LoadOne(resourcePackPath, cultureInfo);
                 
                 if (currentResourcePack?.Commands != null)
                     resourcePacks.Add(currentResourcePack);           
@@ -41,11 +41,11 @@ namespace DiscordBotJarvis.Core
             return resourcePacks;
         }
 
-        private static ResourcePack Load(string resourcePackPath, string currentCulture)
+        public static ResourcePack LoadOne(string resourcePackPath, CultureInfo cultureInfo)
         {
             // Vérification si les paramètres ne sont pas 'null'
             if (resourcePackPath == null) throw new ArgumentNullException(nameof(resourcePackPath));
-            if (currentCulture == null) throw new ArgumentNullException(nameof(currentCulture));
+            if (cultureInfo == null) throw new ArgumentNullException(nameof(cultureInfo));
 
             ResourcePack currentResourcePack = new ResourcePack
             {
@@ -60,7 +60,7 @@ namespace DiscordBotJarvis.Core
             if (!File.Exists(configFilePath)) return null;
 
             // On vérifie qu'il existe les sous-répertoies suivants : "CommandDefinitions", "Resources" et "Services"
-            if (!ResourcePacksHelper.AllSubdirectoriesResourcePackExists(currentResourcePack.DirectoryName, currentCulture)) return null;
+            if (!ResourcePacksHelper.AllSubdirectoriesResourcePackExists(currentResourcePack.DirectoryName, cultureInfo)) return null;
 
             // Lecture du fichier "Config.xml" du ressource pack
             try
@@ -75,7 +75,7 @@ namespace DiscordBotJarvis.Core
             }
 
             // Liste de tous les fichiers xml présent dans le dossier "CommandDefinitions"
-            string commandsSubdirectoryPath = string.Format(EndPoints.Directory.ResourcePacksCommands, currentResourcePack.DirectoryName, currentCulture);
+            string commandsSubdirectoryPath = string.Format(EndPoints.Directory.ResourcePacksCommands, currentResourcePack.DirectoryName, cultureInfo);
             string[] xmlFilesPaths = Directory.GetFiles(commandsSubdirectoryPath, "*.xml");
 
             // Si aucun fichier xml de définition de commands est trouvé, on passe a la lecture du pack de ressources suivant

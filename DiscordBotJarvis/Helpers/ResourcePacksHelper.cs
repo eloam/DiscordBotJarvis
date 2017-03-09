@@ -1,19 +1,18 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Net;
 using DiscordBotJarvis.Core;
 
 namespace DiscordBotJarvis.Helpers
 {
     public static class ResourcePacksHelper
     {
-        public static bool AllSubdirectoriesResourcePackExists(string resourcePackDirectoryName, string currentCulture)
+        public static bool AllSubdirectoriesResourcePackExists(string resourcePackDirectoryName, CultureInfo cultureInfo)
         {
             if (resourcePackDirectoryName == null) throw new ArgumentNullException(nameof(resourcePackDirectoryName));
-            if (currentCulture == null) throw new ArgumentNullException(nameof(currentCulture));
+            if (cultureInfo == null) throw new ArgumentNullException(nameof(cultureInfo));
 
-            string subdirectoryCommandsPath = string.Format(EndPoints.Directory.ResourcePacksCommands, resourcePackDirectoryName, currentCulture);
+            string subdirectoryCommandsPath = string.Format(EndPoints.Directory.ResourcePacksCommands, resourcePackDirectoryName, cultureInfo);
             string subdirectoryResourcesPath = string.Format(EndPoints.Directory.ResourcePacksResources, resourcePackDirectoryName);
             string subdirectoryServicesPath = string.Format(EndPoints.Directory.ResourcePacksServices, resourcePackDirectoryName);
 

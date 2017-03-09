@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using DiscordBotJarvis.Models.ResourcePacks.ConfigFile;
+﻿using DiscordBotJarvis.Models.ResourcePacks.ConfigFile;
 
 namespace DiscordBotJarvis.Data
 {

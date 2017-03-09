@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BotConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Possible values : None, ResourcePacksDebug -->
+  <LogFileName>Lastest.log</LogFileName>
+
+  <!-- Table of Language Culture Names : https://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx -->
+  <ResourcePacksCurrentCulture>fr-FR</ResourcePacksCurrentCulture>
+
+  <!-- Différents noms du bot -->
+  <BotNames>
+    <string>bot</string>
+    <string>jarvis</string>
+  </BotNames>
+  
+</BotConfig>

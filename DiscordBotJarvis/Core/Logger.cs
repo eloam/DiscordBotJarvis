@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using DiscordBotJarvis.Enums;
+
 namespace DiscordBotJarvis.Core
 {
 
@@ -18,7 +16,7 @@ namespace DiscordBotJarvis.Core
         public LogLevel LogLevelDisplayConsole { get; set; }
 
         // Constructor
-        public Logger(string logFileName, LogLevel logLevelDisplay = LogLevel.Verbose, LogLevel logLevelDisplayConsole = LogLevel.Error)
+        public Logger(string logFileName, LogLevel logLevelDisplay = LogLevel.Verbose, LogLevel logLevelDisplayConsole = LogLevel.Info)
         {
             LogFilePath = logFileName;
             LogLevelDisplay = logLevelDisplay;

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using DiscordBotJarvis.Core;
-using DiscordBotJarvis.Extensions;
 using DiscordBotJarvis.Interfaces;
 using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
 using DiscordBotJarvis.Models.ResourcePacks.ConfigFile;

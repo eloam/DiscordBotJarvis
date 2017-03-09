@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
-using DiscordBotJarvis.Core;
 using DiscordBotJarvis.Enums;
 using DiscordBotJarvis.Interfaces;
 

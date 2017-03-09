@@ -1,26 +1,21 @@
 ﻿using DSharpPlus;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using DiscordBotJarvis.Core;
 using DiscordBotJarvis.Extensions;
-using DiscordBotJarvis.Helpers;
+using DiscordBotJarvis.Models.Client;
 using DiscordBotJarvis.Models.Commands;
 using DiscordBotJarvis.Models.Queries;
-using DiscordBotJarvis.Models.ResourcePacks;
-using DiscordBotJarvis.Models.Settings;
 using LogLevel = DiscordBotJarvis.Enums.LogLevel;
 
 namespace DiscordBotJarvis
 {
     internal class Program
     {
-        private static IEnumerable<ResourcePack> ResourcePacksList { get; set; } = new List<ResourcePack>();
-
+        // Methods
         private static void Main(string[] args)
         {
             Console.Title = "DiscordBotJarvis";
@@ -36,15 +31,15 @@ namespace DiscordBotJarvis
             Console.WriteLine();
             Console.WriteLine();
 
-            Logger logger = new Logger("Lastest.log", logLevelDisplayConsole: LogLevel.Verbose);
+            {
+                Logger logger = new Logger("Lastest.log", logLevelDisplayConsole: LogLevel.Verbose);
+                logger.Verbose($"Démarrage en cours de {Console.Title}");
+                logger.Verbose($"Version de l'application {Assembly.GetEntryAssembly().GetName().Version}");
+                logger.LogLevelDisplayConsole = LogLevel.Info;
+                logger.Info($"Consultez le fichier de log {logger.LogFilePath} pour plus de détails en cas d'erreurs");
+            }
 
-            logger.Verbose($"Démarrage en cours de {Console.Title}");
-            logger.Verbose($"Version de l'application {Assembly.GetEntryAssembly().GetName().Version}");
-
-            logger.LogLevelDisplayConsole = LogLevel.Info;
-            logger.Info($"Consultez le fichier de log {logger.LogFilePath} pour plus de détails en cas d'erreurs");
-
-            DiscordClient client = new DiscordClient(new DiscordConfig()
+            DiscordClient discordClient = new DiscordClient(new DiscordConfig()
             {
                 Token = File.ReadAllText("Token.txt"),
                 AutoReconnect = true
@@ -52,34 +47,27 @@ namespace DiscordBotJarvis
 
             Task.Run(async delegate
             {
-                logger.Verbose("Etablissement de la connexion du client à Discord...");
-                await client.Connect();
-                logger.Verbose("Etablissement de la connexion du client à Discord... [Terminé]");
+                await discordClient.Connect();
             });
             
-            client.UseCommands(new CommandConfig()
+            discordClient.UseCommands(new CommandConfig()
             {
                 Prefix = "!",
                 SelfBot = false
             });
 
-            logger.Verbose("Lecture du fichier de configuration de l'application...");
+            BotClient botClient = new BotClient();
 
-            AppConfig appConfig = XmlSerializerHelper.Decode<AppConfig>("AppConfig.xml") ?? new AppConfig();
+            botClient.Logger.Info($"La langue actuelle des pack de ressources est : {botClient.Config.CultureInfo.EnglishName}");
+            botClient.Logger.Info("Vous pouvez le changer en éditant le fichier AppConfig.xml.");
+            botClient.Logger.Verbose("Chargement de tous les packs de ressources...");
 
-            logger.Verbose("Lecture du fichier de configuration de l'application... [Terminé]");
-            CultureInfo culture = new CultureInfo("fr-FR");
-            logger.Info($"La langue actuelle des pack de ressources est : {culture.EnglishName}");
-            logger.Info("Vous pouvez le changer en éditant le fichier AppConfig.xml.");
-            logger.Verbose("Chargement de tous les packs de ressources...");
 
-            ResourcePacksList = ResourcePacks.LoadAll(appConfig.ResourcePacksCurrentCulture);
+            botClient.Logger.Verbose("Chargement de tous les packs de ressources... [Terminé]");
 
-            logger.Verbose("Chargement de tous les packs de ressources... [Terminé]");
+            ProcessingEvents(discordClient, botClient);
 
-            ProcessingEvents(client);
-
-            logger.Info("En attente de requête...");
+            botClient.Logger.Info("En attente de requête...");
 
             Console.WriteLine("Pressez la touche Q pour quitter...");
 
@@ -91,43 +79,39 @@ namespace DiscordBotJarvis
             } while (true);
         }
 
-        private static void ProcessingEvents(DiscordClient client)
+        private static void ProcessingEvents(DiscordClient discordClient, BotClient botClient)
         {
             // Evénement lancé lors de la création d'un message dans le client Discord
-            client.MessageCreated += async (sender, e) =>
+            discordClient.MessageCreated += async (sender, e) =>
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
 
-                DateTime t1 = DateTime.Now;
-
-                if (e.Message.Author.ID == client.Me.ID) return;
+                if (e.Message.Author.ID == discordClient.Me.ID) return;
 
                 // Creation de l'objet Query
                 AuthorQuery author = new AuthorQuery(e.Message.Author.ID.ToString(), e.Message.Author.Username);
-                UserQuery query = new UserQuery(e.Message.Content, author);
+                UserQuery userQuery = new UserQuery(e.Message.Content, author);
 
-                Console.WriteLine($"T01 {sw.Elapsed} ms.");
+                Console.WriteLine($"T01 {sw.Elapsed} : Création de l'objet UserQuery & AuthorQuery");
 
-                string[] responses = TextRecognition.ExecuteQuery(query, ResourcePacksList);
+                string[] responses = botClient.Query(userQuery);
 
-                Console.WriteLine($"T02 {sw.Elapsed} ms.");
+                Console.WriteLine($"T02 {sw.Elapsed} : Execution de la requête");
 
                 if (responses == null) return;
-
-                Console.WriteLine($"T03 {sw.Elapsed} ms.");
 
                 foreach (string response in responses)
                     await e.Message.Respond(response);
 
                 sw.Stop();
-                Console.WriteLine($"Processing performed in {sw.Elapsed} ms.");
+                Console.WriteLine($"T03 Requête traitée en {sw.Elapsed} secondes.");
             };
 
-            client.PresenceUpdate += async (sender, e) =>
+            discordClient.PresenceUpdate += async (sender, e) =>
             {
                 if (e.User != null && e.Game != string.Empty)
-                    await client.SendMessage(e.GuildID, $"{e.User.Mention} joue à {e.Game}.");
+                    await discordClient.SendMessage(e.GuildID, $"{e.User.Mention} joue à {e.Game}.");
             };
         }
     }

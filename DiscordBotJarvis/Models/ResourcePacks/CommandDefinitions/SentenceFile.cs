@@ -1,9 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
-using DiscordBotJarvis.Core;
 using DiscordBotJarvis.Enums;
-using DiscordBotJarvis.Extensions;
 using DiscordBotJarvis.Interfaces;
 
 namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions

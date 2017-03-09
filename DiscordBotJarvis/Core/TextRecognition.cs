@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using DiscordBotJarvis.Enums;
 using DiscordBotJarvis.Extensions;
 using DiscordBotJarvis.Helpers;
@@ -12,7 +11,6 @@ using DiscordBotJarvis.Models.Queries;
 using DiscordBotJarvis.Models.ResourcePacks;
 using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
 using DiscordBotJarvis.Services;
-using DSharpPlus;
 
 namespace DiscordBotJarvis.Core
 {

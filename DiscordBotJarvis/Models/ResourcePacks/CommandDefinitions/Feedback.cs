@@ -1,6 +1,4 @@
 ﻿using System;
-using DiscordBotJarvis.Core;
-using DiscordBotJarvis.Extensions;
 using DiscordBotJarvis.Interfaces;
 
 namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
