@@ -4,7 +4,7 @@
   <!-- Définition d'une commande -->
   <CommandSet>
     <Feedbacks>
-      <Feedback xsi:type="SentenceFile">
+      <Feedback xsi:type="SentenceFile" FileName="">
         <FileName>SayImFine.txt</FileName>
         <!-- (Facultatif) Spécifier comment on va lire la phrase dans le fichier (aléatoire ou une ligne précise) 
              Valeurs possibles : "OneSentenceSpecified" = Lire une ligne spécifiée du fichier contenant la liste de phrases, 
@@ -18,29 +18,26 @@
       </Feedback>
     </Feedbacks>
     <!-- Petite particularité 
-         Le bot se déclenchera lorsque les mots clés correspondront à un des exemples suivants :
+         Le bot se déclenchera lorsque les mots clés correspondront à une des conditions suivantes :
          - "comment" ET "vas-tu" ET "?"
            OU
          - "comment" ET "tu vas" ET "?"
            OU
          - "comment" ET "ça va" ET "?"
     -->
-    <KeywordsList>
-      <Keywords>
+    <Triggers>
+      <Condition>
         <string>comment</string>
-      </Keywords>
-      <!-- Condition ET -->
-      <Keywords>
+      </Condition>
+      <Condition>
         <string>vas tu</string>
-        <!-- Condition OU -->
         <string>tu vas</string>
-        <!-- Condition OU -->
         <string>ca va</string>
-      </Keywords>
-      <!-- Condition ET -->      
-      <Keywords>
-        <string>?</string>
-      </Keywords>
-    </KeywordsList>
+      </Condition>
+      <Condition>
+        <string>\?</string>
+      </Condition>
+    </Triggers>
+    
   </CommandSet>
 </CommandDefinitions>

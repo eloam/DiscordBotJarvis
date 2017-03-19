@@ -84,7 +84,6 @@
     <Compile Include="Enums\ResourcePacksLoadType.cs" />
     <Compile Include="Extensions\TypeExtension.cs" />
     <Compile Include="Interfaces\IXmlDeserializationCallback.cs" />
-    <Compile Include="Interfaces\IXmlFeedbacksDeserializationCallback.cs" />
     <Compile Include="Models\Client\BotClient.cs" />
     <Compile Include="Models\Commands\Command.cs" />
     <Compile Include="Models\Commands\CommandConfig.cs" />
@@ -97,7 +96,6 @@
     <Compile Include="Data\ConfigDal.cs" />
     <Compile Include="Data\SentencesDal.cs" />
     <Compile Include="Enums\AppExecutionMode.cs" />
-    <Compile Include="Enums\KeywordsComparison.cs" />
     <Compile Include="Enums\SentenceParameters.cs" />
     <Compile Include="Enums\ReadFileMode.cs" />
     <Compile Include="Helpers\ResourcePacksHelper.cs" />

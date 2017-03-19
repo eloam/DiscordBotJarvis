@@ -24,22 +24,13 @@ namespace DiscordBotJarvis.Helpers
         {
             T genericObject = default(T);
 
-            try
-            {
-                // Vérification si les paramètres en entrées de fonction ne sont pas à 'null'
-                if (path == null) throw new ArgumentNullException(nameof(path));
+            // Vérification si les paramètres en entrées de fonction ne sont pas à 'null'
+            if (path == null) throw new ArgumentNullException(nameof(path));
 
-                XmlCallbackSerializer serializer = new XmlCallbackSerializer(typeof(T), xmlRootAttribute);
-                using (StreamReader reader = new StreamReader(path))
-                {
-                    genericObject = (T) serializer.Deserialize(reader);
-                }
-            }
-            catch (Exception e)
+            XmlCallbackSerializer serializer = new XmlCallbackSerializer(typeof(T), xmlRootAttribute);
+            using (StreamReader reader = new StreamReader(path))
             {
-                Logger logger = new Logger("Lastest.log");
-                logger.Error($"Une erreur s'est produite lors de la lecture du fichier : {path}");
-                logger.Error($"Détails de l'erreur : {e.Message} {e.InnerException?.Message}");
+                genericObject = (T) serializer.Deserialize(reader);
             }
 
             return genericObject;

@@ -1,14 +1,19 @@
 ﻿using DSharpPlus;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using DiscordBotJarvis.Core;
+using DiscordBotJarvis.Data;
 using DiscordBotJarvis.Extensions;
+using DiscordBotJarvis.Helpers;
 using DiscordBotJarvis.Models.Client;
 using DiscordBotJarvis.Models.Commands;
 using DiscordBotJarvis.Models.Queries;
+using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
 using LogLevel = DiscordBotJarvis.Enums.LogLevel;
 
 namespace DiscordBotJarvis
@@ -90,14 +95,14 @@ namespace DiscordBotJarvis
                 if (e.Message.Author.ID == discordClient.Me.ID) return;
 
                 // Creation de l'objet Query
-                AuthorQuery author = new AuthorQuery(e.Message.Author.ID.ToString(), e.Message.Author.Username);
-                UserQuery userQuery = new UserQuery(e.Message.Content, author);
+                AuthorQuery authorQuery = new AuthorQuery(e.Message.Author.ID.ToString(), e.Message.Author.Username);
+                UserQuery userQuery = new UserQuery(e.Message.Content, authorQuery);
 
-                Console.WriteLine($"T01 {sw.Elapsed} : Création de l'objet UserQuery & AuthorQuery");
+                Console.WriteLine($"T01 {sw.ElapsedMilliseconds} : Création de l'objet UserQuery & AuthorQuery");
 
                 string[] responses = botClient.Query(userQuery);
 
-                Console.WriteLine($"T02 {sw.Elapsed} : Execution de la requête");
+                Console.WriteLine($"T02 {sw.ElapsedMilliseconds} : Execution de la requête");
 
                 if (responses == null) return;
 
@@ -105,7 +110,7 @@ namespace DiscordBotJarvis
                     await e.Message.Respond(response);
 
                 sw.Stop();
-                Console.WriteLine($"T03 Requête traitée en {sw.Elapsed} secondes.");
+                Console.WriteLine($"T03 Requête traitée en {sw.ElapsedMilliseconds} ms.");
             };
 
             discordClient.PresenceUpdate += async (sender, e) =>

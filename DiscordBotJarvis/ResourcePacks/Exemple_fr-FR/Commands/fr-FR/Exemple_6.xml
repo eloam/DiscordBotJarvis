@@ -10,11 +10,11 @@
       </Feedback>
     </Feedbacks>
 
-    <KeywordsList>
-      <Keywords>
+    <Triggers>
+      <Condition>
         <string>test plugin</string>
-      </Keywords>
-    </KeywordsList>
+      </Condition>
+    </Triggers>
     
     <BotMentionRequired>false</BotMentionRequired>
   </CommandSet>

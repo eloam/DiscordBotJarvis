@@ -111,35 +111,20 @@ namespace DiscordBotJarvis.Core
 
         private void CheckForDeserializationCallbacks(object result)
         {
-            if (!result.GetType().IsCollection())
+
+            if (result is IXmlDeserializationCallback)
             {
-                if (result is IXmlDeserializationCallback)
+                var deserializedCallback = result as IXmlDeserializationCallback;
+                deserializedCallback?.OnXmlDeserialization(this);
+            }
+            else if (result is IEnumerable<IXmlDeserializationCallback>)
+            {
+                IEnumerable<IXmlDeserializationCallback> resultList = result as IEnumerable<IXmlDeserializationCallback>;
+                foreach (IXmlDeserializationCallback deserializedCallback in resultList)
                 {
-                    var deserializedCallback = result as IXmlDeserializationCallback;
                     deserializedCallback?.OnXmlDeserialization(this);
                 }
-                else if (result is IEnumerable<IXmlFeedbacksDeserializationCallback>)
-                {
-                    IEnumerable<IXmlFeedbacksDeserializationCallback> resultList = result as IEnumerable<IXmlFeedbacksDeserializationCallback>;
-                    foreach (IXmlFeedbacksDeserializationCallback deserializedCallback in resultList)
-                    {
-                        Feedback[] feedbacksCommandSet = deserializedCallback?.Feedbacks;
-
-                        if (feedbacksCommandSet == null) continue;
-                        foreach (Feedback currentFeedback in feedbacksCommandSet)
-                        {
-                            if (currentFeedback == null) continue;
-
-                            if (currentFeedback is Sentence) ((Sentence)currentFeedback)?.OnXmlDeserialization(this);
-                            if (currentFeedback is SentenceFile) ((SentenceFile)currentFeedback)?.OnXmlDeserialization(this);
-                            if (currentFeedback is Service) ((Service)currentFeedback)?.OnXmlDeserialization(this);
-                        }
-                    }
-                }
             }
-
-            
-
         }
     }
 }

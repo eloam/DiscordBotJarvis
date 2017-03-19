@@ -90,10 +90,7 @@ namespace DiscordBotJarvis.Core
             {
                 try
                 {
-                   // XmlSchemaSet schemaSet = new XmlSchemaSet();
-                    //schemaSet.Add("test", @"D:\Documents\Visual Studio 2015\Projects\DiscordBotJarvis\DiscordBotJarvis\ResourcePacks\Exemple_fr-FR\Commands\fr-FR\Full.xsd");
                     IEnumerable<CommandSet> commands = XmlSerializerHelper.Decode<List<CommandSet>>(xmlFilePath, new XmlRootAttribute("CommandDefinitions"));
-
                     currentResourcePack.Commands.Add(Path.GetFileName(xmlFilePath), commands);
                 }
                 catch (Exception e)

@@ -19,7 +19,7 @@ namespace DiscordBotJarvis.Helpers
 
             List<string> lstSentences = BuildListSentences(filePath).ToList();
 
-            return line < lstSentences.Count ? lstSentences[line] : ReadLineRandom(filePath);
+            return index < lstSentences.Count ? lstSentences[index] : ReadLineRandom(filePath);
         }
 
         public static string ReadLineRandom(string filePath)

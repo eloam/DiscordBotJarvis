@@ -1,5 +1,5 @@
 ﻿```markdown
-# CaptainObvious - Aide
+# Jarvis - Aide
 
 Module de reconnaissance de texte :
 - Interpellé le bot : Utiliser dans sa phrase un des mots suivants : Bot ou Jarvis, nécessaire dans la pluparts des requêtes
@@ -12,20 +12,9 @@ N'importe où dans une phrase (interpellation du bot non requis) :
 - Dire "Au revoir" :  au revoir, j'y vais, j'y go, je go, bonne nuit, tchuss
 
 N'importe où dans une phrase (interpellation du bot nécessaire) :
-- "De rien" : merci, remerci, nice, thank you, thanks, thx, ty
-- Phrase de type punchline : punchline, connard, putain
-- Phrase de type obvious : obvious
-- Phrase "russian" : russie, russes
-- "Tout à fait Thierry" : n'est ce pas Captain ?
+- "Je vais bien" : comment vas-tu ? / comment tu vas ? / comment ça va ?
 - Musique CS GO : (musique + cs), (musique + csgo), (musique + cs go)
-- Obtenir ses stats d'Overwatch : (stats + overwatch), (stats + ow), (BattleTag#9999 : A remplacer par votre vrai BattleTag :p)
 
 Liste des commandes :
 - !help - *Pour obtenir cette page d'aide*
-- !hello - *Obtenir un petit coucou de la part du bot !*
-- !obvious - *Bah Captain Obvious quoi !*
-- !therussian - *Mode d'emploi d'un russe sur CS GO*
-- !cs - *Mode d'emploi d'un russe sur CS GO*
-- !punchline - *Une petite punchline des familles !*
-- !statut - *Connaitre son statut sur le serveur*
 ```

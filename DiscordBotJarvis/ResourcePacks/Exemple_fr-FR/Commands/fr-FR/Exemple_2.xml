@@ -25,13 +25,18 @@
     </Feedbacks>
 
     <!-- Liste de mots-clés -->
-    <KeywordsList>
-      <Keywords>
+    <Triggers>
+      <Condition>
         <string>bonne nuit</string>
         <string>au revoir</string>
         <string>j'y vais</string>
         <string>a+ tlm</string>
-      </Keywords>
-    </KeywordsList>
+      </Condition>
+    </Triggers>
+
+    <!-- (Facultatif) Indique si le nom du bot (Jarvis) doit être mentionné dans la requête de l'utilisateur pour être prise en compte
+         Si non spécifié, le bot devrat être mentionné dans la phrase de la requête -->
+    <BotMentionRequired>false</BotMentionRequired>
+    
   </CommandSet>
 </CommandDefinitions>

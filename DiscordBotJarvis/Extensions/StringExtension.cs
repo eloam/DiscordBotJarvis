@@ -31,7 +31,7 @@ namespace DiscordBotJarvis.Extensions
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
 
-        public static string NormalizeUserQuery(this string str) 
-            => str.RemoveDiacritics().ReplaceSpecialsChar().ToLower().Trim().AddWhiteSpaceAroundString();
+        public static string NormalizeUserQuery(this string str)
+            => str.RemoveDiacritics().ReplaceSpecialsChar();
     }
 }

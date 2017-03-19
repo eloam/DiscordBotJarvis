@@ -9,35 +9,16 @@
         <ComparisonMode>OneSentenceRandom</ComparisonMode>
       </Feedback>
     </Feedbacks>
-    <!-- Petite particularité 
-         Le bot se déclenchera lorsque la ou les expressions régulières définit dans <RegexList> sont validées.
-         Remarque : Tout comme la balise regroupant les différentes liste des mots-clés (<KeywordsList>), il est possible
-                    d'enchainer plusieurs conditions ET/OU en ajoutant de nouvelles balises "<Regex>" :
-
-         Exemple : Le code commenté ci-dessous doit indique pour que la requête de l'utilisateur déclenche la reponse de cette commande, 
-                   elle doit remplir les conditions suivantes :
-
-                   - Au moins une occurence parmis les trois expressions règulières (Regex1, Regex2, Regex3) dans la chaîne d'entrée spécifiée par l'utilisateur
-                   - ET, au moins une occurence parmis les trois expressions règulières suivantes : Regex4, Regex5 et Regex6. 
-
-    <RegexList>
-      <Regex>
-        <string>Regex1</string>
-        <string>Regex2</string>
-        <string>Regex3</string>
-      </Regex>
-      <Regex>
-        <string>Regex4</string>
-        <string>Regex5</string>
-        <string>Regex6</string>
-      </Regex>
-    </RegexList>
+    <!-- Le bot se déclenchera lorsque la ou les expressions régulières définit dans la balise <Condition> seront validées.
+         Le bot prend en charge aussi bien les mots-clé que les expressions régulières.
+         Remarque : Tout comme pour les mots-clés, il est possible d'enchainer plusieurs conditions ET/OU en ajoutant une autre balise <Condition>.
     -->
 
-    <RegexList>
-      <Regex>
+    <Triggers>
+      <Condition>
         <string>(joue|jouer)(.*)(musique)</string>
-      </Regex>
-    </RegexList>
+      </Condition>
+    </Triggers>
+    
   </CommandSet>
 </CommandDefinitions>

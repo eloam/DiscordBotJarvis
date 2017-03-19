@@ -17,9 +17,9 @@ namespace DiscordBotJarvis.Data
                     {
                         new Sentence("Bonjour {0} !", new SentenceParameters[] { SentenceParameters.MessageAuthorMention })
                     },
-                    keywords: new List<string[]>()
+                    triggers: new List<string[]>()
                     {
-                        new string[] { "bonjour", "bjr", "salut", "hi", "hello", "yo" }
+                        new [] { "bonjour", "bjr", "salut", "hi", "hello", "yo" }
                     },
                     botMentionRequired: false)
             };
@@ -35,9 +35,9 @@ namespace DiscordBotJarvis.Data
                     {
                         new SentenceFile("SayGoodbye.txt", new SentenceParameters[] { SentenceParameters.MessageAuthorMention })
                     },
-                    keywords: new List<string[]>()
+                    triggers: new List<string[]>()
                     {
-                        new string[] { "bonne nuit", "au revoir", "j'y vais", "a+ tlm" }
+                        new [] { "bonne nuit", "au revoir", "j'y vais", "a+ tlm" }
                     })
             };
         }
@@ -52,11 +52,11 @@ namespace DiscordBotJarvis.Data
                     {
                         new SentenceFile("SayImFine.txt", new SentenceParameters[] { SentenceParameters.MessageAuthorMention }, ReadFileMode.OneSentenceSpecified, 2)
                     },
-                    keywords: new List<string[]>()
+                    triggers: new List<string[]>()
                     {
-                        new string[] { "comment" },
-                        new string[] { "vas tu", "tu vas", "ca va" },
-                        new string[] { "?" }
+                        new [] { "comment" },
+                        new [] { "vas tu", "tu vas", "ca va" },
+                        new [] { "?" }
                     })
             };
         }
@@ -71,7 +71,7 @@ namespace DiscordBotJarvis.Data
                     {
                         new SentenceFile("PlaySong.txt")
                     },
-                    regex: new List<string[]>()
+                    triggers: new List<string[]>()
                     {
                         new string[] { "(joue|jouer)(.*)(musique)" }
                     })
@@ -88,7 +88,7 @@ namespace DiscordBotJarvis.Data
                     {
                         new SentenceFile("Help.txt", null, ReadFileMode.File)
                     },
-                    regex: new List<string[]>()
+                    triggers: new List<string[]>()
                     {
                         new string[] { "(!help)" }
                     },
@@ -106,9 +106,9 @@ namespace DiscordBotJarvis.Data
                     {
                         new Service("ServiceTest.FirstService")
                     },
-                    keywords: new List<string[]>()
+                    triggers: new List<string[]>()
                     {
-                        new string[] { "test plugin" }
+                        new [] { "test plugin" }
                     },
                     botMentionRequired: false)
             };

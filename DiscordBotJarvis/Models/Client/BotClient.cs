@@ -23,8 +23,6 @@ namespace DiscordBotJarvis.Models.Client
         }
 
         public string[] Query(UserQuery userQuery)
-        {
-            return TextRecognition.ExecuteQuery(userQuery, Commands);
-        }
+            => TextRecognition.ExecuteQuery(Config, userQuery, Commands);
     }
 }

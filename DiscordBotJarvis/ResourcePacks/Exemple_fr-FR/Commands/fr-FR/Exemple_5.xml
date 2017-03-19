@@ -11,11 +11,11 @@
       </Feedback>
     </Feedbacks>
     
-    <RegexList>
-      <Regex>
-        <string>(!help)</string>
-      </Regex>
-    </RegexList>
+    <Triggers>
+      <Condition>
+        <string>\!help</string>
+      </Condition>
+    </Triggers>
     
     <BotMentionRequired>false</BotMentionRequired>
   </CommandSet>

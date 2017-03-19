@@ -43,7 +43,8 @@ namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
 
         public new void OnXmlDeserialization(object sender)
         {
-            if (ServiceName == null) throw new ArgumentNullException(nameof(ServiceName), "La balise est manquante.");
+            if (ServiceName == null)
+                throw new ArgumentNullException(nameof(ServiceName), "La balise est manquante.");
         }
     }
 }

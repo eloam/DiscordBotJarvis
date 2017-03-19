@@ -5,12 +5,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using DiscordBotJarvis.Enums;
-using DiscordBotJarvis.Extensions;
 using DiscordBotJarvis.Helpers;
 using DiscordBotJarvis.Models.Queries;
 using DiscordBotJarvis.Models.ResourcePacks;
 using DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions;
 using DiscordBotJarvis.Services;
+using DiscordBotJarvis.Models.Client;
 
 namespace DiscordBotJarvis.Core
 {
@@ -18,14 +18,14 @@ namespace DiscordBotJarvis.Core
     {
         private delegate bool ComparisonModeDelegate(string keyword);
 
-        public static string[] ExecuteQuery(UserQuery userQuery, IEnumerable<ResourcePack> resourcePacksList)
+        public static string[] ExecuteQuery(BotConfig config, UserQuery userQuery, IEnumerable<ResourcePack> commands)
         {
             // Vérification si un ou plusieurs paramètres sont 'null'
             if (userQuery == null) throw new ArgumentNullException(nameof(userQuery));
-            if (resourcePacksList == null) throw new ArgumentNullException(nameof(resourcePacksList));
+            if (commands == null) throw new ArgumentNullException(nameof(commands));
 
             // On parcours tous les packs de ressources afin de lire le dictionnaire CommandsList associé
-            foreach (ResourcePack currentResourcePack in resourcePacksList)
+            foreach (ResourcePack currentResourcePack in commands)
             {
                 // On parcours tous les fichiers xml situés dans le répertoire "CommandDefinitions" du pack de ressources courant
                 foreach (KeyValuePair<string, IEnumerable<CommandSet>> currentCommandDefinitionsKeyValuePair in currentResourcePack.Commands)
@@ -34,10 +34,10 @@ namespace DiscordBotJarvis.Core
                     foreach (CommandSet command in currentCommandDefinitionsKeyValuePair.Value)
                     {
                         // On regarde si les arguments (mots-clés et expressions regulières) correspondent à la requête
-                        bool resultMatch = ArgumentsMatch(userQuery, command);
+                        bool resultMatch = ArgumentsMatch(userQuery.QueryProcessed, command.TriggersRegex);
 
                         // On regarde si le bot a besoin d'être appelé et que si c'est le cas, que son nom figure dans la requête de l'utilisateur
-                        bool triggerBot = CheckTriggerBot(userQuery, command.BotMentionRequired);
+                        bool triggerBot = CheckTriggerBot(userQuery.QueryProcessed, config.BotNamesRegex, command.BotMentionRequired);
 
                         // Si le résultat correspond aux mots-clés et expressions régulières définit dans l'objet et si le bot doit être appelé, alors...
                         if (resultMatch && triggerBot)
@@ -50,34 +50,16 @@ namespace DiscordBotJarvis.Core
             return null;
         }
 
-        private static bool ArgumentsMatch(UserQuery userQuery, CommandSet command)
+        private static bool ArgumentsMatch(string queryProcessed, Regex[] triggers)
         {
-            // Vérification si les paramètres en entrées de fonction ne sont pas à 'null'
-            if (userQuery == null) throw new ArgumentNullException(nameof(userQuery));
-            if (command == null) throw new ArgumentNullException(nameof(command));
+            // Vérification si les paramètres en entrées de fonction ne sont pas à l'état : null/empty
+            if (string.IsNullOrWhiteSpace(queryProcessed)) throw new ArgumentException(nameof(queryProcessed));
+            if (triggers == null) throw new ArgumentNullException(nameof(triggers));
 
-            // Resultat définitif
-            bool resultMatch = false;
-            
-            // Indique si l'objet de type Feedback en cours de traitement correspond aux mot-clés et regex definies dans la requête provenant de l'utilisateur
-            bool keywordsMatch = false;
-            bool regexMatch = false;
+            foreach (Regex regex in triggers)
+                if (!regex.Match(queryProcessed).Success) return false;
 
-            if (!command.IsListKeywordsEmpty)
-                keywordsMatch = CheckKeywordsMatch(userQuery, command.KeywordsList, command.KeywordsComparisonMode);
-
-            if (!command.IsListRegexEmpty)
-                regexMatch = CheckRegexMatch(userQuery, command.RegexList);
-
-            // Determination du résultat
-            if (!command.IsListKeywordsEmpty && !command.IsListRegexEmpty)
-                resultMatch = keywordsMatch && regexMatch;
-            else if (!command.IsListKeywordsEmpty)
-                resultMatch = keywordsMatch;
-            else if (!command.IsListRegexEmpty)
-                resultMatch = regexMatch;
-
-            return resultMatch;
+            return true;
         }
 
         private static string[] GetFeedbacks(UserQuery userQuery, ResourcePack resourcePack, Feedback[] feedbacks)
@@ -174,80 +156,8 @@ namespace DiscordBotJarvis.Core
             return reponses.ToArray();
         }
 
-        private static bool CheckKeywordsMatch(UserQuery userQuery, IReadOnlyList<string[]> keywords, KeywordsComparison comparisonMode)
-        {
-            // Delegate permettant de définir le mode de comparaison de la requête (en début/fin de str ou n'importe ou dans la requete)
-            ComparisonModeDelegate comparisonModeDel = keyword =>
-            {
-                bool result;
-                switch (comparisonMode)
-                {
-                    case KeywordsComparison.StartsWith:
-                        result = userQuery.QueryProcessed.StartsWith(keyword);
-                        break;
-                    case KeywordsComparison.Contains:
-                        result = userQuery.QueryProcessed.Contains(keyword);
-                        break;
-                    case KeywordsComparison.EndsWith:
-                        result = userQuery.QueryProcessed.EndsWith(keyword);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(comparisonMode), comparisonMode, "Argument not specified.");
-                }
-                return result;
-            };
-
-            // Déclaration d'un booléen indiquant si la requete correspond aux mots clés définit dans l'objet Sentence'
-            bool keywordsMatch = true;
-
-            // Recherche si la requête de l'utilisateur correspond aux mots-clés de l'objet Sentence
-            int index = 0;
-            do
-            {
-                // Ligne de mots-clés
-                string[] rowKeywordsSentence = keywords[index];
-
-                // Si au moins un des mot-clé est trouvé dans la liste, on continue la vérification pour tableaux de mots-clés suivants,
-                // dans le cas contraite on sort de la boucle
-                if (!rowKeywordsSentence.Any(keyword => comparisonModeDel(keyword.AddWhiteSpaceAroundString())))
-                    keywordsMatch = false;
-
-                index++;
-            } while ((index < keywords.Count) && keywordsMatch);
-
-            return keywordsMatch;
-        }
-
-        private static bool CheckRegexMatch(UserQuery userQuery, List<string[]> regexList)
-        {
-            // Déclaration d'un booléen indiquant si la requete correspond aux expressions regulières définit dans l'objet Sentence'
-            bool regexMatch = true;
-
-            // Recherche si la requête de l'utilisateur correspond aux expressions régulières de l'objet Sentence
-            int index = 0;
-            do
-            {
-                // Obtenir à partir de la liste de regex, la ligne correspond a son indice
-                string[] rowRegexSentence = regexList[index];
-
-                // Si au moins un des mot-clé est trouvé dans la liste, on continue la vérification pour tableaux de regex suivants,
-                // dans le cas contraite on sort de la boucle
-                if (!rowRegexSentence.Any(pattern => Regex.Match(userQuery.Query, pattern).Success))
-                    regexMatch = false;
-
-                index++;
-            } while ((index < regexList.Count) && regexMatch);
-
-            return regexMatch;
-        }
-
-        private static bool CheckTriggerBot(UserQuery userQuery, bool callBotRequired)
-        {
-            string[] callBotContains = { "bot", "jarvis" };
-            bool triggerBot = (callBotContains.Any(botname => userQuery.QueryProcessed.Contains(botname.AddWhiteSpaceAroundString())) && callBotRequired) || !callBotRequired;
-
-            return triggerBot;
-        }
+        private static bool CheckTriggerBot(string queryProcessed, Regex botNamesRegex, bool callBotRequired)
+            => callBotRequired ? botNamesRegex.Match(queryProcessed).Success : true;
 
         private static object[] ParametersToValuesConverter(UserQuery userQuery, SentenceParameters[] parameters)
         {
