@@ -1,83 +1,110 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text;
 using System.Xml.Serialization;
 using DiscordBotJarvis.Enums;
 using DiscordBotJarvis.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace DiscordBotJarvis.Models.ResourcePacks.CommandDefinitions
 {
     [XmlInclude(typeof(Sentence))]
     [XmlInclude(typeof(SentenceFile))]
     [XmlInclude(typeof(Service))]
-    public class CommandSet : IXmlFeedbacksDeserializationCallback
+    public class CommandSet : IXmlDeserializationCallback
     {
+        // Variables
+        private string[] _regexTriggers;
+        private List<string[]> _triggersDefinedByUser;
+
         // Property
         public Feedback[] Feedbacks { get; set; }
- 
-        [XmlArrayItem("Keywords")]
-        public List<string[]> KeywordsList { get; set; }
 
-        [XmlArrayItem("Regex")]
-        public List<string[]> RegexList { get; set; }
+        [XmlIgnore]
+        public Regex[] TriggersRegex { get; set; }
+
+        [XmlArray("Triggers")]
+        [XmlArrayItem("Condition")]
+        public List<string[]> TriggersDefinedByUser {
+            get { return _triggersDefinedByUser; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(TriggersDefinedByUser), "La balise est manquante.");
+
+                if (value.Count > 0)
+                    SetRegexTriggers(value);
+
+                _triggersDefinedByUser = value;
+            }
+        }
 
         [DefaultValue(true)]
         public bool BotMentionRequired { get; set; }
 
-        [DefaultValue(KeywordsComparison.Contains)]
-        public KeywordsComparison KeywordsComparisonMode { get; set; }
-
         [XmlIgnore]
-        public bool IsListKeywordsEmpty => KeywordsList?.Count == 0;
-
-        [XmlIgnore]
-        public bool IsListRegexEmpty => RegexList?.Count == 0;
+        public bool IsListKeywordsEmpty => TriggersDefinedByUser?.Count == 0;
 
         // Contructors
         public CommandSet()
         {
-            KeywordsList = new List<string[]>();
-            RegexList = new List<string[]>();
+            TriggersDefinedByUser = new List<string[]>();
             BotMentionRequired = true;
-            KeywordsComparisonMode = KeywordsComparison.Contains;
         }
 
-        private CommandSet(Feedback[] feedbacks, bool botMentionRequired = true, KeywordsComparison keywordsComparisonMode = KeywordsComparison.Contains)
+        private CommandSet(Feedback[] feedbacks, bool botMentionRequired = true)
         {
             Feedbacks = feedbacks;
             BotMentionRequired = botMentionRequired;
-            KeywordsComparisonMode = keywordsComparisonMode;
         }
 
-        public CommandSet(Feedback[] feedbacks, List<string[]> keywords,
-            bool botMentionRequired = true, KeywordsComparison keywordsComparisonMode = KeywordsComparison.Contains) : this(feedbacks, botMentionRequired, keywordsComparisonMode)
+        public CommandSet(Feedback[] feedbacks, List<string[]> triggers, bool botMentionRequired = true) : this(feedbacks, botMentionRequired)
         {
-            if (keywords == null)
-                throw new ArgumentNullException(nameof(keywords));
+            if (triggers == null)
+                throw new ArgumentNullException(nameof(triggers));
 
-            KeywordsList = keywords;
+            TriggersDefinedByUser = triggers;
         }
 
-        public CommandSet(Feedback[] feedbacks, List<string[]> regex, bool botMentionRequired = true) : this(feedbacks, botMentionRequired)
+
+        private void SetRegexTriggers(IEnumerable<string[]> triggersList)
         {
-            if (regex == null)
-                throw new ArgumentNullException(nameof(regex));
+            // On réalise une concaténation afin de regrouper en une seul liste toutes les opérateurs 
+            // logiques de type OU dans une seule et même chaine de caractères.
+            List<Regex> result = new List<Regex>();
+            foreach (string[] condition in triggersList)
+            {
+                StringBuilder conditionConcatenate = new StringBuilder().Append("(^| )(");
+                for (int item = 0; item < condition.Length; item++)
+                {
+                    conditionConcatenate.Append(condition[item]);
+                    conditionConcatenate.Append(item < condition.Length - 1 ? "|" : @")($|\.| )");
+                }
 
-            RegexList = regex;
-        }
-
-        public CommandSet(Feedback[] feedbacks, List<string[]> keywords, List<string[]> regex,
-            bool botMentionRequired = true, KeywordsComparison keywordsComparisonMode = KeywordsComparison.Contains) : this(feedbacks, botMentionRequired, keywordsComparisonMode)
-        {
-            if (keywords == null && regex == null)
-                throw new ArgumentNullException($"{nameof(keywords)}, {nameof(regex)}");
-
-            KeywordsList = keywords;
-            RegexList = regex;
+                Regex rgx = new Regex(conditionConcatenate.ToString(),
+                    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+                result.Add(rgx);
+            }
+            TriggersRegex = result.ToArray();
         }
 
         public void OnXmlDeserialization(object sender)
         {
+            if (TriggersDefinedByUser == null)
+                throw new ArgumentNullException(nameof(TriggersDefinedByUser), "La balise est manquante.");
+
+            SetRegexTriggers(TriggersDefinedByUser);
+
+            if (Feedbacks == null) return;
+            foreach (Feedback feedback in Feedbacks)
+            {
+                if (feedback == null) continue;
+
+                if (feedback is Sentence) ((Sentence)feedback)?.OnXmlDeserialization(this);
+                else if (feedback is SentenceFile) ((SentenceFile)feedback)?.OnXmlDeserialization(this);
+                else if (feedback is Service) ((Service)feedback)?.OnXmlDeserialization(this);
+            }
         }
     }
 }
